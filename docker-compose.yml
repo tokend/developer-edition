@@ -1,0 +1,88 @@
+version: '3.3'
+
+services:
+  web_client:
+    image: tokend/web-client
+    volumes:
+      - ./configs/client.js:/usr/share/nginx/html/static/env.js
+    ports:
+      - 8060:80
+  admin_client:
+    image: tokend/admin-client
+    volumes:
+      - ./configs/client.js:/usr/share/nginx/html/static/env.js
+    ports:
+      - 8070:80
+  adks:
+    image: tokend/adks
+    restart: unless-stopped
+    depends_on:
+      - adks_db
+    ports:
+      - 8006:80
+    volumes:
+      - ./configs/adks.toml:/config.toml
+  adks_db:
+    image: tokend/postgres-ubuntu:9.6
+    environment:
+      - POSTGRES_USER=adks
+      - POSTGRES_PASSWORD=adks
+      - POSTGRES_DB=adks
+      - PGDATA=/pgdata
+    volumes:
+      - adks-data:/pgdata
+  api:
+    image: tokend/api
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - api_db
+    ports:
+      - 8001:80
+    volumes:
+      - ./api.yml:/config.yaml
+    command: run
+  api_db:
+    image: tokend/postgres-ubuntu:9.6
+    environment:
+      - POSTGRES_USER=api
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=api
+      - PGDATA=/pgdata
+    volumes:
+      - api-data:/pgdata
+  horizon:
+    depends_on:
+      - core
+    image: tokend/horizon
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=horizon
+      - POSTGRES_PASSWORD=horizon
+      - POSTGRES_DB=horizon
+      - PGDATA=/pgdata
+    volumes:
+      - horizon-data:/pgdata
+      - ./configs/horizon.env:/config.env
+    ports:
+      - 8000:80
+  core:
+    image: tokend/core
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=core
+      - POSTGRES_PASSWORD=core
+      - POSTGRES_DB=core
+      - PGDATA=/data/pgdata
+    volumes:
+      - ./configs/core.ini:/config.ini
+      - core-data:/data
+    ports:
+      - 8080:8080
+    command: start
+
+volumes:
+  adks-data:
+  api-data:
+  core-data:
+  horizon-data:

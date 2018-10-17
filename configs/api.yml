@@ -1,0 +1,41 @@
+api:
+  horizon_url: http://horizon
+  account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  skip_signature_check: true
+
+db:
+  url: postgres://api:api@api_db/api?sslmode=disable
+  max_idle: 4
+  max_connections: 12
+
+horizon:
+  url: http://horizon
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+notificator:
+  disabled: true
+
+salesforce:
+  disabled: true
+
+http:
+  host: 0.0.0.0
+  port: 80
+
+log:
+  level: info
+  slow_query_bound: 300ms
+  slow_request_bound: 1s
+
+sentry:
+  dsn: https://320bda3976214e8597028ebca2385c13:9e5f309255ed4b859210ac6dc12b3ea3@sentry.tokend.services/4
+  level: warn
+
+storage:
+  disabled: true
+
+wallets:
+  disable_confirm: true
+
+tx_watcher:
+  disabled: true
