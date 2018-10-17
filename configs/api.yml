@@ -28,7 +28,7 @@ log:
   slow_request_bound: 1s
 
 sentry:
-  dsn: https://320bda3976214e8597028ebca2385c13:9e5f309255ed4b859210ac6dc12b3ea3@sentry.tokend.services/4
+  dsn: https://e48aaa3c7f764c0ebe04dba3a2bb6eb8:ba2a1c169ff54e06b09b32ace9cdf92b@sentry.tokend.services/15
   level: warn
 
 storage:
