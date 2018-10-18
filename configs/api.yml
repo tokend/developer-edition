@@ -31,8 +31,24 @@ sentry:
   dsn: https://e48aaa3c7f764c0ebe04dba3a2bb6eb8:ba2a1c169ff54e06b09b32ace9cdf92b@sentry.tokend.services/15
   level: warn
 
+aws:
+  credentials: "static"
+  endpoint: storage:9000
+  disable_ssl: true
+  access_key: "miniominio"
+  secret_key: "sekritsekrit"
+  region: "us-east-1"
+
 storage:
-  disabled: true
+  backend: "aws"
+  bucket: "api"
+  ensure_bucket: true
+  media_types:
+    general:
+      - application/pdf
+      - image/jpeg
+      - image/png
+      - image/gif
 
 wallets:
   disable_confirm: true

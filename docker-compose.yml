@@ -13,6 +13,17 @@ services:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8070:80
+  storage:
+    image: minio/minio
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    environment:
+      - MINIO_ACCESS_KEY=miniominio
+      - MINIO_SECRET_KEY=sekritsekrit
+    volumes:
+      - storage-data:/data
+    command: server /data
   adks:
     image: tokend/adks
     restart: unless-stopped
@@ -38,8 +49,6 @@ services:
     depends_on:
       - horizon
       - api_db
-    ports:
-      - 8001:80
     volumes:
       - ./configs/api.yml:/config.yaml
     command: run
@@ -87,3 +96,4 @@ volumes:
   api-data:
   core-data:
   horizon-data:
+  storage-data:
