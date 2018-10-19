@@ -28,7 +28,8 @@ By default all data is persistent in mounted volumes, you should be fine stoppin
 For testing or development purposes it might be useful to bootstrap your environment to predefined state. That's where `initscripts` come in handy!
 Some useful tasks are already included in `tasks` directory which you could adapt to your own needs.
 
-You could start tickering with `$ docker-compose run initscripts tasks/common.hcl` which should get you environment with sane defaults, few assets and Alice and Bob users with tokens on their balances. Task files should have details and hints about which happening under the hood.
+You could start tickering with `docker-compose run initscripts tasks/common.hcl` which should get you environment with sane defaults and few tradeable assets.
+After that if you feel lonely running `docker-compose run iniscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
 
 
 ## Known Issues
