@@ -89,7 +89,14 @@ services:
       - core-data:/data
     ports:
       - 8080:8080
-    command: start
+  initscripts:
+    entrypoint: /binary -e /env.hcl -t 
+    image: tokend/initscripts
+    restart: on-failure
+    volumes:
+      - ./configs/env.hcl:/env.hcl
+      - ./tasks:/tasks
+    command: tasks/default.hcl
 
 volumes:
   adks-data:
