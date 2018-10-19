@@ -15,8 +15,8 @@ user {
 // login: bob@mail.com
 // pwd: bob@mail.com
 user {
-  wallet_id  = "8d03d790d4d562548e59d09101943b098b3028f34eff0f1a57aec3d2281d04c1"
-  account_id = "GBTRYNKYER5QMJ7LMVI2I5PIZWDLXVUCNZZKQSWPOOQCUUCCYX3X7532"
+  wallet_id  = "2cd34bb53d167f25baae0531b7bdff33e319f6670c2187b26df3ced3a953c571"
+  account_id = "GCXT7FZM52CZ2WUA7TKYCMMSA5ZVQEPLLKSKUQWD2JXGUTYDEVZO2PA7"
   request    = "tasks/bob.json"
 }
 
