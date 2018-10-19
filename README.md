@@ -29,7 +29,7 @@ For testing or development purposes it might be useful to bootstrap your environ
 Some useful tasks are already included in `tasks` directory which you could adapt to your own needs.
 
 You could start tickering with `docker-compose run initscripts tasks/common.hcl` which should get you environment with sane defaults and few tradeable assets.
-After that if you feel lonely running `docker-compose run iniscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
+After that if you feel lonely running `docker-compose run initscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
 
 
 ## Known Issues
