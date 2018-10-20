@@ -21,7 +21,7 @@ Assuming you've just cloned this repository, the following steps will get you up
 
 These instructions are just a guideline for what you should generally do. You may modify provided `docker-compose.yml` to accommodate your needs.
 
-By default all data is persistent in mounted volumes, you should be fine stopping and removing the containers without worry.
+By default all data is persistent in mounted volumes, you should be fine stopping and removing the containers without worry. But if for any reason you want to start over just run `docker-compose down -v` do clean up any persistent state.
 
 ## Bootstraping your environment
 
@@ -30,6 +30,7 @@ Some useful tasks are already included in `tasks` directory which you could adap
 
 You could start tickering with `docker-compose run initscripts tasks/common.hcl` which should get you environment with sane defaults and few tradeable assets.
 After that if you feel lonely running `docker-compose run initscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
+
 
 
 ## Known Issues
