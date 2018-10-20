@@ -31,7 +31,7 @@ Some useful tasks are already included in `tasks` directory which you could adap
 You could start tickering with `docker-compose run initscripts tasks/common.hcl` which should get you environment with sane defaults and few tradeable assets.
 After that if you feel lonely running `docker-compose run initscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
 
-So now you're able to login as Alice and Bob by using alice@mail.com and bob@mail.com for both email and password. To sign-up to the admin-client, use this secret seed: `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
+So now you're able to login as Alice and Bob by using `alice@mail.com` and `bob@mail.com` for both email and password. To sign-up to the admin-client, use this secret seed: `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
 
 ## Known Issues
 
