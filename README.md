@@ -35,7 +35,7 @@ After that if you feel lonely running `docker-compose run initscripts tasks/user
 ## Known Issues
 
 * clients are unable to access private documents due to limitations of S3v4 signature method. One of the workarounds might be setting public access policy to all objects in a bucket.
-
+* to sign-up to the admin-client, use this secret seed: `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
 ## Resources
 
 * [Knowledge base](https://tokend.gitbook.io/knowledge-base/)
