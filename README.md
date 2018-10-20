@@ -16,7 +16,7 @@ Assuming you've just cloned this repository, the following steps will get you up
 
 * `docker-compose pull` just in case, to be sure you have latest versions of containers
 * `docker-compose run --rm core init` to initialize core instance with genesis block according to `configs/core.ini`
-* `docker-compose up -d` to launch all services in background, after it finishes you should be able to access web client at [http://localhost:8060](http://localhost:8060) and admin dashboard at [http://localhost:8070](http://localhost:8070)
+* `docker-compose up -d` to launch all services in background, after it finishes you should be able to access web client at [http://localhost:8060](http://localhost:8060) and admin dashboard at [http://localhost:8070](http://localhost:8070) default seed for login is `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
 * `docker-compose ps` to see status of services and which ports are available
 
 These instructions are just a guideline for what you should generally do. You may modify provided `docker-compose.yml` to accommodate your needs.
