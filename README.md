@@ -36,7 +36,7 @@ So now you're able to login as Alice and Bob by using `alice@mail.com` and `bob@
 
 ## Known Issues
 
-* clients are unable to access private documents due to limitations of S3v4 signature method. One of the workarounds might be setting public access policy to all objects in a bucket.
+* clients are unable to access private documents due to limitations of S3v4 signature method. One of the workarounds might be set add `127.0.0.1    storage` to your hosts file.
 
 ## Resources
 
