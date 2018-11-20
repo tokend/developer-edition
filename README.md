@@ -13,7 +13,7 @@ Quick way for running [Tokend](https://tokend.io) development environment with [
 
  * Check for new updates. Make sure Docker is up to date.
  
- For Linux user, create a group to manage Docker as a non-root user. Check [guide](https://docs.docker.com/install/linux/linux-postinstall/)
+ * For **Linux** users, create a group to manage Docker as a non-root user. Check [guide](https://docs.docker.com/install/linux/linux-postinstall/)
 
  * Install [docker-compose](https://docs.docker.com/compose/install/)
 
