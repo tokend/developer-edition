@@ -2,13 +2,13 @@ version: '3.3'
 
 services:
   web_client:
-    image: tokend/web-client
+    image: tokend/web-client:art
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client
+    image: tokend/admin-client:art
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
