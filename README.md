@@ -1,7 +1,7 @@
 # TokenD Developer Edition
 
-Quick way for running [Tokend](https://tokend.io) development environment with [Docker](https://www.docker.com)
-
+Quick way for running [Tokend](https://tokend.io) development environment with [Docker](https://www.docker.com). There are known issues and it's not intended for any kind of production use.
+If you are interested in running TokenD please reach us at `dev@distributedlab.com`.
 
 ## Requirements
 
@@ -9,6 +9,13 @@ Quick way for running [Tokend](https://tokend.io) development environment with [
 * Compose
 * Linux/MacOS, Windows support is experimental and has known issues.
 
+## Custom use cases
+
+Default `docker-compose.yml` contains service definitions for default TokenD environment, but there is more to it! There are few custom use cases you could start with.
+
+*TODO*: brief summary of art and tickets use cases
+
+Just add `-f tickets.yml` or `-f art.yml` to your `docker-compose` (like `docker-compose -f art.yml up -d`) to have a TokenD setup tailored to your needs.
 
 ## Up and Running
 
@@ -32,7 +39,6 @@ You could start tickering with `docker-compose run initscripts tasks/common.hcl`
 After that if you feel lonely running `docker-compose run initscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
 
 So now you're able to login as Alice and Bob by using `alice@mail.com` and `bob@mail.com` for both email and password. To sign-up to the admin-client, use this secret seed: `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
-
 
 ## Known Issues
 
