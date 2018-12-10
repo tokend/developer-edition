@@ -5,8 +5,8 @@ If you are interested in running TokenD please reach us at `dev@distributedlab.c
 
 ## Requirements
 
-* Docker
-* Compose
+* [Docker](https://www.docker.com/get-started)
+* [Compose](https://docs.docker.com/compose/install/)
 * Linux/MacOS, Windows support is experimental and has known issues.
 
 ## Custom use cases
