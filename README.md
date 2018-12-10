@@ -1,7 +1,7 @@
 # TokenD Developer Edition
 
-Quick way for running [Tokend](https://tokend.io) development environment with [Docker](https://www.docker.com)
-
+Quick way for running [Tokend](https://tokend.io) development environment with [Docker](https://www.docker.com). There are known issues and it's not intended for any kind of production use.
+If you are interested in running TokenD please reach us at `dev@distributedlab.com`.
 
 ## Requirements
 
@@ -9,13 +9,21 @@ Quick way for running [Tokend](https://tokend.io) development environment with [
 * [Compose](https://docs.docker.com/compose/install/)
 * Linux/MacOS, Windows support is experimental and has known issues.
 
-## Setting up
+## Custom use cases
 
- * Check for new updates. Make sure Docker is up to date.
- 
- * For **Linux** users, create a group to manage Docker as a non-root user. Check [guide](https://docs.docker.com/install/linux/linux-postinstall/)
+Default `docker-compose.yml` contains service definitions for default TokenD environment, but there is more to it! There are few custom use cases you could start with. To have a TokenD setup tailored to your needs.
 
- * Install [docker-compose](https://docs.docker.com/compose/install/)
+#### Art Marketplace
+
+Art marketplace is one of TokenD's environment that contains all the standard functionality to list and sell art as well as innovative features such as support of digital currencies, non-fungible art tokens.
+
+* `docker-compose -f art.yml up -d`
+
+#### Ticket Marketplace
+
+Ticket marketplace is another TokenD's environment that can be used for events, conference to distribute tickets. It contains all the standard functionality such as ownership transfer, atomic swap, non-fungible ticket tokens.
+
+* `docker-compose -f ticket.yml up -d`
 
 ## Up and Running
 
@@ -39,7 +47,6 @@ You could start tickering with `docker-compose run initscripts tasks/common.hcl`
 After that if you feel lonely running `docker-compose run initscripts tasks/users.hcl` will create Alice and Bob accounts with some tokens ready to trade! Task files should have details and hints about which is happening under the hood.
 
 So now you're able to login as Alice and Bob by using `alice@mail.com` and `bob@mail.com` for both email and password. To sign-up to the admin-client, use this secret seed: `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
-
 
 ## Known Issues
 
