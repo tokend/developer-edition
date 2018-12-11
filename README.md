@@ -9,6 +9,19 @@ If you are interested in running TokenD please reach us at `dev@distributedlab.c
 * [Compose](https://docs.docker.com/compose/install/)
 * Linux/MacOS, Windows support is experimental and has known issues.
 
+## Up and Running
+
+Assuming you've just cloned this repository, the following steps will get you up and running in no time!
+
+* `docker-compose pull` just in case, to be sure you have latest versions of containers
+* `docker-compose run --rm core init` to initialize core instance with genesis block according to `configs/core.ini`
+* `docker-compose up -d` to launch all services in background, after it finishes you should be able to access web client at [http://localhost:8060](http://localhost:8060) and admin dashboard at [http://localhost:8070](http://localhost:8070) default seed for login is `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
+* `docker-compose ps` to see status of services and which ports are available
+
+These instructions are just a guideline for what you should generally do. You may modify provided `docker-compose.yml` to accommodate your needs.
+
+By default all data is persistent in mounted volumes, you should be fine stopping and removing the containers without worry. But if for any reason you want to start over just run `docker-compose down -v` do clean up any persistent state.
+
 ## Custom use cases
 
 Default `docker-compose.yml` contains service definitions for default TokenD environment, but there is more to it! There are few custom use cases you could start with. To have a TokenD setup tailored to your needs.
@@ -24,19 +37,6 @@ Art marketplace is one of TokenD's environment that contains all the standard fu
 Ticket marketplace is another TokenD's environment that can be used for events, conference to distribute tickets. It contains all the standard functionality such as ownership transfer, atomic swap, non-fungible ticket tokens.
 
 * `docker-compose -f ticket.yml up -d`
-
-## Up and Running
-
-Assuming you've just cloned this repository, the following steps will get you up and running in no time!
-
-* `docker-compose pull` just in case, to be sure you have latest versions of containers
-* `docker-compose run --rm core init` to initialize core instance with genesis block according to `configs/core.ini`
-* `docker-compose up -d` to launch all services in background, after it finishes you should be able to access web client at [http://localhost:8060](http://localhost:8060) and admin dashboard at [http://localhost:8070](http://localhost:8070) default seed for login is `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
-* `docker-compose ps` to see status of services and which ports are available
-
-These instructions are just a guideline for what you should generally do. You may modify provided `docker-compose.yml` to accommodate your needs.
-
-By default all data is persistent in mounted volumes, you should be fine stopping and removing the containers without worry. But if for any reason you want to start over just run `docker-compose down -v` do clean up any persistent state.
 
 ## Bootstraping your environment
 
