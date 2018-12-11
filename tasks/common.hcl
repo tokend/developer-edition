@@ -2,6 +2,10 @@
 # set generic KYC tasks
 #
 
+key_value "atomic_swap_tasks" {
+  value = 3
+}
+
 key_value "kyc_lvlup_rules:5:0:2:0" {
   value = 6
 }
@@ -57,6 +61,7 @@ asset "ETH" {
   policies = [
     "base_asset",
     "transferable",
+    "can_be_quote_in_atomic_swap",
   ]
 
   details = {
@@ -74,6 +79,7 @@ asset "BTC" {
   policies = [
     "base_asset",
     "transferable",
+    "can_be_quote_in_atomic_swap",
   ]
 
   details = {

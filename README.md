@@ -38,6 +38,8 @@ Ticket marketplace is another TokenD's environment that can be used for events, 
 
 * `docker-compose -f ticket.yml up -d`
 
+**Note:** To perform actual atomic swap of art/ticket tokens payment gateway integration is required, but it's not included in DE bundle at this point.
+
 ## Bootstraping your environment
 
 For testing or development purposes it might be useful to bootstrap your environment to predefined state. That's where `initscripts` come in handy!
