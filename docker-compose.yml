@@ -2,30 +2,30 @@ version: '3.3'
 
 services:
   web_client:
-    image: tokend/web-client
+    image: tokend/web-client:1.0.4
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client
+    image: tokend/admin-client:1.0.5
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8070:80
   storage:
-    image: minio/minio
+    image: minio/minio:RELEASE.2019-01-31T00-31-19Z
     restart: unless-stopped
-    ports:
-      - 9000:9000
     environment:
       - MINIO_ACCESS_KEY=miniominio
       - MINIO_SECRET_KEY=sekritsekrit
     volumes:
       - storage-data:/data
     command: server /data
+    ports:
+      - 9000:9000
   adks:
-    image: tokend/adks
+    image: tokend/adks:1.0.0
     restart: unless-stopped
     depends_on:
       - adks_db
@@ -43,8 +43,10 @@ services:
       - PGDATA=/pgdata
     volumes:
       - adks-data:/pgdata
+    ports:
+      - 5436:5432
   api:
-    image: tokend/api
+    image: tokend/api:1.0.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -61,10 +63,12 @@ services:
       - PGDATA=/pgdata
     volumes:
       - api-data:/pgdata
+    ports:
+      - 5435:5432
   horizon:
     depends_on:
       - core
-    image: tokend/horizon:bleeding-edge
+    image: tokend/horizon:1.0.0
     restart: unless-stopped
     environment:
       - POSTGRES_USER=horizon
@@ -76,8 +80,9 @@ services:
       - ./configs/horizon.env:/config.env
     ports:
       - 8000:80
+      - 5434:5432
   core:
-    image: tokend/core:bleeding-edge
+    image: tokend/core:1.0.0
     restart: unless-stopped
     environment:
       - POSTGRES_USER=core
@@ -89,13 +94,14 @@ services:
       - core-data:/data
     ports:
       - 8080:8080
+      - 5433:5432
   initscripts:
-    entrypoint: /binary -e /env.hcl -t 
-    image: tokend/initscripts
+    image: tokend/initscripts:1.0.0
     restart: on-failure
     volumes:
       - ./configs/env.hcl:/env.hcl
       - ./tasks:/tasks
+    entrypoint: /binary -e /env.hcl -t 
     command: tasks/default.hcl
 
 volumes:
