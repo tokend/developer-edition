@@ -36,7 +36,7 @@ Art marketplace is one of TokenD's environment that contains all the standard fu
 
 Ticket marketplace is another TokenD's environment that can be used for events, conference to distribute tickets. It contains all the standard functionality such as ownership transfer, atomic swap, non-fungible ticket tokens.
 
-* `docker-compose -f ticket.yml up -d`
+* `docker-compose -f tickets.yml up -d`
 
 **Note:** To perform actual atomic swap of art/ticket tokens payment gateway integration is required, but it's not included in DE bundle at this point.
 
