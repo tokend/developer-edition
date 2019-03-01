@@ -18,9 +18,8 @@ notificator:
 salesforce:
   disabled: true
 
-http:
-  host: 0.0.0.0
-  port: 80
+listener:
+  addr: :80
 
 log:
   level: info
@@ -43,6 +42,7 @@ storage:
   backend: "aws"
   bucket: "api"
   ensure_bucket: true
+  client_url: http://localhost:8000/_/storage/
   media_types:
     general:
       - application/pdf
@@ -54,4 +54,9 @@ wallets:
   disable_confirm: true
 
 tx_watcher:
-  disabled: true
+  disabled: false
+
+janus:
+  endpoint: http://janus:8000
+  upstream: http://api
+  surname:  api
