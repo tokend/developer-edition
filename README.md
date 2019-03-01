@@ -15,9 +15,9 @@ If you are interested in running TokenD please reach us at `dev@distributedlab.c
 # drop any persistent state to make sure you are working with clean install
 $ docker-compose down -v
 # spin everything up
-$  docker-compose up -d
+$ docker-compose up -d
 # wait while environment initialization is complete
-$  docker-compose logs -f initscripts
+$ docker-compose logs -f initscripts
 ```
 
 Now you should be able to access web client at [http://localhost:8060](http://localhost:8060) and admin dashboard at [http://localhost:8070](http://localhost:8070) default seed for login is `SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4`
