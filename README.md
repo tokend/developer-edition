@@ -22,24 +22,6 @@ These instructions are just a guideline for what you should generally do. You ma
 
 By default all data is persistent in mounted volumes, you should be fine stopping and removing the containers without worry. But if for any reason you want to start over just run `docker-compose down -v` do clean up any persistent state.
 
-## Custom use cases
-
-Default `docker-compose.yml` contains service definitions for default TokenD environment, but there is more to it! There are few custom use cases you could start with. To have a TokenD setup tailored to your needs.
-
-#### Art Marketplace
-
-Art marketplace is one of TokenD's environment that contains all the standard functionality to list and sell art as well as innovative features such as support of digital currencies, non-fungible art tokens.
-
-* `docker-compose -f art.yml up -d`
-
-#### Ticket Marketplace
-
-Ticket marketplace is another TokenD's environment that can be used for events, conference to distribute tickets. It contains all the standard functionality such as ownership transfer, atomic swap, non-fungible ticket tokens.
-
-* `docker-compose -f tickets.yml up -d`
-
-**Note:** To perform actual atomic swap of art/ticket tokens payment gateway integration is required, but it's not included in DE bundle at this point.
-
 ## Bootstraping your environment
 
 For testing or development purposes it might be useful to bootstrap your environment to predefined state. That's where `initscripts` come in handy!
