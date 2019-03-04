@@ -1,6 +1,6 @@
 # TokenD Developer Edition
 
-Quick way for running [TokenD](https://tokend.io) development environment with [Docker](https://www.docker.com). There are known issues and it's not intended for any kind of production use.
+Quick way for running [TokenD](https://tokend.io) local development environment with [Docker](https://www.docker.com). There are known issues and it's not intended for any kind of production use.
 If you are interested in running TokenD please reach us at `dev@distributedlab.com`.
 
 ## Requirements
@@ -13,7 +13,7 @@ If you are interested in running TokenD please reach us at `dev@distributedlab.c
 
 ```sh
 # drop any persistent state to make sure you are working with clean install
-$ docker-compose down -v
+$ docker-compose down -v && docker-compose pull
 # spin everything up
 $ docker-compose up -d
 # wait while environment initialization is complete

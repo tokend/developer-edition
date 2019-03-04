@@ -6,6 +6,33 @@ services:
     restart: unless-stopped
     volumes:
       - ./configs/janus.toml:/etc/janus/janus.toml
+  upstream:
+    restart: unless-stopped
+    image: nginx
+    volumes:
+    - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+    - "8000:80"
+  adks:
+    image: tokend/adks:1.0.0
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - adks_db
+    ports:
+      - 8006:80
+    volumes:
+      - ./configs/adks.toml:/config.toml
+  adks_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=adks
+      - POSTGRES_PASSWORD=adks
+      - POSTGRES_DB=adks
+      - PGDATA=/pgdata
+    volumes:
+      - adks-data:/pgdata
   core:
     depends_on:
       - janus
@@ -53,13 +80,6 @@ services:
       - PGDATA=/pgdata
     volumes:
       - api-data:/pgdata
-  upstream:
-    restart: unless-stopped
-    image: nginx
-    volumes:
-    - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
-    ports:
-    - "8000:80"
   initscripts:
     depends_on:
       - horizon
@@ -93,26 +113,6 @@ services:
     volumes:
       - storage-data:/data
     command: server /data
-  adks:
-    image: tokend/adks:1.0.0
-    restart: unless-stopped
-    depends_on:
-      - horizon
-      - adks_db
-    ports:
-      - 8006:80
-    volumes:
-      - ./configs/adks.toml:/config.toml
-  adks_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=adks
-      - POSTGRES_PASSWORD=adks
-      - POSTGRES_DB=adks
-      - PGDATA=/pgdata
-    volumes:
-      - adks-data:/pgdata
 
 volumes:
   adks-data:
