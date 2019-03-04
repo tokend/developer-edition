@@ -215,7 +215,6 @@ resource tokend_asset "USD" {
 
   policies = [
     "transferable",
-    "base_asset",
   ]
 }
 
