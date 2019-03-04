@@ -75,7 +75,7 @@ services:
     depends_on:
       - horizon
       - api_db
-    environment: 
+    environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/api.yml:/config.yaml
@@ -101,7 +101,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    restart: unless-stopped    
+    restart: unless-stopped
     image: tokend/web-client:1.3.0
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
