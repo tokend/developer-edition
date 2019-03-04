@@ -1,0 +1,17 @@
+closer:
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  normal_time: 1m
+  abnormal_period: 1m
+  max_abnormal_period: 5m
+
+listener:
+  addr: :2323
+
+horizon:
+  endpoint: http://janus/
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+
+log:
+  level: info
+  disable_sentry: true
