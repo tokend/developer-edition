@@ -123,6 +123,16 @@ services:
     volumes:
       - storage-data:/data
     command: server /data
+  cp_deposit:
+    image: registry.gitlab.com/tokend/coinpayments:45717b77dddd8828b4d3eb98c4f27e3360a6cb1a
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/coinpayments.yaml:/config.yaml
+    command: run deposit
 
 volumes:
   adks-data:
