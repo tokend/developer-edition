@@ -18,16 +18,10 @@ deposit:
   source: GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
-server:
-  address: localhost:9000
-  request_write_timeout: 30s
+listener:
+  addr: :80
 
-deposit_verify:
-  source: GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB
-  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-
-withdraw:
-  source: GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB
-  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-  add_tx_fee: true
-  auto_confirm: false
+janus:
+  endpoint: http://janus:8000
+  upstream: http://coinpayments-deposit
+  surname: coinpayments-deposit
