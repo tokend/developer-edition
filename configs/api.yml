@@ -42,7 +42,7 @@ storage:
   backend: "aws"
   bucket: "api"
   ensure_bucket: true
-  client_url: http://localhost:8000/_/storage/
+  client_url: http://localhost:8000/_/storage/api
   media_types:
     general:
       - application/pdf
