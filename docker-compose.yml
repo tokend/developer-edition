@@ -70,7 +70,7 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
   api:
-    image: tokend/identity:3.0.0
+    image: registry.gitlab.com/tokend/api:c82057d24accc2b460b1b43b760a783c9b0631a2
     restart: unless-stopped
     depends_on:
       - horizon
@@ -120,6 +120,7 @@ services:
     environment:
       - MINIO_ACCESS_KEY=miniominio
       - MINIO_SECRET_KEY=sekritsekrit
+      - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
     command: server /data
