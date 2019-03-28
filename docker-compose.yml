@@ -46,7 +46,8 @@ services:
   core:
     depends_on:
       - janus
-    image: tokend/core:3.0.0
+    image: registry.gitlab.com/tokend/core:pg-03d89c5f90a54601fd9b4c527c6ca6d8fe8f1e20
+    #image: tokend/core:3.0.0
     restart: unless-stopped
     environment:
       - POSTGRES_USER=core
@@ -54,13 +55,14 @@ services:
       - POSTGRES_DB=core
       - PGDATA=/data/pgdata
       - ENSUREDB=1
+      - CONFIG=/core-config.ini
     volumes:
-      - ./configs/core.ini:/config.ini
+      - ./configs/core.ini:/core-config.ini
       - core-data:/data
   horizon:
     depends_on:
       - core
-    image: tokend/horizon:3.0.1
+    image: registry.gitlab.com/tokend/horizon:pg-d810104242a60d445ac769c45b393a183851cc49
     restart: unless-stopped
     environment:
       - POSTGRES_USER=horizon
@@ -70,7 +72,7 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
   api:
-    image: registry.gitlab.com/tokend/api:c82057d24accc2b460b1b43b760a783c9b0631a2
+    image: registry.gitlab.com/tokend/api:ae33b05d71f5c2e657a6cd69b753e16a3bba9791
     restart: unless-stopped
     depends_on:
       - horizon
@@ -93,7 +95,7 @@ services:
   initscripts:
     depends_on:
       - horizon
-    image: tokend/terraform-provider-tokend:latest
+    image: tokend/terraform-provider-tokend:0.2.0
     restart: on-failure
     volumes:
       - ./terraform:/opt/config
@@ -124,7 +126,20 @@ services:
     volumes:
       - storage-data:/data
     command: server /data
-  
+
+  ##
+  ## Auxiliary modules
+  ##
+
+  charts:
+    image: tokend/charts:0.2.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/charts.yaml:/config.yaml
+    command: run
+
   ##
   ## Integration services
   ##
@@ -132,7 +147,7 @@ services:
   ## Coinpayments
 
   coinpayments-deposit:
-    image: tokend/coinpayments:0.1.0
+    image: tokend/coinpayments:0.2.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -140,7 +155,7 @@ services:
       - ./configs/coinpayments-deposit.yaml:/config.yaml
     command: deposit
   coinpayments-deposit-verify:
-    image: tokend/coinpayments:0.1.0
+    image: tokend/coinpayments:0.2.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -148,7 +163,7 @@ services:
       - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
     command: deposit-verify
   coinpayments-withdraw:
-    image: tokend/coinpayments:0.1.0
+    image: tokend/coinpayments:0.2.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml

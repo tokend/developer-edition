@@ -1,0 +1,19 @@
+listener:
+  addr: :80
+
+log:
+  # we are using sentry for error collection,
+  # you could opt-out by disabling it on the following line
+  disable_sentry: false
+
+sentry:
+  dsn: https://7764dbf1ce9f4aac83625fb020492613@sentry.tokend.services/7
+
+horizon:
+  endpoint: http://janus
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+janus:
+  endpoint: http://janus:8000
+  upstream: http://charts
+  surname:  charts
