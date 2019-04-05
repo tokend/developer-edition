@@ -13,5 +13,10 @@ horizon:
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
 
 log:
-  level: info
-  disable_sentry: true
+  level: warn
+  # we are using sentry for error collection,
+  # you could opt-out by disabling it on the following line
+  disable_sentry: false
+
+sentry:
+  dsn: https://3168b86d1fe34f1b95247afc100fa7ad@sentry.tokend.services/8
