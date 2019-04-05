@@ -3,7 +3,7 @@ config:
   stellar_core_database_url:               postgres://core:core@core/core?sslmode=disable
   hostname:                                ""
   database_url:                            postgres://horizon:horizon@localhost/horizon?sslmode=disable
-  log_level:                               "info"
+  log_level:                               "warn"
   slow_query_bound:                        1s
   port:                                    80
   ingest:                                  true
@@ -14,7 +14,7 @@ config:
   disable_tx_tfa:                          true
   force_https_links:                       false
   # we are using sentry for error collection, you could opt-out by removing following line
-  sentry_dsn:                              "https://cd41c8dfcb6649d1bbdc2be4da7494c4@sentry.tokend.services/4"
+  sentry_dsn:                              "https://0ad42a3fc393412a94b8e09d342aaed1@sentry.tokend.services/7"
   sentry_log_level:                        "warn"
   project:                                 "horizon"
   env:                                     "developer-edition"

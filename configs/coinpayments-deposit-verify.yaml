@@ -1,6 +1,11 @@
 log:
-  level: info
-  disable_sentry: true
+  level: warn
+  # we are using sentry for error collection,
+  # you could opt-out by disabling it on the following line
+  disable_sentry: false
+
+sentry:
+  dsn: https://591b6a3c375f4aa890a37532ce4969ec@sentry.tokend.services/4
 
 horizon:
   endpoint: http://janus

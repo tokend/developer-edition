@@ -2,12 +2,13 @@ listener:
   addr: :80
 
 log:
+  level: warn
   # we are using sentry for error collection,
   # you could opt-out by disabling it on the following line
   disable_sentry: false
 
 sentry:
-  dsn: https://7764dbf1ce9f4aac83625fb020492613@sentry.tokend.services/7
+  dsn: https://989409410d0740a89b1f8571c4195dca@sentry.tokend.services/3
 
 horizon:
   endpoint: http://janus
