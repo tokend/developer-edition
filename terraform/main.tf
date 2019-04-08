@@ -40,6 +40,7 @@ module "account_roles" {
     "${module.account_rules.buy_offer_creator}",
     "${module.account_rules.sale_participant}",
     "${module.account_rules.external_binder}",
+    "${module.account_rules.vote_creator}",
   ]
 
   general_rules = [
@@ -68,6 +69,7 @@ module "account_roles" {
     "${module.account_rules.sale_participant}",
     "${module.account_rules.asset_withdrawer}",
     "${module.account_rules.external_binder}",
+    "${module.account_rules.vote_creator}",
   ]
 
   syndicate_rules = [
@@ -97,6 +99,7 @@ module "account_roles" {
     "${module.account_rules.sale_participant}",
     "${module.account_rules.asset_withdrawer}",
     "${module.account_rules.external_binder}",
+    "${module.account_rules.vote_creator}",
   ]
 
   blocked_rules = []

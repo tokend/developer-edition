@@ -66,6 +66,16 @@ resource tokend_account_rule "external_binder" {
   entry_type = "external_system_account_id_pool_entry"
 }
 
+resource tokend_account_rule "vote_creator" {
+  action = "create"
+  entry_type = "vote"
+
+  entry = {
+    poll_id = "*"
+    permission_type = "*"
+  }
+}
+
 output "external_binder" {
   value = "${tokend_account_rule.external_binder.id}"
 }
@@ -101,4 +111,8 @@ output "asset_creator" {
 
 output "asset_withdrawer" {
   value = "${tokend_account_rule.asset_withdrawer.id}"
+}
+
+output "vote_creator" {
+  value = "${tokend_account_rule.vote_creator.id}"
 }
