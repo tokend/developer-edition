@@ -92,7 +92,7 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:0.2.0
+    image: tokend/terraform-provider-tokend:0.3.0
     depends_on:
       - horizon
     restart: on-failure
