@@ -126,6 +126,13 @@ module "signer_roles" {
   external_systems_admin = [
     "${module.signer_rules.tx_sender}",
   ]
+
+  license_admin = [
+    "${module.signer_rules.tx_sender}",
+    "${module.signer_rules.license_creator}",
+    "${module.signer_rules.stamp_creator}",
+  ]
+
 }
 
 resource tokend_key_value "default_withdraw_tasks" {
