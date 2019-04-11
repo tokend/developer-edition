@@ -44,7 +44,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.1.0
+    image: tokend/core:3.1.2
     depends_on:
       - janus
     restart: unless-stopped
