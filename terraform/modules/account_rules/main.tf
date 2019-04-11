@@ -76,6 +76,17 @@ resource tokend_account_rule "vote_creator" {
   }
 }
 
+resource tokend_account_rule "vote_remover" {
+  action = "remove"
+  entry_type = "vote"
+
+  entry = {
+    poll_id = "*"
+    permission_type = "*"
+  }
+}
+
+
 output "external_binder" {
   value = "${tokend_account_rule.external_binder.id}"
 }
@@ -115,4 +126,8 @@ output "asset_withdrawer" {
 
 output "vote_creator" {
   value = "${tokend_account_rule.vote_creator.id}"
+}
+
+output "vote_remover" {
+  value = "${tokend_account_rule.vote_remover.id}"
 }

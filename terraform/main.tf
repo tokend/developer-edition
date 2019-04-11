@@ -41,6 +41,7 @@ module "account_roles" {
     "${module.account_rules.sale_participant}",
     "${module.account_rules.external_binder}",
     "${module.account_rules.vote_creator}",
+    "${module.account_rules.vote_remover}",
   ]
 
   general_rules = [
@@ -70,6 +71,7 @@ module "account_roles" {
     "${module.account_rules.asset_withdrawer}",
     "${module.account_rules.external_binder}",
     "${module.account_rules.vote_creator}",
+    "${module.account_rules.vote_remover}",
   ]
 
   syndicate_rules = [
@@ -100,6 +102,7 @@ module "account_roles" {
     "${module.account_rules.asset_withdrawer}",
     "${module.account_rules.external_binder}",
     "${module.account_rules.vote_creator}",
+    "${module.account_rules.vote_remover}",
   ]
 
   blocked_rules = []
