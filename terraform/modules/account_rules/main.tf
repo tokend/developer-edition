@@ -1,3 +1,7 @@
+variable restricted_poll_type {
+  type = "string"
+ }
+
 resource tokend_account_rule "signer_manager" {
   action = "*"
   entry_type = "signer"
@@ -86,6 +90,16 @@ resource tokend_account_rule "vote_remover" {
   }
 }
 
+resource tokend_account_rule "forbid_restricted_vote_remove" {
+  action = "remove"
+  entry_type = "vote"
+  forbids = true
+
+  entry = {
+    poll_id = "*"
+    permission_type = "${var.restricted_poll_type}"
+  }
+}
 
 output "external_binder" {
   value = "${tokend_account_rule.external_binder.id}"
@@ -130,4 +144,8 @@ output "vote_creator" {
 
 output "vote_remover" {
   value = "${tokend_account_rule.vote_remover.id}"
+}
+
+output "forbid_restricted_vote_remove" {
+  value = "${tokend_account_rule.forbid_restricted_vote_remove.id}"
 }
