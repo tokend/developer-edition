@@ -131,7 +131,7 @@ services:
   ##
 
   charts:
-    image: tokend/charts:0.2.0
+    image: tokend/charts:0.3.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
