@@ -59,7 +59,7 @@ services:
       - ./configs/core.ini:/core-config.ini
       - core-data:/data
   horizon:
-    image: tokend/horizon:3.2.0-x.6
+    image: tokend/horizon:3.2.0-x.7
     depends_on:
       - core
     restart: unless-stopped
