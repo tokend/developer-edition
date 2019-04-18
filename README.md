@@ -1,6 +1,6 @@
 # TokenD Developer Edition
 
-Quick way for running [TokenD](https://tokend.io) local development environment with [Docker](https://www.docker.com). It's not intended for any kind of production use.
+Quick way for running [TokenD](https://tokend.io) local development environment with [Docker](https://www.docker.com). It's not intended for any kind of production use. If you would like to do production or demo deployment, we highly reccomend to use this [tool instead](https://gitlab.com/tokend/tokend-cli).
 
 ## Requirements
 
