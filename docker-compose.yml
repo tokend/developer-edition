@@ -13,16 +13,6 @@ services:
     - ./configs/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
     - "8000:80"
-  salecloser:
-    image: tokend/sale-closer-svc:1.0.0
-    depends_on:
-      - horizon
-    restart: unless-stopped
-    volumes:
-      - ./configs/salecloser.yaml:/config.yaml
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    command: "run"
   adks:
     image: tokend/adks:1.0.0
     restart: unless-stopped
@@ -131,13 +121,23 @@ services:
   ##
 
   charts:
-    image: tokend/charts:0.3.0
+    image: tokend/charts:0.3.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/charts.yaml:/config.yaml
     command: run
+  salecloser:
+    image: tokend/sale-closer-svc:1.0.1
+    depends_on:
+      - horizon
+    restart: unless-stopped
+    volumes:
+      - ./configs/salecloser.yaml:/config.yaml
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    command: "run"
 
   ##
   ## Integration services
