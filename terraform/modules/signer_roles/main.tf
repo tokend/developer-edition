@@ -10,6 +10,10 @@ variable "kyc_aml_admin" {
   type = "list"
 }
 
+variable "license_admin" {
+  type = "list"
+}
+
 resource tokend_signer_role "super_admin" {
   rules = [
     "1",
@@ -45,6 +49,18 @@ resource tokend_signer_role "kyc_aml_admin" {
     description = "Responsible for reviewing users requests including KYC, asset/sale creation etc"
   }
 }
+
+resource tokend_signer_role "license_admin" {
+  rules = [
+  "${var.license_admin}"
+  ]
+  details = {
+    admin_role = true
+    name = "License Admin"
+    description = "Able to manage system licenses"
+  }
+}
+
 
 // users operational signer role
 resource tokend_signer_role "default" {

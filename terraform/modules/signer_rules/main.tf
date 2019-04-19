@@ -45,6 +45,16 @@ resource tokend_signer_rule "fee_manager" {
   entry_type = "fee"
 }
 
+resource tokend_signer_rule "license_creator" {
+  action = "create"
+  entry_type = "license"
+}
+
+resource tokend_signer_rule "stamp_creator" {
+  action = "create"
+  entry_type = "stamp"
+}
+
 output "issuance_creator" {
   value = "${tokend_signer_rule.issuance_creator.id}"
 }
@@ -71,4 +81,12 @@ output "limits_manager" {
 
 output "fee_manager" {
   value = "${tokend_signer_rule.fee_manager.id}"
+}
+
+output "license_creator" {
+  value = "${tokend_signer_rule.license_creator.id}"
+}
+
+output "stamp_creator" {
+  value = "${tokend_signer_rule.stamp_creator.id}"
 }

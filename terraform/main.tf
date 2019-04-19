@@ -1,14 +1,8 @@
-// variable account {
-//   type = "string"
-// }
 
-// variable signer {
-//   type = "string"
-// }
-
-// variable endpoint {
-//   type = "string"
-// }
+variable restricted_poll_type {
+  type = "string"
+  default = "3"
+}
 
 provider "tokend" {
   account  = "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
@@ -19,6 +13,7 @@ provider "tokend" {
 // creates basic account rules
 module "account_rules" {
   source = "modules/account_rules"
+  restricted_poll_type = "${var.restricted_poll_type}"
 }
 
 // TODO withdraw request
@@ -26,7 +21,6 @@ module "account_rules" {
 // create default account roles
 module "account_roles" {
   source = "modules/account_roles"
-
   unverified_rules = [
     "${module.account_rules.balance_creator}",
     "${module.account_rules.sender}",
@@ -40,6 +34,9 @@ module "account_roles" {
     "${module.account_rules.buy_offer_creator}",
     "${module.account_rules.sale_participant}",
     "${module.account_rules.external_binder}",
+    "${module.account_rules.vote_creator}",
+    "${module.account_rules.vote_remover}",
+    "${module.account_rules.forbid_restricted_vote_remove}",
   ]
 
   general_rules = [
@@ -68,6 +65,9 @@ module "account_roles" {
     "${module.account_rules.sale_participant}",
     "${module.account_rules.asset_withdrawer}",
     "${module.account_rules.external_binder}",
+    "${module.account_rules.vote_creator}",
+    "${module.account_rules.vote_remover}",
+    "${module.account_rules.forbid_restricted_vote_remove}",
   ]
 
   syndicate_rules = [
@@ -97,6 +97,9 @@ module "account_roles" {
     "${module.account_rules.sale_participant}",
     "${module.account_rules.asset_withdrawer}",
     "${module.account_rules.external_binder}",
+    "${module.account_rules.vote_creator}",
+    "${module.account_rules.vote_remover}",
+    "${module.account_rules.forbid_restricted_vote_remove}",
   ]
 
   blocked_rules = []
@@ -123,6 +126,13 @@ module "signer_roles" {
   external_systems_admin = [
     "${module.signer_rules.tx_sender}",
   ]
+
+  license_admin = [
+    "${module.signer_rules.tx_sender}",
+    "${module.signer_rules.license_creator}",
+    "${module.signer_rules.stamp_creator}",
+  ]
+
 }
 
 resource tokend_key_value "default_withdraw_tasks" {
@@ -177,6 +187,12 @@ resource tokend_key_value "preissuance_tasks_default" {
   key        = "preissuance_tasks:*"
   value_type = "uint32"
   value      = "0"
+}
+
+resource tokend_key_value "poll_type_restricted" {
+  key = "poll_type:restricted"
+  value_type = "uint32"
+  value = "${var.restricted_poll_type}"
 }
 
 resource tokend_asset "DOGE" {
