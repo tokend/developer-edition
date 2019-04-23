@@ -61,7 +61,7 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
   api:
-    image: tokend/identity:4.0.2
+    image: tokend/identity:4.1.0
     restart: unless-stopped
     depends_on:
       - horizon
