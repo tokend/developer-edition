@@ -49,7 +49,7 @@ services:
       - ./configs/core.ini:/core-config.ini
       - core-data:/data
   horizon:
-    image: tokend/horizon:3.2.0
+    image: tokend/horizon:3.2.1
     depends_on:
       - core
     restart: unless-stopped
@@ -92,7 +92,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.5.0
+    image: tokend/web-client:1.6.0-x.2
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
