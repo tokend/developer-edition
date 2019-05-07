@@ -48,6 +48,8 @@ services:
     volumes:
       - ./configs/core.ini:/core-config.ini
       - core-data:/data
+    labels:
+      - "autoheal=true"
   horizon:
     image: tokend/horizon:3.2.1
     depends_on:
@@ -138,6 +140,17 @@ services:
     environment:
       - KV_VIPER_FILE=/config.yaml
     command: "run"
+
+  ## 3rd party
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: unless-stopped
+    environment:
+      - AUTOHEAL_START_PERIOD=60
+      - AUTOHEAL_DEFAULT_STOP_TIMEOUT=30
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   ##
   ## Integration services
