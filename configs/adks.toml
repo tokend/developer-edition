@@ -1,5 +1,5 @@
 port = 80
-horizon = "http://horizon"
+horizon = "http://janus"
 log_level = "warn"
 
 [database]
