@@ -92,14 +92,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.6.0-rc.0
+    image: tokend/web-client:1.6.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.6.0-rc.1
+    image: tokend/admin-client:1.6.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
