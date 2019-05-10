@@ -85,10 +85,10 @@ services:
     image: tokend/terraform-provider-tokend:0.3.0
     depends_on:
       - horizon
+      - storage
     restart: on-failure
     volumes:
       - ./terraform:/opt/config
-      - terraform-data:/opt/state
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
@@ -108,13 +108,14 @@ services:
   storage:
     image: minio/minio:RELEASE.2019-01-31T00-31-19Z
     restart: unless-stopped
+    entrypoint: "sh"
+    command: -c "mkdir -p /data/tfstate && minio server /data"
     environment:
       - MINIO_ACCESS_KEY=miniominio
       - MINIO_SECRET_KEY=sekritsekrit
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
-    command: server /data
 
   ##
   ## Auxiliary modules
@@ -176,4 +177,3 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
-  terraform-data:

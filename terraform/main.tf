@@ -1,3 +1,15 @@
+terraform {
+  backend "s3" {
+    bucket = "tfstate"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+    access_key = "miniominio"
+    secret_key = "sekritsekrit"
+    endpoint = "http://storage:9000"
+    skip_credentials_validation = true
+    force_path_style = true
+  }
+}
 
 provider "tokend" {
   account  = "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
