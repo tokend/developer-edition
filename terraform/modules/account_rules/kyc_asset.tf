@@ -3,7 +3,7 @@ resource tokend_account_rule "kyc_sender" {
   entry_type = "asset"
 
   entry = {
-    asset_type = "1"
+    asset_type = "${var.asset_type_kyc}"
     asset_code = "*"
   }
 }
@@ -13,7 +13,7 @@ resource tokend_account_rule "kyc_payment_receiver" {
   entry_type = "asset"
 
   entry = {
-    asset_type = "1"
+    asset_type = "${var.asset_type_kyc}"
     asset_code = "*"
   }
 }
@@ -23,7 +23,7 @@ resource tokend_account_rule "kyc_atomic_swap_receiver" {
   entry_type = "asset"
 
   entry = {
-    asset_type = "1"
+    asset_type = "${var.asset_type_kyc}"
     asset_code = "*"
   }
 }
@@ -33,70 +33,69 @@ resource tokend_account_rule "kyc_withdrawer" {
   entry_type = "asset"
 
   entry = {
-    asset_type = "1"
+    asset_type = "${var.asset_type_kyc}"
     asset_code = "*"
   }
 }
 
-
-resource tokend_account_rule "kyc_buy_offer_creator" {
+resource tokend_account_rule "kyc_for_kyc_buy_offer_creator" {
   action = "create"
   entry_type = "offer"
   entry = {
     is_buy = true
-    quote_asset_type = "1"
-    base_asset_type = "1"
+    quote_asset_type = "${var.asset_type_kyc}"
+    base_asset_type = "${var.asset_type_kyc}"
   }
 }
 
-resource tokend_account_rule "kyc_sell_offer_creator" {
+resource tokend_account_rule "kyc_for_kyc_sell_offer_creator" {
   action = "create"
   entry_type = "offer"
   entry = {
     is_buy = false
-    quote_asset_type = "1"
-    base_asset_type = "1"
+    quote_asset_type = "${var.asset_type_kyc}"
+    base_asset_type = "${var.asset_type_kyc}"
   }
 }
 
 
-resource tokend_account_rule "kyc_buy_offer_creator_1_0" {
+resource tokend_account_rule "default_for_kyc_buy_offer_creator" {
   action = "create"
   entry_type = "offer"
   entry = {
     is_buy = true
-    quote_asset_type = "1"
-    base_asset_type = "0"
+    quote_asset_type = "${var.asset_type_kyc}"
+    base_asset_type = "${var.asset_type_default}"
   }
 }
 
-resource tokend_account_rule "kyc_sell_offer_creator_1_0" {
+resource tokend_account_rule "default_for_kyc_sell_offer_creator" {
   action = "create"
   entry_type = "offer"
   entry = {
     is_buy = false
-    quote_asset_type = "1"
-    base_asset_type = "0"
+    quote_asset_type = "${var.asset_type_kyc}"
+    base_asset_type = "${var.asset_type_default}"
   }
 }
 
-resource tokend_account_rule "kyc_buy_offer_creator_0_1" {
+resource tokend_account_rule "kyc_for_default_buy_offer_creator" {
   action = "create"
   entry_type = "offer"
   entry = {
     is_buy = true
-    quote_asset_type = "0"
-    base_asset_type = "1"
+    quote_asset_type = "${var.asset_type_default}"
+    base_asset_type = "${var.asset_type_kyc}"
   }
 }
 
-resource tokend_account_rule "kyc_sell_offer_creator_0_1" {
+resource tokend_account_rule "kyc_for_default_sell_offer_creator" {
   action = "create"
   entry_type = "offer"
   entry = {
     is_buy = false
-    quote_asset_type = "0"
-    base_asset_type = "1"
+    quote_asset_type = "${var.asset_type_default}"
+    base_asset_type = "${var.asset_type_kyc}"
   }
 }
 
@@ -106,39 +105,33 @@ resource tokend_account_rule "kyc_issuance_receiver" {
   entry_type = "asset"
 
   entry = {
-    asset_type = "1"
+    asset_type = "${var.asset_type_kyc}"
     asset_code = "*"
   }
 }
 
-resource tokend_key_value "asset_type_kyc_required" {
-  key = "asset_type:kyc_required"
-  value_type = "uint32"
-  value = "1"
+output "kyc_for_default_buy_offer_creator" {
+  value = "${tokend_account_rule.kyc_for_default_buy_offer_creator.id}"
 }
 
-output "kyc_buy_offer_creator" {
-  value = "${tokend_account_rule.kyc_buy_offer_creator.id}"
+output "kyc_for_default_sell_offer_creator" {
+  value = "${tokend_account_rule.kyc_for_default_sell_offer_creator.id}"
 }
 
-output "kyc_sell_offer_creator" {
-  value = "${tokend_account_rule.kyc_sell_offer_creator.id}"
+output "kyc_for_kyc_buy_offer_creator" {
+  value = "${tokend_account_rule.kyc_for_kyc_buy_offer_creator.id}"
 }
 
-output "kyc_buy_offer_creator_0_1" {
-  value = "${tokend_account_rule.kyc_buy_offer_creator_0_1.id}"
+output "kyc_for_kyc_sell_offer_creator" {
+  value = "${tokend_account_rule.kyc_for_kyc_sell_offer_creator.id}"
 }
 
-output "kyc_sell_offer_creator_0_1" {
-  value = "${tokend_account_rule.kyc_sell_offer_creator_0_1.id}"
+output "default_for_kyc_buy_offer_creator" {
+  value = "${tokend_account_rule.default_for_kyc_buy_offer_creator.id}"
 }
 
-output "kyc_buy_offer_creator_1_0" {
-  value = "${tokend_account_rule.kyc_buy_offer_creator_1_0.id}"
-}
-
-output "kyc_sell_offer_creator_1_0" {
-  value = "${tokend_account_rule.kyc_sell_offer_creator_1_0.id}"
+output "default_for_kyc_sell_offer_creator" {
+  value = "${tokend_account_rule.default_for_kyc_sell_offer_creator.id}"
 }
 
 output "kyc_sender" {
