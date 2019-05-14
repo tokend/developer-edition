@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.2.1
+    image: tokend/core:3.3.0
     depends_on:
       - janus
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
       - ./configs/core.ini:/core-config.ini
       - core-data:/data
   horizon:
-    image: tokend/horizon:3.3.0
+    image: tokend/horizon:3.3.1-x.1
     depends_on:
       - core
     restart: unless-stopped
