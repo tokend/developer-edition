@@ -1,6 +1,10 @@
 listener:
   addr: :80
 
+websocket:
+  enabled: true
+  addr: :8080
+
 log:
   level: warn
   # we are using sentry for error collection,
