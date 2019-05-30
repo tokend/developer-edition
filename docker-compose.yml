@@ -61,7 +61,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
   api:
-    image: tokend/identity:4.3.2
+    # image: tokend/identity:4.3.2
+    image: api:1
     restart: unless-stopped
     depends_on:
       - horizon
@@ -92,14 +93,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.7.0-rc.2
+    image: tokend/web-client:1.7.0-rc.3
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.7.0-rc.2
+    image: tokend/admin-client:1.7.0-rc.3
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
