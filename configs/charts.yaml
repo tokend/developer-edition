@@ -7,6 +7,10 @@ log:
   # you could opt-out by disabling it on the following line
   disable_sentry: false
 
+websocket:
+  enabled: false
+  addr: :8080
+
 sentry:
   dsn: https://989409410d0740a89b1f8571c4195dca@sentry.tokend.services/3
 

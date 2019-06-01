@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.2.1
+    image: tokend/core:3.4.0
     depends_on:
       - janus
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
       - ./configs/core.ini:/core-config.ini
       - core-data:/data
   horizon:
-    image: tokend/horizon:3.3.0
+    image: tokend/horizon:3.3.3
     depends_on:
       - core
     restart: unless-stopped
@@ -61,7 +61,7 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
   api:
-    image: tokend/identity:4.2.3
+    image: tokend/identity:4.3.2
     restart: unless-stopped
     depends_on:
       - horizon
@@ -85,21 +85,21 @@ services:
     image: tokend/terraform-provider-tokend:0.3.0
     depends_on:
       - horizon
+      - storage
     restart: on-failure
     volumes:
       - ./terraform:/opt/config
-      - terraform-data:/opt/state
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.6.0
+    image: tokend/web-client:1.7.0-rc.4
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.6.0
+    image: tokend/admin-client:1.7.0-rc.4
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -108,20 +108,21 @@ services:
   storage:
     image: minio/minio:RELEASE.2019-01-31T00-31-19Z
     restart: unless-stopped
+    entrypoint: "sh"
+    command: -c "mkdir -p /data/tfstate && minio server /data"
     environment:
       - MINIO_ACCESS_KEY=miniominio
       - MINIO_SECRET_KEY=sekritsekrit
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
-    command: server /data
 
   ##
   ## Auxiliary modules
   ##
 
   charts:
-    image: tokend/charts:0.3.1
+    image: tokend/charts:0.4.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -176,4 +177,3 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
-  terraform-data:
