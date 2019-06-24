@@ -1,0 +1,11 @@
+log:
+  disable_sentry: true
+
+db:
+  url: "postgres://dns:dns@dns_db/dns?sslmode=disable"
+
+horizon:
+  endpoint: "http://janus/"
+
+listener:
+  addr: :2323

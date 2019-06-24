@@ -118,6 +118,27 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
+  dns:
+    image: tokend/dns:0.0.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - dns_db
+    volumes:
+      - ./configs/dns.yaml:/config.yaml
+    command: run
+  dns_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=dns
+      - POSTGRES_PASSWORD=dns
+      - POSTGRES_DB=dns
+      - PGDATA=/pgdata
+    volumes:
+      - dns-data:/pgdata
 
   ##
   ## Auxiliary modules
@@ -216,3 +237,4 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
+  dns-data:
