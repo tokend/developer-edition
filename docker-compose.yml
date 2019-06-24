@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.5.0-x.0
+    image: tokend/core:3.5.0
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.4.0-x.0
+    image: tokend/horizon:3.4.0
     depends_on:
       - core
     restart: unless-stopped
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
   api:
-    image: tokend/identity:4.4.0-x.1
+    image: tokend/identity:4.4.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -94,14 +94,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.8.0-rc.2
+    image: tokend/web-client:1.8.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.8.0-rc.1
+    image: tokend/admin-client:1.8.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -130,6 +130,8 @@ services:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/charts.yaml:/config.yaml
+    ports:
+      - 8080:8080
     command: run
   salecloser:
     image: tokend/sale-closer-svc:1.0.1
