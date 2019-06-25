@@ -9,3 +9,10 @@ horizon:
 
 listener:
   addr: :2323
+
+janus:
+  disabled: false
+  surname: dns
+  endpoint: http://janus:8000
+  upstream: http://dns
+
