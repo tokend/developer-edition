@@ -8,7 +8,7 @@ horizon:
   endpoint: "http://janus/"
 
 listener:
-  addr: :2323
+  addr: :80
 
 janus:
   disabled: false
