@@ -59,9 +59,10 @@ services:
       - POSTGRES_USER=horizon
       - POSTGRES_PASSWORD=horizon
       - POSTGRES_DB=horizon
-      - PGDATA=/pgdata
+      - PGDATA=/data/pgdata
     volumes:
       - ./configs/horizon.yaml:/config.yaml
+      - horizon-data:/data
   api:
     image: tokend/identity:4.4.0
     restart: unless-stopped
