@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.0.3
+    image: tokend/dns:0.0.4
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
