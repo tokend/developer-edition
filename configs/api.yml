@@ -5,8 +5,8 @@ api:
 
 db:
   url: postgres://api:api@api_db/api?sslmode=disable
-  max_idle: 4
-  max_connections: 12
+  max_idle: 900
+  max_open: 1000
 
 horizon:
   url: http://horizon

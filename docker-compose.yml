@@ -84,6 +84,11 @@ services:
       - PGDATA=/pgdata
     volumes:
       - api-data:/pgdata
+    command:
+      - "postgres"
+      - "--"
+      - "-c"
+      - "max_connections=2000"
   initscripts:
     image: tokend/terraform-provider-tokend:1.1.0
     depends_on:
