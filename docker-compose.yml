@@ -235,6 +235,16 @@ services:
       - PGDATA=/pgdata
     volumes:
       - notificator-data:/pgdata
+  templatesprovider:
+    image: registry.gitlab.com/tokend/templates-svc:4603b974928fc90186973a9b103fb420e840f125
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/templatesprovider.yaml:/config.yaml
+    command:
+      - 'run'
+      - 'service'
 
 volumes:
   adks-data:
