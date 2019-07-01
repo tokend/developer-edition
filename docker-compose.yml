@@ -210,6 +210,33 @@ services:
     volumes:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
+  notificator:
+    image: registry.gitlab.com/distributed_lab/notificator-server:e603cc413f0c1f3977addef0d4a9e213d11e8aea
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - notificator_db
+    ports:
+      - 8007:80
+    volumes:
+      - ./configs/notificator.yaml:/config.yaml
+    command:
+      - "notificator"
+      - "--config"
+      - "/config.yaml"
+      - "--migrations"
+      - "/migrations"
+      - "run"
+  notificator_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=notificator
+      - POSTGRES_PASSWORD=notificator
+      - POSTGRES_DB=notificator
+      - PGDATA=/pgdata
+    volumes:
+      - notificator-data:/pgdata
 
 volumes:
   adks-data:
@@ -217,3 +244,4 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
+  notificator-data:

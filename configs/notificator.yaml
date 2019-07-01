@@ -1,0 +1,65 @@
+mailgun:
+  key: "key-"
+  domain: ""
+  from: ""
+
+http:
+  host: 0.0.0.0
+  port: 80
+  allow_untrusted: true
+
+db:
+  driver: "postgres"
+  dsn: "postgres://notificator:notificator@notificator_db/notificator?sslmode=disable"
+
+log:
+  level: warn
+
+requests:
+  verification_email:
+    id: 3
+    priority: 10
+    worker: mailgun
+    limiters:
+      - type: window
+        requests: 10
+        interval: 10m
+  approval_email:
+    id: 4
+    priority: 10
+    worker: mailgun
+    limiters:
+      - type: window
+        requests: 10
+        interval: 10m
+  recovery_request_email:
+    id: 6
+    priority: 5
+    worker: mailgun
+    limiters:
+  admin_notification:
+    id: 7
+    priority: 5
+    worker: mailgun
+    limiters:
+      - type: window
+        requests: 1
+        interval: 24h
+  payment_notification:
+    id: 8
+    priority: 10
+    worker: mailgun
+    limiters:
+      - type: unique
+  operation_notification:
+    id: 9
+    priority: 10
+    worker: mailgun
+    limiters:
+      - type: directly-unique
+  operation_notifications:
+    id: 10
+    priority: 10
+    worker: mailgun
+    limiters:
+      - type: directly-unique
