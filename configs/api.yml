@@ -13,7 +13,8 @@ horizon:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
-  disabled: true
+  endpoint: 'http://notificator'
+  client_router: 'http://localhost:8060'
 
 salesforce:
   disabled: true

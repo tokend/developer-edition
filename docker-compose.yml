@@ -216,8 +216,6 @@ services:
     depends_on:
       - horizon
       - notificator_db
-    ports:
-      - 8007:80
     volumes:
       - ./configs/notificator.yaml:/config.yaml
     command:
