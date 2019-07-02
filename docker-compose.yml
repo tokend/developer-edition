@@ -95,14 +95,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.8.0
+    image: tokend/web-client:1.9.0-rc.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.8.0
+    image: tokend/admin-client:1.9.0-rc.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -231,6 +231,41 @@ services:
     volumes:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
+  notificator:
+    image: registry.gitlab.com/distributed_lab/notificator-server:e603cc413f0c1f3977addef0d4a9e213d11e8aea
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - notificator_db
+    volumes:
+      - ./configs/notificator.yaml:/config.yaml
+    command:
+      - "notificator"
+      - "--config"
+      - "/config.yaml"
+      - "--migrations"
+      - "/migrations"
+      - "run"
+  notificator_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=notificator
+      - POSTGRES_PASSWORD=notificator
+      - POSTGRES_DB=notificator
+      - PGDATA=/pgdata
+    volumes:
+      - notificator-data:/pgdata
+  templatesprovider:
+    image: registry.gitlab.com/tokend/templates-svc:4603b974928fc90186973a9b103fb420e840f125
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/templatesprovider.yaml:/config.yaml
+    command:
+      - 'run'
+      - 'service'
 
 volumes:
   adks-data:
@@ -239,3 +274,4 @@ volumes:
   horizon-data:
   storage-data:
   dns-data:
+  notificator-data:
