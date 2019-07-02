@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.4.0
+    image: registry.gitlab.com/tokend/api:4460e4e9f982b3c017e3c24733db132907fce1d8
     restart: unless-stopped
     depends_on:
       - horizon
@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.0.4
+    image: registry.gitlab.com/tokend/dns-svc:16e52bddd14d60e131c7891c2e6003fbd7188847
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
