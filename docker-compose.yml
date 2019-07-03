@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: registry.gitlab.com/tokend/api:4460e4e9f982b3c017e3c24733db132907fce1d8
+    image: registry.gitlab.com/tokend/api:c94a3a3e0eb96fb27736c510af52f195766d5e5b
     restart: unless-stopped
     depends_on:
       - horizon
@@ -101,6 +101,13 @@ services:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
+  conto_client:
+    image: tokend/web-client:1.10.0-x.0
+    restart: unless-stopped
+    volumes:
+      - ./configs/conto.js:/usr/share/nginx/html/static/env.js
+    ports:
+      - 8050:80
   admin_client:
     image: tokend/admin-client:1.9.0-rc.0
     restart: unless-stopped
@@ -120,7 +127,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:16e52bddd14d60e131c7891c2e6003fbd7188847
+    image: registry.gitlab.com/tokend/dns-svc:630ec80e1e588eb4c264b10d244d95e17abcb19a 
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -129,7 +136,7 @@ services:
       - dns_db
     volumes:
       - ./configs/dns.yaml:/config.yaml
-    command: run
+    entrypoint: sh -c "dns-svc migrate up && dns-svc run"
   dns_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
