@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.4.0
+    image: registry.gitlab.com/tokend/api:1fe0f4ab445d929266eeae02ece154722d94f6a1
     restart: unless-stopped
     depends_on:
       - horizon
@@ -82,13 +82,9 @@ services:
       - POSTGRES_PASSWORD=api
       - POSTGRES_DB=api
       - PGDATA=/pgdata
+      - PGMAXCONNECTIONS=2000
     volumes:
       - api-data:/pgdata
-    command:
-      - "postgres"
-      - "--"
-      - "-c"
-      - "max_connections=2000"
   initscripts:
     image: tokend/terraform-provider-tokend:1.1.0
     depends_on:
