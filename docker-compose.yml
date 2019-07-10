@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.5.0
+    image: tokend/core:3.5.1
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.4.0
+    image: tokend/horizon:3.5.0
     depends_on:
       - core
     restart: unless-stopped
@@ -59,9 +59,10 @@ services:
       - POSTGRES_USER=horizon
       - POSTGRES_PASSWORD=horizon
       - POSTGRES_DB=horizon
-      - PGDATA=/pgdata
+      - PGDATA=/data/pgdata
     volumes:
       - ./configs/horizon.yaml:/config.yaml
+      - horizon-data:/data
   api:
     image: tokend/identity:4.4.0
     restart: unless-stopped
@@ -94,14 +95,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.8.0
+    image: tokend/web-client:1.9.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.8.0
+    image: tokend/admin-client:1.9.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -143,6 +144,14 @@ services:
     environment:
       - KV_VIPER_FILE=/config.yaml
     command: "run"
+  poll_closer:
+    image: tokend/poll-closer:0.1.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/poll-closer.yaml:/config.yaml
+    command: run closer
 
   ## 3rd party
 
@@ -162,7 +171,7 @@ services:
   ## Coinpayments
 
   coinpayments-deposit:
-    image: tokend/coinpayments:0.3.0
+    image: tokend/coinpayments:0.4.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -170,7 +179,7 @@ services:
       - ./configs/coinpayments-deposit.yaml:/config.yaml
     command: deposit
   coinpayments-deposit-verify:
-    image: tokend/coinpayments:0.3.0
+    image: tokend/coinpayments:0.4.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -178,13 +187,29 @@ services:
       - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
     command: deposit-verify
   coinpayments-withdraw:
-    image: tokend/coinpayments:0.3.0
+    image: tokend/coinpayments:0.4.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/coinpayments-withdraw.yaml:/config.yaml
     command: withdraw
+  coinpayments-atomic-swap-checker:
+    image: tokend/coinpayments:0.4.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
+    command: atomic-swap-checker
+  coinpayments-atomic-swap-matcher:
+    image: tokend/coinpayments:0.4.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
+    command: atomic-swap-matcher
 
 volumes:
   adks-data:
