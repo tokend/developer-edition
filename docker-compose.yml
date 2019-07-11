@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.5.0
+    image: tokend/horizon:3.5.1-x.0
     depends_on:
       - core
     restart: unless-stopped
