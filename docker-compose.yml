@@ -195,7 +195,7 @@ services:
       - ./configs/coinpayments-withdraw.yaml:/config.yaml
     command: withdraw
   coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.4.1
+    image: tokend/coinpayments:0.4.2
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -203,7 +203,7 @@ services:
       - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
     command: atomic-swap-checker
   coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.4.1
+    image: tokend/coinpayments:0.4.2
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
