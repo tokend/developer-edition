@@ -17,7 +17,8 @@ services:
     image: tokend/adks:1.0.0
     restart: unless-stopped
     depends_on:
-      - horizon
+      - keys-horizon
+      - assets-horizon
       - adks_db
     ports:
       - 8006:80
@@ -33,8 +34,28 @@ services:
       - PGDATA=/pgdata
     volumes:
       - adks-data:/pgdata
-  core:
-    image: tokend/core:3.5.1
+  accounts-ingester:
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:ecfda70790f89599388d623cece82deb1061d3b7
+    restart: unless-stopped
+    depends_on: 
+      - keys-horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/accounts-ingester.yaml:/config.yaml
+    command: run
+  ingester_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=ingester
+      - POSTGRES_PASSWORD=ingester
+      - POSTGRES_DB=ingester
+      - PGDATA=/data/pgdata
+    volumes:
+      - ingester-data:/data
+  keys-core:
+    image: registry.gitlab.com/tokend/core:keys-01ac5e17a31c279e9f8b971957f235e8c8b27d98
     depends_on:
       - janus
     restart: unless-stopped
@@ -46,14 +67,34 @@ services:
       - ENSUREDB=1
       - CONFIG=/core-config.ini
     volumes:
-      - ./configs/core.ini:/core-config.ini
-      - core-data:/data
+      - ./configs/keys-core.toml:/core-config.ini
+      - keys-data:/data
     labels:
       - "autoheal=true"
-  horizon:
+  assets-core:
+    image: registry.gitlab.com/tokend/core:assets-01ac5e17a31c279e9f8b971957f235e8c8b27d98
+    depends_on:
+      - janus
+      - accounts-ingester
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=core
+      - POSTGRES_PASSWORD=core
+      - POSTGRES_DB=core
+      - PGDATA=/data/pgdata
+      - ENSUREDB=1
+      - CONFIG=/core-config.ini
+    volumes:
+      - ./configs/assets-core.toml:/core-config.ini
+      - assets-data:/data
+    labels:
+      - "autoheal=true"
+    ports:
+      - 9060:8080
+  keys-horizon:
     image: tokend/horizon:3.5.1-x.0
     depends_on:
-      - core
+      - keys-core
     restart: unless-stopped
     environment:
       - POSTGRES_USER=horizon
@@ -61,13 +102,29 @@ services:
       - POSTGRES_DB=horizon
       - PGDATA=/data/pgdata
     volumes:
-      - ./configs/horizon.yaml:/config.yaml
-      - horizon-data:/data
+      - ./configs/keys-horizon.yaml:/config.yaml
+      - keys-horizon-data:/data
+    ports:
+      - 9080:80
+  assets-horizon:
+    image: tokend/horizon:3.5.1-x.0
+    depends_on:
+      - assets-core
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=horizon
+      - POSTGRES_PASSWORD=horizon
+      - POSTGRES_DB=horizon
+      - PGDATA=/data/pgdata
+    volumes:
+      - ./configs/assets-horizon.yaml:/config.yaml
+      - assets-horizon-data:/data
   api:
     image: tokend/identity:4.5.0-x.0
     restart: unless-stopped
     depends_on:
-      - horizon
+      - keys-horizon
+      - assets-horizon
       - api_db
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -87,27 +144,27 @@ services:
   initscripts:
     image: tokend/terraform-provider-tokend:1.1.0
     depends_on:
-      - horizon
+      - assets-horizon
       - storage
     restart: on-failure
     volumes:
       - ./terraform:/opt/config
     entrypoint: ""
     command: /opt/config/apply.sh
-  web_client:
-    image: tokend/web-client:1.10.0-rc.0
-    restart: unless-stopped
-    volumes:
-      - ./configs/client.js:/usr/share/nginx/html/static/env.js
-    ports:
-      - 8060:80
-  admin_client:
-    image: tokend/admin-client:1.10.0-rc.1
-    restart: unless-stopped
-    volumes:
-      - ./configs/client.js:/usr/share/nginx/html/static/env.js
-    ports:
-      - 8070:80
+  # web_client:
+  #   image: tokend/web-client:1.10.0-rc.0
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./configs/client.js:/usr/share/nginx/html/static/env.js
+  #   ports:
+  #     - 8060:80
+  # admin_client:
+  #   image: tokend/admin-client:1.10.0-rc.1
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./configs/client.js:/usr/share/nginx/html/static/env.js
+  #   ports:
+  #     - 8070:80
   storage:
     image: minio/minio:RELEASE.2019-01-31T00-31-19Z
     restart: unless-stopped
@@ -124,34 +181,34 @@ services:
   ## Auxiliary modules
   ##
 
-  charts:
-    image: tokend/charts:0.4.1
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/charts.yaml:/config.yaml
-    ports:
-      - 8080:8080
-    command: run
-  salecloser:
-    image: tokend/sale-closer-svc:1.0.1
-    depends_on:
-      - horizon
-    restart: unless-stopped
-    volumes:
-      - ./configs/salecloser.yaml:/config.yaml
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    command: "run"
-  poll_closer:
-    image: tokend/poll-closer:0.1.1
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/poll-closer.yaml:/config.yaml
-    command: run closer
+  # charts:
+  #   image: tokend/charts:0.4.1
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/charts.yaml:/config.yaml
+  #   ports:
+  #     - 8080:8080
+  #   command: run
+  # salecloser:
+  #   image: tokend/sale-closer-svc:1.0.1
+  #   depends_on:
+  #     - assets-horizon
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./configs/salecloser.yaml:/config.yaml
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   command: "run"
+  # poll_closer:
+  #   image: tokend/poll-closer:0.1.1
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/poll-closer.yaml:/config.yaml
+  #   command: run closer
 
   ## 3rd party
 
@@ -164,56 +221,59 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  ##
-  ## Integration services
-  ##
+  # ##
+  # ## Integration services
+  # ##
 
-  ## Coinpayments
+  # ## Coinpayments
 
-  coinpayments-deposit:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-deposit.yaml:/config.yaml
-    command: deposit
-  coinpayments-deposit-verify:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
-    command: deposit-verify
-  coinpayments-withdraw:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-withdraw.yaml:/config.yaml
-    command: withdraw
-  coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.4.2
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
-    command: atomic-swap-checker
-  coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.4.2
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
-    command: atomic-swap-matcher
+  # coinpayments-deposit:
+  #   image: tokend/coinpayments:0.4.0
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/coinpayments-deposit.yaml:/config.yaml
+  #   command: deposit
+  # coinpayments-deposit-verify:
+  #   image: tokend/coinpayments:0.4.0
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
+  #   command: deposit-verify
+  # coinpayments-withdraw:
+  #   image: tokend/coinpayments:0.4.0
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/coinpayments-withdraw.yaml:/config.yaml
+  #   command: withdraw
+  # coinpayments-atomic-swap-checker:
+  #   image: tokend/coinpayments:0.4.2
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
+  #   command: atomic-swap-checker
+  # coinpayments-atomic-swap-matcher:
+  #   image: tokend/coinpayments:0.4.2
+  #   restart: unless-stopped
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
+  #   command: atomic-swap-matcher
 
 volumes:
   adks-data:
   api-data:
-  core-data:
-  horizon-data:
+  keys-data:
+  assets-data:
+  keys-horizon-data:
+  assets-horizon-data:
+  ingester-data:
   storage-data:
