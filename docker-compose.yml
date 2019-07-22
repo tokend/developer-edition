@@ -95,7 +95,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.10.0-rc.0
+    image: tokend/web-client:1.10.0-rc.3
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
