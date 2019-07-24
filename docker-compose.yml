@@ -37,13 +37,15 @@ services:
   accounts-ingester:
     image: registry.gitlab.com/tokend/accounts-ingester-svc:ecfda70790f89599388d623cece82deb1061d3b7
     restart: unless-stopped
-    depends_on: 
+    depends_on:
       - keys-horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/accounts-ingester.yaml:/config.yaml
-    command: run
+    entrypoint: sh -c "accounts-ingester-svc migrate up && accounts-ingester-svc run"
+    ports:
+      - 2323:80
   ingester_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -55,7 +57,7 @@ services:
     volumes:
       - ingester-data:/data
   keys-core:
-    image: registry.gitlab.com/tokend/core:keys-01ac5e17a31c279e9f8b971957f235e8c8b27d98
+    image: registry.gitlab.com/tokend/core:keys-dd3e3be683ace3afbfbd8948573cf6df53add213
     depends_on:
       - janus
     restart: unless-stopped
@@ -71,8 +73,10 @@ services:
       - keys-data:/data
     labels:
       - "autoheal=true"
+    ports:
+      - 9070:8080
   assets-core:
-    image: registry.gitlab.com/tokend/core:assets-01ac5e17a31c279e9f8b971957f235e8c8b27d98
+    image: registry.gitlab.com/tokend/core:assets-dd3e3be683ace3afbfbd8948573cf6df53add213
     depends_on:
       - janus
       - accounts-ingester
@@ -105,7 +109,7 @@ services:
       - ./configs/keys-horizon.yaml:/config.yaml
       - keys-horizon-data:/data
     ports:
-      - 9080:80
+      - 9090:80
   assets-horizon:
     image: tokend/horizon:3.5.1-x.0
     depends_on:
@@ -119,28 +123,30 @@ services:
     volumes:
       - ./configs/assets-horizon.yaml:/config.yaml
       - assets-horizon-data:/data
-  api:
-    image: tokend/identity:4.5.0-x.0
-    restart: unless-stopped
-    depends_on:
-      - keys-horizon
-      - assets-horizon
-      - api_db
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/api.yml:/config.yaml
-    command: run
-  api_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=api
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=api
-      - PGDATA=/pgdata
-    volumes:
-      - api-data:/pgdata
+    ports:
+      - 9080:80
+  # api:
+  #   image: tokend/identity:4.5.0-x.0
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - keys-horizon
+  #     # - assets-horizon
+  #     - api_db
+  #   environment:
+  #     - KV_VIPER_FILE=/config.yaml
+  #   volumes:
+  #     - ./configs/api.yml:/config.yaml
+  #   command: run
+  # api_db:
+  #   image: tokend/postgres-ubuntu:9.6
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_USER=api
+  #     - POSTGRES_PASSWORD=api
+  #     - POSTGRES_DB=api
+  #     - PGDATA=/pgdata
+  #   volumes:
+  #     - api-data:/pgdata
   initscripts:
     image: tokend/terraform-provider-tokend:1.1.0
     depends_on:

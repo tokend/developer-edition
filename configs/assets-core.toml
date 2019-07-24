@@ -20,7 +20,7 @@ UNSAFE_QUORUM=true
 # disable cursor based history prune
 AUTOMATIC_MAINTENANCE_COUNT=0
 
-PKI_ADDRESS="ingester"
+PKI_ADDRESS="accounts-ingester"
 PKI_PORT=80
 
 [QUORUM_SET]
