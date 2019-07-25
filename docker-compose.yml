@@ -85,7 +85,7 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:1.1.0
+    image: tokend/terraform-provider-tokend:1.2.0
     depends_on:
       - horizon
       - storage
