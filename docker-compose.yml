@@ -127,7 +127,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:4cacb820d898a7565490a39888dbb1009319dc18
+    image: tokend/dns:0.2.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
