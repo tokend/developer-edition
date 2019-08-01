@@ -211,6 +211,22 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
 
+  ## Stellar
+  stellar-deposit:
+    image: tokend/stellar-deposit-svc:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/stellar-deposit.yaml:/config.yaml
+  stellar-withdraw:
+    image: tokend/stellar-withdraw-svc:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/stellar-withdraw.yaml:/config.yaml
+
 volumes:
   adks-data:
   api-data:
