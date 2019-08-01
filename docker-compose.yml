@@ -211,6 +211,60 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
 
+  ## Stellar
+  stellar-deposit:
+    image: tokend/stellar-deposit-svc:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/stellar-deposit.yaml:/config.yaml
+  stellar-withdraw:
+    image: tokend/stellar-withdraw-svc:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/stellar-withdraw.yaml:/config.yaml
+
+  ## Ethereum
+  erc20-deposit:
+    image: tokend/erc20-deposit-svc:1.0.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-deposit.yaml:/config.yaml
+    entrypoint: "erc20-deposit-svc"
+    command: ["run", "deposit"]
+  erc20-deployer:
+    image: tokend/erc20-deposit-svc:1.0.1
+    restart: on-failure
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-deposit.yaml:/config.yaml
+    entrypoint: "erc20-deposit-svc"
+    command: ["run", "deployer"]
+  erc20-funnel:
+    image: tokend/erc20-deposit-svc:1.0.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-deposit.yaml:/config.yaml
+    entrypoint: "erc20-deposit-svc"
+    command: ["run", "funnel"]
+  erc20-withdraw:
+    image: tokend/erc20-withdraw-svc:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-withdraw.yaml:/config.yaml
+    entrypoint: "erc20-withdraw-svc"
+    command: ["run", "withdraw"]
+
 volumes:
   adks-data:
   api-data:
