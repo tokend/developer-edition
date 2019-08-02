@@ -213,7 +213,7 @@ services:
 
   ## Stellar
   stellar-deposit:
-    image: tokend/stellar-deposit-svc:1.0.0
+    image: tokend/stellar-deposit-svc:1.0.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -256,7 +256,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "funnel"]
   erc20-withdraw:
-    image: tokend/erc20-withdraw-svc:1.0.0
+    image: tokend/erc20-withdraw-svc:1.0.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
