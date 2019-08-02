@@ -64,3 +64,11 @@ janus:
   endpoint: http://janus:8000
   upstream: http://api
   surname:  api
+  
+sms:
+  disabled: true
+  url: ""
+  login: ""
+  password: ""
+  sender: ""
+  tls: false
