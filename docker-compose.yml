@@ -13,27 +13,26 @@ services:
     - ./configs/nginx.conf:/etc/nginx/nginx.conf
     ports:
     - "8000:80"
-  adks:
-    image: tokend/adks:1.0.0
-    restart: unless-stopped
-    depends_on:
-      - keys-horizon
-      - assets-horizon
-      - adks_db
-    ports:
-      - 8006:80
-    volumes:
-      - ./configs/adks.toml:/config.toml
-  adks_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=adks
-      - POSTGRES_PASSWORD=adks
-      - POSTGRES_DB=adks
-      - PGDATA=/pgdata
-    volumes:
-      - adks-data:/pgdata
+  # adks:
+  #   image: tokend/adks:1.0.0
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - keys-horizon
+  #     - adks_db
+  #   ports:
+  #     - 8006:80
+  #   volumes:
+  #     - ./configs/adks.toml:/config.toml
+  # adks_db:
+  #   image: tokend/postgres-ubuntu:9.6
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_USER=adks
+  #     - POSTGRES_PASSWORD=adks
+  #     - POSTGRES_DB=adks
+  #     - PGDATA=/pgdata
+  #   volumes:
+  #     - adks-data:/pgdata
   accounts-ingester:
     image: registry.gitlab.com/tokend/accounts-ingester-svc:ecfda70790f89599388d623cece82deb1061d3b7
     restart: unless-stopped
@@ -57,7 +56,7 @@ services:
     volumes:
       - ingester-data:/data
   keys-core:
-    image: registry.gitlab.com/tokend/core:keys-dd3e3be683ace3afbfbd8948573cf6df53add213
+    image: registry.gitlab.com/tokend/core:keys-89341e374846a4b21c9c8e232a5b2766c038bcb3
     depends_on:
       - janus
     restart: unless-stopped
@@ -75,8 +74,23 @@ services:
       - "autoheal=true"
     ports:
       - 9070:8080
+  keys-horizon:
+    image: registry.gitlab.com/tokend/horizon:pg-c53bdaa164e14a922b9ef18821ab6e0a44d47297
+    depends_on:
+      - keys-core
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=horizon
+      - POSTGRES_PASSWORD=horizon
+      - POSTGRES_DB=horizon
+      - PGDATA=/data/pgdata
+    volumes:
+      - ./configs/keys-horizon.yaml:/config.yaml
+      - keys-horizon-data:/data
+    ports:
+      - 9090:80
   assets-core:
-    image: registry.gitlab.com/tokend/core:assets-dd3e3be683ace3afbfbd8948573cf6df53add213
+    image: registry.gitlab.com/tokend/core:assets-67eca6bf063fc2be4176c64668aad800edfa36de
     depends_on:
       - janus
       - accounts-ingester
@@ -95,23 +109,8 @@ services:
       - "autoheal=true"
     ports:
       - 9060:8080
-  keys-horizon:
-    image: tokend/horizon:3.5.1-x.0
-    depends_on:
-      - keys-core
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=horizon
-      - POSTGRES_PASSWORD=horizon
-      - POSTGRES_DB=horizon
-      - PGDATA=/data/pgdata
-    volumes:
-      - ./configs/keys-horizon.yaml:/config.yaml
-      - keys-horizon-data:/data
-    ports:
-      - 9090:80
   assets-horizon:
-    image: tokend/horizon:3.5.1-x.0
+    image: registry.gitlab.com/tokend/horizon:pg-5513316ae63ddb72473f8b48d920948ad5b00dea
     depends_on:
       - assets-core
     restart: unless-stopped
@@ -147,14 +146,24 @@ services:
   #     - PGDATA=/pgdata
   #   volumes:
   #     - api-data:/pgdata
-  initscripts:
-    image: tokend/terraform-provider-tokend:1.1.0
+  terraform-keys:
+    image: provider-keys:642843a51fb2e275449b27cdcbf35ddf4bffe3d5
+    depends_on:
+      - keys-horizon
+      - storage
+    restart: on-failure
+    volumes:
+      - ./terraform-keys:/opt/config
+    entrypoint: ""
+    command: /opt/config/apply.sh
+  terraform-assets:
+    image: provider-assets:c6d6f3c7ae4436f6bed72decd0ea0dcad7d6b0e2
     depends_on:
       - assets-horizon
       - storage
     restart: on-failure
     volumes:
-      - ./terraform:/opt/config
+      - ./terraform-assets:/opt/config
     entrypoint: ""
     command: /opt/config/apply.sh
   # web_client:
