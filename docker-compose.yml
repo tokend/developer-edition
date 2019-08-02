@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.1-phone
+    image: tokend/identity:4.5.1-phone.1
     restart: unless-stopped
     depends_on:
       - horizon
