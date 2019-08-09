@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.5.0
+    image: tokend/horizon:3.5.1
     depends_on:
       - core
     restart: unless-stopped
@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.4.0
+    image: tokend/identity:4.5.1
     restart: unless-stopped
     depends_on:
       - horizon
@@ -85,7 +85,7 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:1.1.0
+    image: tokend/terraform-provider-tokend:1.2.0
     depends_on:
       - horizon
       - storage
@@ -95,14 +95,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.9.0
+    image: tokend/web-client:1.10.0-rc.6
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.9.0
+    image: tokend/admin-client:1.10.0-rc.7
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -195,7 +195,7 @@ services:
       - ./configs/coinpayments-withdraw.yaml:/config.yaml
     command: withdraw
   coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.4.0
+    image: tokend/coinpayments:0.4.3
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -203,13 +203,79 @@ services:
       - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
     command: atomic-swap-checker
   coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.4.0
+    image: tokend/coinpayments:0.4.3
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
+
+  ## Stellar
+  stellar-deposit:
+    image: tokend/stellar-deposit-svc:1.0.2
+    restart: unless-stopped
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/stellar-deposit.yaml:/config.yaml
+  stellar-withdraw:
+    image: tokend/stellar-withdraw-svc:1.0.0
+    restart: unless-stopped
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/stellar-withdraw.yaml:/config.yaml
+
+  ## Ethereum
+  erc20-deposit:
+    image: tokend/erc20-deposit-svc:1.0.5
+    restart: unless-stopped
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-deposit.yaml:/config.yaml
+    entrypoint: "erc20-deposit-svc"
+    command: ["run", "deposit"]
+  erc20-deployer:
+    image: tokend/erc20-deposit-svc:1.0.5
+    restart: on-failure
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-deposit.yaml:/config.yaml
+    entrypoint: "erc20-deposit-svc"
+    command: ["run", "deployer"]
+  erc20-funnel:
+    image: tokend/erc20-deposit-svc:1.0.5
+    restart: unless-stopped
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-deposit.yaml:/config.yaml
+    entrypoint: "erc20-deposit-svc"
+    command: ["run", "funnel"]
+  erc20-withdraw:
+    image: tokend/erc20-withdraw-svc:1.0.2
+    restart: unless-stopped
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc20-withdraw.yaml:/config.yaml
+    entrypoint: "erc20-withdraw-svc"
+    command: ["run", "withdraw"]
 
 volumes:
   adks-data:
