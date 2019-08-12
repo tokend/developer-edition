@@ -102,7 +102,7 @@ services:
     ports:
       - 8060:80
   conto_client:
-    image: tokendconto/web-client:1.0.0-rc.5
+    image: tokendconto/web-client:1.0.0-rc.7
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
