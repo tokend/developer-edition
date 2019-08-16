@@ -149,7 +149,7 @@ services:
       - dns-data:/pgdata
 
   4bill:
-    image: registry.gitlab.com/tokend/4bill-svc:eefa2d52affc2426256b1f336f47656d8a847e00
+    image: registry.gitlab.com/tokend/4bill-svc:416c4b20ae9e2d9f93e75710da56754aa8e0d093
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
