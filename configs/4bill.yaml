@@ -1,0 +1,39 @@
+horizon:
+  endpoint: http://horizon
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+4bill:
+  url: https://api.4bill.io
+  api_key: 'M~xcKKT"Wi7{~oCruo"L,j_|[I._zA.W'
+  point: "339"
+  debug: true
+
+log:
+  level: info
+  disable_sentry: true
+
+tokenizer:
+  addr: :5050
+  source: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+bidcreator:
+  addr: :5051
+  source: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  wait_period: 1m
+  callback_addr: https://17c221b0.ngrok.io
+  payment_service_id: 2
+  dl_account_id: 317
+  dl_wallet_id: 476
+  payments_asset: "UAH"
+  debug: true
+
+payer:
+  source: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  wait_period: 1m
+
+janus:
+  endpoint: http://janus:8000
+  upstream: http://4bill:5051
+  surname:  4bill
