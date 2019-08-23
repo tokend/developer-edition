@@ -149,7 +149,7 @@ services:
       - dns-data:/pgdata
 
   proxy_payments:
-    image: registry.gitlab.com/tokend/proxy-payments-svc:50fe5185690554321cb6b8edaa12ec9e2464c735
+    image: registry.gitlab.com/tokend/proxy-payments-svc:95c3f7f027f500ca4e7f92c252ad5bd56bb0421b
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml

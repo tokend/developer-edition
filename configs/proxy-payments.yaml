@@ -13,11 +13,11 @@ listener:
   addr: :80
 
 payment_proxy:
-  address: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  account_id: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
 
 janus:
   disabled: false
-  surname: dns
+  surname: proxy_payments
   endpoint: http://janus:8000
-  upstream: http://dns
+  upstream: http://proxy_payments
