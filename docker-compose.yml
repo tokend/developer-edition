@@ -213,7 +213,7 @@ services:
 
   ## Stellar
   stellar-deposit:
-    image: tokend/stellar-deposit-svc:1.0.3
+    image: tokend/stellar-deposit-svc:1.0.5
     restart: unless-stopped
     depends_on:
       - horizon
@@ -233,7 +233,7 @@ services:
 
   ## Ethereum
   erc20-deposit:
-    image: tokend/erc20-deposit-svc:1.0.6
+    image: tokend/erc20-deposit-svc:1.0.8
     restart: unless-stopped
     depends_on:
       - horizon
@@ -244,7 +244,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deposit"]
   erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.6
+    image: tokend/erc20-deposit-svc:1.0.8
     restart: on-failure
     depends_on:
       - horizon
@@ -255,7 +255,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deployer"]
   erc20-funnel:
-    image: tokend/erc20-deposit-svc:1.0.6
+    image: tokend/erc20-deposit-svc:1.0.8
     restart: unless-stopped
     depends_on:
       - horizon
@@ -266,7 +266,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "funnel"]
   erc20-withdraw:
-    image: tokend/erc20-withdraw-svc:1.0.3
+    image: tokend/erc20-withdraw-svc:1.0.5
     restart: unless-stopped
     depends_on:
       - horizon
