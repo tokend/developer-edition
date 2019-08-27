@@ -3,7 +3,7 @@ rpc:
 
 ethereum:
   checkpoint: 6106200 #block to start listening for deposits from
-  confirmations: 20 #number of confirmations to wait for
+  confirmations: 1 #number of confirmations to wait for
 
 horizon:
   endpoint: "http://horizon"
@@ -25,7 +25,7 @@ deployer:
   gas_limit: "1200000"
   contract_owner: "0x9266798B4469275e844C94f747b4e35Dc6aD8D77"
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
-  contract_count: 10
+  contract_count: 2
 
 log:
   level: debug
