@@ -25,11 +25,17 @@ bidcreator:
   source: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
   wait_period: 1m
-  callback_addr: https://17c221b0.ngrok.io
+  callback_domain: "http://set.your.domain"
+  fail_url: "http://set.your.fail.url"
+  success_url: "http://set.your.success.url"
+
+payer:
   payment_service_id: 2
   dl_account_id: 317
   dl_wallet_id: 476
   payments_asset: "UAH"
+  fixed_fee: 500 # kopiyky
+  dynamic_fee: 0.0125 # %
   debug: true
 
 payer:

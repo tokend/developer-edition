@@ -63,11 +63,21 @@ janus:
   endpoint: http://janus:8000
   upstream: http://api
   surname:  api
-  
-sms:
+
+twilio:
+  # 
+  disabled: true
+  url: 'https://api.twilio.com'
+  account_sid: ''
+  auth_token: ''
+  sender: ''
+  # 
+ 
+telegram:
   disabled: true
   url: ""
-  login: ""
-  password: ""
-  sender: ""
-  tls: false
+  bot_url: ""
+  api_url: ""
+  register_url: ""
+  bot_token: ""
+  
