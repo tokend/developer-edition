@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.1-x.5
+    image: tokend/identity:4.5.1-x.11
     restart: unless-stopped
     depends_on:
       - horizon
@@ -102,7 +102,7 @@ services:
     ports:
       - 8060:80
   conto_client:
-    image: tokendconto/web-client:1.0.2-rc.0
+    image: tokendconto/web-client:1.0.3-rc.3
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
@@ -127,7 +127,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.2.14
+    image: tokend/dns:0.2.15
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
