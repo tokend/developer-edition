@@ -100,7 +100,7 @@ services:
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
     ports:
-      - 8050:80
+      - 8060:80
   admin_client:
     image: tokendconto/admin-panel:1.0.0-rc.0
     restart: unless-stopped
@@ -174,38 +174,6 @@ services:
       - ./configs/4bill.yaml:/config.yaml
     entrypoint: sh -c "4bill-svc run 4bill"
 
-  ##
-  ## Auxiliary modules
-  ##
-
-  charts:
-    image: tokend/charts:0.4.1
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/charts.yaml:/config.yaml
-    ports:
-      - 8080:8080
-    command: run
-  salecloser:
-    image: tokend/sale-closer-svc:1.0.1
-    depends_on:
-      - horizon
-    restart: unless-stopped
-    volumes:
-      - ./configs/salecloser.yaml:/config.yaml
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    command: "run"
-  poll_closer:
-    image: tokend/poll-closer:0.1.1
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/poll-closer.yaml:/config.yaml
-    command: run closer
 
   ## 3rd party
 
