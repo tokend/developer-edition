@@ -229,48 +229,6 @@ services:
   ## Integration services
   ##
 
-  ## Coinpayments
-
-  coinpayments-deposit:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-deposit.yaml:/config.yaml
-    command: deposit
-  coinpayments-deposit-verify:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
-    command: deposit-verify
-  coinpayments-withdraw:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-withdraw.yaml:/config.yaml
-    command: withdraw
-  coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.4.3-x.4
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
-    command: atomic-swap-checker
-  coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.4.3-x.4
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
-    command: atomic-swap-matcher
   notificator:
     image: registry.gitlab.com/distributed_lab/notificator-server:e603cc413f0c1f3977addef0d4a9e213d11e8aea
     restart: unless-stopped
