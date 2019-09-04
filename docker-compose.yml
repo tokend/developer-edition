@@ -94,13 +94,6 @@ services:
       - ./terraform:/opt/config
     entrypoint: ""
     command: /opt/config/apply.sh
-  web_client:
-    image: tokend/web-client:1.10.0-rc.1
-    restart: unless-stopped
-    volumes:
-      - ./configs/client.js:/usr/share/nginx/html/static/env.js
-    ports:
-      - 8060:80
   conto_client:
     image: tokendconto/web-client:1.0.3-rc.6
     restart: unless-stopped
