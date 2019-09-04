@@ -170,17 +170,6 @@ services:
     volumes:
       - proxy-payments-data:/pgdata
 
-  4bill:
-    image: tokend/4bill:1.0.7
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    depends_on:
-      - horizon
-    volumes:
-      - ./configs/4bill.yaml:/config.yaml
-    entrypoint: sh -c "4bill-svc run 4bill"
-
   ##
   ## Auxiliary modules
   ##
