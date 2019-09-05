@@ -164,7 +164,7 @@ services:
       - proxy-payments-data:/pgdata
 
   4bill:
-    image: tokend/4bill:1.0.7
+    image: registry.gitlab.com/tokend/4bill-svc:95b912e181c03c10752f8d4f9381b7e3f298298f
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
