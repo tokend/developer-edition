@@ -142,7 +142,7 @@ services:
       - dns-data:/pgdata
 
   proxy_payments:
-    image: registry.gitlab.com/tokend/proxy-payments-svc:95c3f7f027f500ca4e7f92c252ad5bd56bb0421b
+    image: tokend/proxy-payments:0.2.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -212,7 +212,7 @@ services:
   ##
 
   notificator:
-    image: registry.gitlab.com/distributed_lab/notificator-server:e603cc413f0c1f3977addef0d4a9e213d11e8aea
+    image: tokend/notificator:0.5.1
     restart: unless-stopped
     depends_on:
       - horizon
@@ -237,7 +237,7 @@ services:
     volumes:
       - notificator-data:/pgdata
   templatesprovider:
-    image: registry.gitlab.com/tokend/templates-svc:4603b974928fc90186973a9b103fb420e840f125
+    image: tokend/templates-svc:1.0.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
