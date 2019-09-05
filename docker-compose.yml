@@ -174,6 +174,23 @@ services:
       - ./configs/4bill.yaml:/config.yaml
     entrypoint: sh -c "4bill-svc run 4bill"
 
+  coinpayments_atomic_swap:
+    image: registry.gitlab.com/tokend/coinpayments:8cc081f2520cbaf5561f8f437d14ef93fa8ab776
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/coinpayments-atomic-swap.yaml:/config.yaml
+    command: atomic-swap
+  coinpayments_atomic_swap_matcher:
+    image: registry.gitlab.com/tokend/coinpayments:8cc081f2520cbaf5561f8f437d14ef93fa8ab776
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
+    command: atomic-swap-matcher
+
 
   ## 3rd party
 

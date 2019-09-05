@@ -38,7 +38,7 @@ payer:
   dynamic_fee: 0.0125 # %
   debug: true
 
-payer:
+fisher:
   source: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
   wait_period: 1m
 
