@@ -23,12 +23,6 @@ Now you should be able to access web client at [http://localhost:8060](http://lo
 
 These instructions are just a guideline for what you should generally do. You may modify provided `docker-compose.yml` or configuration files in `configs` directory to accommodate your needs.
 
-## Coinpayments integration
-
-TokenD Developer Edition comes with preconfigured [CoinPayments](https://www.coinpayments.net/) integration which allows you to enable deposit and withdrawals for any [supported](https://www.coinpayments.net/supported-coins) cryptocurrency.
-
-> Make sure to update API credentials in `configs/coinpayments-*.yaml` files before depositing any mainnet cryptocurrency or your coins *will* be lost.
-
 ## Support
 
 If you need any help with TokenD or would like to suggest a feature, please reach us via https://tokend.atlassian.net/servicedesk/
