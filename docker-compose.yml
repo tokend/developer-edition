@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.5.2-x.0
+    image: tokend/core:3.5.2
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.5.2-x.3
+    image: tokend/horizon:3.5.2
     depends_on:
       - core
     restart: unless-stopped
@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.2-x.0
+    image: tokend/identity:4.5.2
     restart: unless-stopped
     depends_on:
       - horizon
@@ -195,7 +195,7 @@ services:
       - ./configs/coinpayments-withdraw.yaml:/config.yaml
     command: withdraw
   coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.4.3
+    image: tokend/coinpayments:0.4.5
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -203,7 +203,7 @@ services:
       - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
     command: atomic-swap-checker
   coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.4.3
+    image: tokend/coinpayments:0.4.5
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
