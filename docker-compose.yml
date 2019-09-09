@@ -164,7 +164,7 @@ services:
       - proxy-payments-data:/pgdata
 
   4bill:
-    image: registry.gitlab.com/tokend/4bill-svc:95b912e181c03c10752f8d4f9381b7e3f298298f
+    image: tokend/4bill:1.0.8
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -175,7 +175,7 @@ services:
     entrypoint: sh -c "4bill-svc run 4bill"
 
   coinpayments_atomic_swap:
-    image: registry.gitlab.com/tokend/coinpayments:705058377cef476a710490459b226262d0a70552
+    image: tokend/coinpayments:0.4.6
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -183,7 +183,7 @@ services:
       - ./configs/coinpayments-atomic-swap.yaml:/config.yaml
     command: atomic-swap
   coinpayments_atomic_swap_matcher:
-    image: registry.gitlab.com/tokend/coinpayments:705058377cef476a710490459b226262d0a70552
+    image: tokend/coinpayments:0.4.6
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
