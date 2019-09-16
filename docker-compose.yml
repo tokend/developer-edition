@@ -191,6 +191,28 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
 
+  marketplace:
+    image: registry.gitlab.com/tokend/marketplace-svc:3603b9b9e5d1efc8c4480847f04e52d35bc6d8e9
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - marketplace_db
+    volumes:
+      - ./configs/marketplace.yaml:/config.yaml
+    entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
+  marketplace_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=marketplace
+      - POSTGRES_PASSWORD=marketplace
+      - POSTGRES_DB=marketplace
+      - PGDATA=/pgdata
+    volumes:
+      - marketplace-data:/pgdata
+
 
   ## 3rd party
 
@@ -252,3 +274,4 @@ volumes:
   dns-data:
   notificator-data:
   proxy-payments-data:
+  marketplace-data:

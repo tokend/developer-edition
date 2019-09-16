@@ -1,0 +1,23 @@
+log:
+  level: info
+  disable_sentry: true
+
+db:
+  url: "postgres://marketplace:marketplace@marketplace_db/marketplace?sslmode=disable"
+
+horizon:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  endpoint: "http://janus/"
+
+listener:
+  addr: :80
+
+marketplace:
+  payment_signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  skip_sign_check: false
+
+janus:
+  disabled: false
+  surname: marketplace
+  endpoint: http://janus:8000
+  upstream: http://marketplace
