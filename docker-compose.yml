@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.5.2-x.2
+    image: horizon:local # tokend/horizon:3.5.2-x.2
     depends_on:
       - core
     restart: unless-stopped
@@ -185,6 +185,29 @@ services:
     volumes:
       - marketplace-data:/pgdata
 
+  sponsorship:
+    image: sponsor-svc:latest
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+    volumes:
+      - ./configs/sponsorship.yaml:/config.yaml
+    entrypoint: sh -c "sponsor-svc run sponsorship"
+  
+  sponsorship_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=sponsorship
+      - POSTGRES_PASSWORD=sponsorship
+      - POSTGRES_DB=sponsorship
+      - PGDATA=/pgdata
+    volumes:
+      - sponsorship-data:/pgdata
+
+
 
   ## 3rd party
 
@@ -246,4 +269,5 @@ volumes:
   dns-data:
   notificator-data:
   proxy-payments-data:
+  sponsorship-data:
   marketplace-data:

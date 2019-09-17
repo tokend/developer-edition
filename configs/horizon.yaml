@@ -14,7 +14,7 @@ config:
   disable_tx_tfa:                          true
   force_https_links:                       false
   # we are using sentry for error collection, you could opt-out by removing following line
-  sentry_dsn:                              "https://0ad42a3fc393412a94b8e09d342aaed1@sentry.tokend.services/7"
+#  sentry_dsn:                              "https://0ad42a3fc393412a94b8e09d342aaed1@sentry.tokend.services/7"
   sentry_log_level:                        "warn"
   project:                                 "horizon"
   env:                                     "developer-edition"

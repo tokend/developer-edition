@@ -1,0 +1,26 @@
+log:
+  disable_sentry: true
+  level: info
+
+db:
+  url: postgres://sponsorship:sponsorship@sponsorship_db/sponsorship?sslmode=disable
+
+horizon:
+  endpoint: http://janus
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  source: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+listener:
+  addr: :4545
+
+janus:
+  surname: sponsorship
+  endpoint: http://janus:8000
+  upstream: http://sponsorship:4545
+
+dispatcher:
+  # address and seed of the service account 
+  address: GBGBDBSTBHPFPPYXKOUI3VTO5MCBRCOPJDE4FOYS5KAO63GJYHX4FNO7
+  seed: SCF776AE7MK6USKZIFBYLRB6ATTDNTY3C4UOSZWZPO4C6EZYXDUDXQSG
+  skip_sign_check: false
+
