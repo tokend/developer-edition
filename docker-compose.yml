@@ -96,7 +96,7 @@ services:
       - ./configs/pkihorizon.yaml:/config.yaml
       - pkihorizon-data:/data
   api:
-    image: api
+    image: registry.gitlab.com/tokend/api:5e4ef6a347f7524203755d68e4e658fe8333d861
     restart: unless-stopped
     depends_on:
       - horizon
