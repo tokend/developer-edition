@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.2.15
+    image: registry.gitlab.com/tokend/sponsor-svc:68b3eb8bd50a4e90f7fb2c82fd6b03a92e36e3d6 # tokend/dns:0.2.15
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -186,12 +186,13 @@ services:
       - marketplace-data:/pgdata
 
   sponsorship:
-    image: sponsor-svc:latest
+    image: registry.gitlab.com/tokend/sponsor-svc:a2ccb9ba62ec4c499bf2e8407394f590fcc2a5f4
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
     depends_on:
       - horizon
+      - sponsorship_db
     volumes:
       - ./configs/sponsorship.yaml:/config.yaml
     entrypoint: sh -c "sponsor-svc run sponsorship"
