@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./configs/janus.toml:/etc/janus/janus.toml
+    ports:
+    - "8888:80"
   upstream:
     image: nginx
     restart: unless-stopped
@@ -63,6 +65,36 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+  pkicore:
+    image: registry.gitlab.com/tokend/core:gdis-94da4bcfb21f4a81d3686eee15f28337b0b80602
+    depends_on:
+      - janus
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=pkicore
+      - POSTGRES_PASSWORD=pkicore
+      - POSTGRES_DB=pkicore
+      - PGDATA=/data/pgdata
+      - ENSUREDB=1
+      - CONFIG=/pkicore-config.ini
+    volumes:
+      - ./configs/pkicore.ini:/pkicore-config.ini
+      - pkicore-data:/data
+    labels:
+      - "autoheal=true"
+  pkihorizon:
+    image: registry.gitlab.com/tokend/horizon:pg-992c682fa1ffd477c6b22348f031cb3ffb91bcb9
+    depends_on:
+      - pkicore
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=pkihorizon
+      - POSTGRES_PASSWORD=pkihorizon
+      - POSTGRES_DB=pkihorizon
+      - PGDATA=/data/pgdata
+    volumes:
+      - ./configs/pkihorizon.yaml:/config.yaml
+      - pkihorizon-data:/data
   api:
     image: tokend/identity:4.5.1-x.11
     restart: unless-stopped
@@ -270,6 +302,8 @@ volumes:
   api-data:
   core-data:
   horizon-data:
+  pkicore-data:
+  pkihorizon-data:
   storage-data:
   dns-data:
   notificator-data:
