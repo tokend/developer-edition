@@ -66,7 +66,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   pkicore:
-    image: registry.gitlab.com/tokend/core:gdis-94da4bcfb21f4a81d3686eee15f28337b0b80602
+    image: registry.gitlab.com/tokend/core:gdis-4698ebfd20ed709ea0857af06e3b197be0215a9b
     depends_on:
       - janus
     restart: unless-stopped
@@ -83,7 +83,7 @@ services:
     labels:
       - "autoheal=true"
   pkihorizon:
-    image: registry.gitlab.com/tokend/horizon:pg-992c682fa1ffd477c6b22348f031cb3ffb91bcb9
+    image: registry.gitlab.com/tokend/horizon:pg-e27da0c643887039862df2b62a8927547b55da27
     depends_on:
       - pkicore
     restart: unless-stopped
@@ -96,10 +96,11 @@ services:
       - ./configs/pkihorizon.yaml:/config.yaml
       - pkihorizon-data:/data
   api:
-    image: tokend/identity:4.5.1-x.11
+    image: api
     restart: unless-stopped
     depends_on:
       - horizon
+      - pkihorizon
       - api_db
     environment:
       - KV_VIPER_FILE=/config.yaml

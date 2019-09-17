@@ -1,6 +1,7 @@
 api:
   horizon_url: http://horizon
   account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  pki_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
   skip_signature_check: false
 
 db:
@@ -81,3 +82,6 @@ telegram:
   register_url: ""
   bot_token: ""
   
+pki_horizon:
+  url: http://pkihorizon
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
