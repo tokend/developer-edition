@@ -163,36 +163,8 @@ services:
     volumes:
       - proxy-payments-data:/pgdata
 
-  4bill:
-    image: tokend/4bill:1.0.8
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    depends_on:
-      - horizon
-    volumes:
-      - ./configs/4bill.yaml:/config.yaml
-    entrypoint: sh -c "4bill-svc run 4bill"
-
-  coinpayments_atomic_swap:
-    image: tokend/coinpayments:0.4.6
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap.yaml:/config.yaml
-    command: atomic-swap
-  coinpayments_atomic_swap_matcher:
-    image: tokend/coinpayments:0.4.6
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
-    command: atomic-swap-matcher
-
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:3603b9b9e5d1efc8c4480847f04e52d35bc6d8e9
+    image: registry.gitlab.com/tokend/marketplace-svc:6a1a3a684ba09699c0f9761fecfc06de75f2e6af
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
