@@ -83,7 +83,7 @@ services:
     labels:
       - "autoheal=true"
   pkihorizon:
-    image: registry.gitlab.com/tokend/horizon:pg-e27da0c643887039862df2b62a8927547b55da27
+    image: registry.gitlab.com/tokend/horizon:pg-b585f811a1955e53f2dcb7815a4ec7fba6c2590b
     depends_on:
       - pkicore
     restart: unless-stopped
@@ -96,7 +96,7 @@ services:
       - ./configs/pkihorizon.yaml:/config.yaml
       - pkihorizon-data:/data
   api:
-    image: registry.gitlab.com/tokend/api:5e4ef6a347f7524203755d68e4e658fe8333d861
+    image: registry.gitlab.com/tokend/api:e45a5c238e772ab399fb654da62da3363081be3a
     restart: unless-stopped
     depends_on:
       - horizon
