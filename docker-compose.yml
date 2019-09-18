@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: horizon:local # tokend/horizon:3.5.2-x.2
+    image: tokend/horizon:3.5.2-x.2
     depends_on:
       - core
     restart: unless-stopped
@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: registry.gitlab.com/tokend/sponsor-svc:68b3eb8bd50a4e90f7fb2c82fd6b03a92e36e3d6 # tokend/dns:0.2.15
+    image: registry.gitlab.com/tokend/dns-svc:68b3eb8bd50a4e90f7fb2c82fd6b03a92e36e3d6 # tokend/dns:0.2.15
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -195,7 +195,7 @@ services:
       - sponsorship_db
     volumes:
       - ./configs/sponsorship.yaml:/config.yaml
-    entrypoint: sh -c "sponsor-svc run sponsorship"
+    entrypoint: sh -c "sponsor-svc migrate up && sponsor-svc run sponsorship"
   
   sponsorship_db:
     image: tokend/postgres-ubuntu:9.6
