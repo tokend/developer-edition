@@ -95,7 +95,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.0.3-rc.6
+    image: tokendconto/web-client:1.0.3-rc.11
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
