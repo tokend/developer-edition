@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.6.0
+    image: tokend/horizon:3.6.1-x.0
     depends_on:
       - core
     restart: unless-stopped
@@ -164,7 +164,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:6a1a3a684ba09699c0f9761fecfc06de75f2e6af
+    image: tokend/marketplace-svc:0.1.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
