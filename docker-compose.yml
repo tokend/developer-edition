@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.5.1
+    image: tokend/core:3.6.0
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.5.2-x.2
+    image: tokend/horizon:3.6.0
     depends_on:
       - core
     restart: unless-stopped
