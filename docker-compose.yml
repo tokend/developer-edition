@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.3-x.0
+    image: tokend/identity:4.5.3-x.3
     restart: unless-stopped
     depends_on:
       - horizon
@@ -95,14 +95,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.0.3-rc.12
+    image: tokendconto/web-client:1.1.0-rc.1
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokendconto/admin-panel:1.0.0-rc.0
+    image: tokendconto/admin-panel:1.0.0-rc.2
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.2.15
+    image: tokend/dns:0.2.17
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -142,7 +142,7 @@ services:
       - dns-data:/pgdata
 
   proxy_payments:
-    image: registry.gitlab.com/tokend/proxy-payments-svc:95c3f7f027f500ca4e7f92c252ad5bd56bb0421b
+    image: tokend/proxy-payments:0.2.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -202,7 +202,7 @@ services:
   ##
 
   notificator:
-    image: registry.gitlab.com/distributed_lab/notificator-server:e603cc413f0c1f3977addef0d4a9e213d11e8aea
+    image: tokend/notificator:0.5.1
     restart: unless-stopped
     depends_on:
       - horizon
@@ -227,7 +227,7 @@ services:
     volumes:
       - notificator-data:/pgdata
   templatesprovider:
-    image: registry.gitlab.com/tokend/templates-svc:4603b974928fc90186973a9b103fb420e840f125
+    image: tokend/templates-svc:1.0.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
