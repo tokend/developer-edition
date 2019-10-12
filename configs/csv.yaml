@@ -1,0 +1,18 @@
+csv:
+  skip_sign_check: true
+
+horizon:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  endpoint: http://janus
+
+log:
+  disable_sentry: true
+
+listener:
+  addr: :80
+
+janus:
+  disabled: false
+  surname: csv
+  endpoint: http://janus:8000
+  upstream: http://csv
