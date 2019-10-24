@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.1-x.0
+    image: tokend/core:3.6.1
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.6.2-x.1
+    image: tokend/horizon:3.6.2
     depends_on:
       - core
     restart: unless-stopped
@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.3-x.8
+    image: tokend/identity:4.5.3
     restart: unless-stopped
     depends_on:
       - horizon
@@ -95,14 +95,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.10.3-rc.2
+    image: tokend/web-client:1.10.3
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.10.1-rc.2
+    image: tokend/admin-client:1.10.1
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
