@@ -70,6 +70,7 @@ key_values:
   signer_role: "signer_role:default"
   account_role: "account_role:unverified"
   kyc_recovery_signer_role: "kyc_recovery_signer_role"
+  license_admin_signer_role: "license_admin_signer_role"
 
 twilio:
   # 
