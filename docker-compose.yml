@@ -33,6 +33,11 @@ services:
       - PGDATA=/pgdata
     volumes:
       - adks-data:/pgdata
+  redis:
+    image: redis:5.0-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
   core:
     image: tokend/core:3.6.1
     depends_on:
@@ -283,3 +288,4 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
+  redis-data:
