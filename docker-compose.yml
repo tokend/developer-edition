@@ -38,6 +38,10 @@ services:
     restart: unless-stopped
     volumes:
       - redis-data:/data
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
   core:
     image: tokend/core:3.6.1
     depends_on:
