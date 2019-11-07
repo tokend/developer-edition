@@ -119,6 +119,16 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
+  asset-remover:
+    image: registry.gitlab.com/tokend/asset-remover-svc:59e15885402117cc6ba546d54fe1c376a701299a # tokend/dns:0.2.21
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+    volumes:
+      - ./configs/asset-remover.yaml:/config.yaml
+    entrypoint: sh -c "asset-remover-svc run assetchecker"
   dns:
     image: tokend/dns:0.2.19
     restart: unless-stopped
