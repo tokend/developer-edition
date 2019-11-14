@@ -141,6 +141,29 @@ services:
     volumes:
       - dns-data:/pgdata
 
+  sponsorship:
+    image: tokend/sponsor:0.2.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - sponsorship_db
+    volumes:
+      - ./configs/sponsorship.yaml:/config.yaml
+    entrypoint: sh -c "sponsor-svc migrate up && sponsor-svc run sponsorship"
+
+  sponsorship_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=sponsorship
+      - POSTGRES_PASSWORD=sponsorship
+      - POSTGRES_DB=sponsorship
+      - PGDATA=/pgdata
+    volumes:
+      - sponsorship-data:/pgdata
+
   proxy_payments:
     image: tokend/proxy-payments:0.2.1
     restart: unless-stopped
@@ -247,3 +270,4 @@ volumes:
   notificator-data:
   proxy-payments-data:
   marketplace-data:
+  sponsorship-data:
