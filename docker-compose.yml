@@ -175,6 +175,17 @@ services:
       - ./configs/csv.yaml:/config.yaml
     entrypoint: sh -c "csv-svc run csvproxy"
 
+  asset_remover:
+    image: tokend/asset-remover-svc:0.1.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+    volumes:
+      - ./configs/asset-remover.yaml:/config.yaml
+    entrypoint: sh -c "asset-remover-svc run assetchecker"
+
   proxy_payments:
     image: tokend/proxy-payments:0.2.1
     restart: unless-stopped
