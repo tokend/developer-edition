@@ -164,6 +164,17 @@ services:
     volumes:
       - sponsorship-data:/pgdata
 
+  csv:
+    image: tokend/csv:0.1.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+    volumes:
+      - ./configs/csv.yaml:/config.yaml
+    entrypoint: sh -c "csv-svc run csvproxy"
+
   proxy_payments:
     image: tokend/proxy-payments:0.2.1
     restart: unless-stopped
