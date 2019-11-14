@@ -1,0 +1,7 @@
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+
+entryPoints:
+  web:
+    address: ":80"

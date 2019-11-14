@@ -13,7 +13,7 @@ listener:
   addr: :80
 
 janus:
-  disabled: false
+  disabled: true
   surname: dns
   endpoint: http://janus:8000
   upstream: http://dns

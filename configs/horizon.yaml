@@ -25,6 +25,7 @@ config:
   telegram_airdrop:                        http://black.hole
 
 janus:
+  disabled: true
   endpoint: http://janus:8000
   upstream: http://horizon
   surname: horizon

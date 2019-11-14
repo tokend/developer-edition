@@ -18,7 +18,7 @@ marketplace:
   tx_expiration_time: 30m
 
 janus:
-  disabled: false
+  disabled: true
   surname: marketplace
   endpoint: http://janus:8000
   upstream: http://marketplace

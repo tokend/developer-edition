@@ -1,11 +1,14 @@
 version: '3.3'
 
 services:
-  janus:
-    image: tokend/janus:latest
-    restart: unless-stopped
+  traefik:
+    image: traefik:v2.0
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "8001:80"
+      - "8080:8080"
     volumes:
-      - ./configs/janus.toml:/etc/janus/janus.toml
+      - /var/run/docker.sock:/var/run/docker.sock
   upstream:
     image: nginx
     restart: unless-stopped
@@ -36,7 +39,7 @@ services:
   core:
     image: tokend/core:3.6.1-x.0
     depends_on:
-      - janus
+      - traefik
     restart: unless-stopped
     environment:
       - POSTGRES_USER=core
@@ -52,6 +55,9 @@ services:
       - "autoheal=true"
   horizon:
     image: tokend/horizon:3.6.2-x.0
+    labels:
+      - "traefik.http.routers.horizon.rule=Host(`localhost`)"
+      - "traefik.http.services.horizon-service.loadbalancer.server.port=80"
     depends_on:
       - core
     restart: unless-stopped
@@ -65,6 +71,9 @@ services:
       - horizon-data:/data
   api:
     image: tokend/identity:4.5.3-x.4
+    labels:
+      - "traefik.http.routers.api.rule=Host(`localhost`)"
+      - "traefik.http.services.api-service.loadbalancer.server.port=80"
     restart: unless-stopped
     depends_on:
       - horizon
@@ -121,6 +130,9 @@ services:
       - storage-data:/data
   dns:
     image: tokend/dns:0.2.19
+    labels:
+      - "traefik.http.routers.dns.rule=Host(`localhost`)"
+      - "traefik.http.services.dns-service.loadbalancer.server.port=80"
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -141,49 +153,51 @@ services:
     volumes:
       - dns-data:/pgdata
 
-  proxy_payments:
-    image: tokend/proxy-payments:0.2.1
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    depends_on:
-      - horizon
-      - proxy_payments_db
-    volumes:
-      - ./configs/proxy-payments.yaml:/config.yaml
-    entrypoint: sh -c "proxy-payments-svc migrate up && proxy-payments-svc run"
-  proxy_payments_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=proxy_payments
-      - POSTGRES_PASSWORD=proxy_payments
-      - POSTGRES_DB=proxy_payments
-      - PGDATA=/pgdata
-    volumes:
-      - proxy-payments-data:/pgdata
-
-  marketplace:
-    image: tokend/marketplace-svc:0.2.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    depends_on:
-      - horizon
-      - marketplace_db
-    volumes:
-      - ./configs/marketplace.yaml:/config.yaml
-    entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
-  marketplace_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=marketplace
-      - POSTGRES_PASSWORD=marketplace
-      - POSTGRES_DB=marketplace
-      - PGDATA=/pgdata
-    volumes:
-      - marketplace-data:/pgdata
+#  proxy_payments:
+#    image: tokend/proxy-payments:0.2.1
+#    labels:
+#      - "traefik.http.routers.proxy_payments.rule=Host(`proxy_payments.docker.localhost`)"
+#    restart: unless-stopped
+#    environment:
+#      - KV_VIPER_FILE=/config.yaml
+#    depends_on:
+#      - horizon
+#      - proxy_payments_db
+#    volumes:
+#      - ./configs/proxy-payments.yaml:/config.yaml
+#    entrypoint: sh -c "proxy-payments-svc migrate up && proxy-payments-svc run"
+#  proxy_payments_db:
+#    image: tokend/postgres-ubuntu:9.6
+#    restart: unless-stopped
+#    environment:
+#      - POSTGRES_USER=proxy_payments
+#      - POSTGRES_PASSWORD=proxy_payments
+#      - POSTGRES_DB=proxy_payments
+#      - PGDATA=/pgdata
+#    volumes:
+#      - proxy-payments-data:/pgdata
+#
+#  marketplace:
+#    image: tokend/marketplace-svc:0.2.0
+#    restart: unless-stopped
+#    environment:
+#      - KV_VIPER_FILE=/config.yaml
+#    depends_on:
+#      - horizon
+#      - marketplace_db
+#    volumes:
+#      - ./configs/marketplace.yaml:/config.yaml
+#    entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
+#  marketplace_db:
+#    image: tokend/postgres-ubuntu:9.6
+#    restart: unless-stopped
+#    environment:
+#      - POSTGRES_USER=marketplace
+#      - POSTGRES_PASSWORD=marketplace
+#      - POSTGRES_DB=marketplace
+#      - PGDATA=/pgdata
+#    volumes:
+#      - marketplace-data:/pgdata
 
 
   ## 3rd party
