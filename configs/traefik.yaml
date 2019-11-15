@@ -5,3 +5,8 @@ providers:
 entryPoints:
   web:
     address: ":80"
+api:
+  insecure: true
+
+log:
+  level: ERROR
