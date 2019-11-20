@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.2-x.0
+    image: tokend/core:3.6.2
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.7.0-x.0
+    image: tokend/horizon:3.7.0
     depends_on:
       - core
     restart: unless-stopped
@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.4-x.1
+    image: tokend/identity:4.5.4
     restart: unless-stopped
     depends_on:
       - horizon
@@ -95,7 +95,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.4.0-rc.0
+    image: tokendconto/web-client:1.4.0
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.3.0
+    image: tokend/dns:0.3.3
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -165,7 +165,7 @@ services:
       - sponsorship-data:/pgdata
 
   csv:
-    image: tokend/csv:0.1.0
+    image: tokend/csv:0.1.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -176,7 +176,7 @@ services:
     entrypoint: sh -c "csv-svc run csvproxy"
 
   asset_remover:
-    image: tokend/asset-remover-svc:0.1.0
+    image: tokend/asset-remover-svc:0.1.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -187,7 +187,7 @@ services:
     entrypoint: sh -c "asset-remover-svc run assetchecker"
 
   proxy_payments:
-    image: tokend/proxy-payments:0.2.2
+    image: tokend/proxy-payments:0.2.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -209,7 +209,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: tokend/marketplace-svc:0.3.0
+    image: tokend/marketplace-svc:0.3.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
