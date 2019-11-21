@@ -18,4 +18,6 @@ listener:
   addr: :80
 
 janus:
-  disabled: true
+  endpoint: http://janus:8000
+  upstream: http://booking
+  surname:  booking
