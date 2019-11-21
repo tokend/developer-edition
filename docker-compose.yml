@@ -167,7 +167,7 @@ services:
   ## Booking
 
   scheduler:
-    image: registry.gitlab.com/tokend/scheduler-svc:d792258bba64194aedab983b9ada03bc2ffa8af1
+    image: registry.gitlab.com/tokend/scheduler-svc:f0c1344d70254f192c9c27f9a62ae65416c8adad
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -189,7 +189,7 @@ services:
     volumes:
       - scheduler-data:/pgdata
   booking:
-    image: registry.gitlab.com/tokend/booking-svc:f6e7bedf73fb42fbbe3bac9cff8a1b586172f070
+    image: registry.gitlab.com/tokend/booking-svc:61e0973ee4fe26e80205c3bdca6c73304add2d42
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
