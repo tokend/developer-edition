@@ -164,6 +164,53 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  ## Booking
+
+  scheduler:
+    image: registry.gitlab.com/tokend/scheduler-svc:88f08e0f63f01f425d231ce967e59a82ccb9d567
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/scheduler.yaml:/config.yaml
+    entrypoint: sh -c "scheduler migrate up && scheduler run"
+    ports:
+      - 8005:80
+    depends_on:
+      - scheduler_db
+  scheduler_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=scheduler
+      - POSTGRES_PASSWORD=scheduler
+      - POSTGRES_DB=scheduler
+      - PGDATA=/pgdata
+    volumes:
+      - scheduler-data:/pgdata
+  booking:
+    image: registry.gitlab.com/tokend/booking-svc:61aa3249fe3c6f8328bf72fd361aa53115118d06
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/booking.yaml:/config.yaml
+    entrypoint: sh -c "booking-svc migrate up && booking-svc run"
+    ports:
+      - 8002:80
+    depends_on: 
+      - booking_db
+  booking_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=booking
+      - POSTGRES_PASSWORD=booking
+      - POSTGRES_DB=booking
+      - PGDATA=/pgdata
+    volumes:
+      - booking-data:/pgdata
+
   ##
   ## Integration services
   ##
@@ -283,3 +330,6 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
+  booking-data:
+  scheduler-data:
+

@@ -1,0 +1,21 @@
+booking:
+  skip_sign_check: true
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  scheduler: http://scheduler
+
+horizon:
+  endpoint: http://janus
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+
+db:
+  url: postgres://booking:booking@booking_db/booking?sslmode=disable
+
+log:
+  disable_sentry: true
+
+listener:
+  addr: :80
+
+janus:
+  disabled: true

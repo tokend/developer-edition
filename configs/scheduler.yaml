@@ -1,0 +1,20 @@
+scheduler:
+  skip_sign_check: true
+  generate_till: 12h
+  generation_period: 1m
+
+horizon:
+  endpoint: http://janus
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+
+db:
+  url: postgres://scheduler:scheduler@scheduler_db/scheduler?sslmode=disable
+
+log:
+  disable_sentry: true
+
+listener:
+  addr: :80
+
+janus:
+  disabled: true
