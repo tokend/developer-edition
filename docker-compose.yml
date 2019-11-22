@@ -63,6 +63,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+    ports:
+     - 8001:80
   api:
     image: tokend/identity:4.5.3.1
     restart: unless-stopped
@@ -167,7 +169,7 @@ services:
   ## Booking
 
   scheduler:
-    image: registry.gitlab.com/tokend/scheduler-svc:f0c1344d70254f192c9c27f9a62ae65416c8adad
+    image: registry.gitlab.com/tokend/scheduler-svc:8766db977b77fa73cbca91370d389fd4fc226cb1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -178,6 +180,7 @@ services:
       - 8005:80
     depends_on:
       - scheduler_db
+      - horizon
   scheduler_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -189,7 +192,7 @@ services:
     volumes:
       - scheduler-data:/pgdata
   booking:
-    image: registry.gitlab.com/tokend/booking-svc:61e0973ee4fe26e80205c3bdca6c73304add2d42
+    image: registry.gitlab.com/tokend/booking-svc:d42136dc7c33587335056626e0af17b6a6197e15
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -201,6 +204,7 @@ services:
     depends_on: 
       - booking_db
       - scheduler
+      - horizon
   booking_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
