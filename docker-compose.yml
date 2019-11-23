@@ -192,7 +192,7 @@ services:
     volumes:
       - scheduler-data:/pgdata
   booking:
-    image: registry.gitlab.com/tokend/booking-svc:d2d58fb22b8ecf2900206f1d19316fce88935d14
+    image: registry.gitlab.com/tokend/booking-svc:dc75c37d1cbcc312268d15246faf43803c375195
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
