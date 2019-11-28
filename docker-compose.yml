@@ -166,6 +166,33 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+
+## Escrow
+  
+  escrow:
+    image: registry.gitlab.com/tokend/escrow-svc:246f811c9e63ad50cd38eb17bde234d5fdc03ae0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/escrow.yaml:/config.yaml
+    entrypoint: sh -c "escrow-svc migrate up && escrow-svc run"
+    depends_on:
+      - escrow_db
+      - api
+  escrow_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=escrow
+      - POSTGRES_PASSWORD=escrow
+      - POSTGRES_DB=escrow
+      - PGDATA=/pgdata
+    volumes:
+      - escrow-data:/pgdata
+
+
+
   ## Booking
 
   scheduler:
@@ -180,7 +207,7 @@ services:
       - 8005:80
     depends_on:
       - scheduler_db
-      - horizon
+      - api
   scheduler_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -192,7 +219,7 @@ services:
     volumes:
       - scheduler-data:/pgdata
   booking:
-    image: registry.gitlab.com/tokend/booking-svc:dc75c37d1cbcc312268d15246faf43803c375195
+    image: registry.gitlab.com/tokend/booking-svc:b48799c42034a84884fd5e8a071f282aeca8a802
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -204,7 +231,7 @@ services:
     depends_on: 
       - booking_db
       - scheduler
-      - horizon
+      - api
   booking_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -337,4 +364,5 @@ volumes:
   storage-data:
   booking-data:
   scheduler-data:
+  escrow-data:
 
