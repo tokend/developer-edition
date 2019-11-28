@@ -1,0 +1,23 @@
+log:
+  level: info
+  disable_sentry: true
+
+db:
+  url: "postgres://proxy_payments:proxy_payments@proxy_payments_db/proxy_payments?sslmode=disable"
+
+horizon:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  endpoint: "http://janus/"
+
+listener:
+  addr: :80
+
+payment_proxy:
+  account_id: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+
+janus:
+  disabled: false
+  surname: proxy_payments
+  endpoint: http://janus:8000
+  upstream: http://proxy_payments

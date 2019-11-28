@@ -5,5 +5,5 @@ document.ENV = {
     KEY_SERVER_ADMIN: 'http://localhost:8000/_/adks',
     VALIDATE_EMAILS: false,
     WEB_CLIENT_URL: 'http://localhost:8060',
-    IMG_BUCKET_URL: 'https://conto-images.s3.eu-north-1.amazonaws.com'
+    MODULE_SCHEME_NAME: 'conto'
 }

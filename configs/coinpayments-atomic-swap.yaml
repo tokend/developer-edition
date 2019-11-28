@@ -11,6 +11,14 @@ horizon:
   endpoint: http://janus
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
+listener:
+  addr: :80
+
+janus:
+  endpoint: http://janus:8000
+  upstream: http://coinpayments_atomic_swap
+  surname:  coinpayments_atomic_swap
+
 coinpayments:
   merchant_id: "6936542314febfcc8dd3955fce88e0be"
   address: https://www.coinpayments.net/api.php
@@ -19,7 +27,7 @@ coinpayments:
   ipn_secret: "supersekr1tandsecure"
   request_timeout: 30
 
-atomic_swap_matcher:
-  excluded_assets:
-    - UAH
+atomic_swap:
+  forbill_endpoint: http://janus
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  price_asset: UAH

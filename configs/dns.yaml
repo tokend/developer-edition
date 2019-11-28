@@ -1,0 +1,23 @@
+log:
+  level: info
+  disable_sentry: true
+
+db:
+  url: "postgres://dns:dns@dns_db/dns?sslmode=disable"
+
+horizon:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  endpoint: "http://janus/"
+
+listener:
+  addr: :80
+
+janus:
+  disabled: false
+  surname: dns
+  endpoint: http://janus:8000
+  upstream: http://dns
+
+dns:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  skip_sign_check: false

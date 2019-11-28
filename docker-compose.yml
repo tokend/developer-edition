@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.1
+    image: tokend/core:3.6.2
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.6.2
+    image: tokend/horizon:3.7.0
     depends_on:
       - core
     restart: unless-stopped
@@ -63,10 +63,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
-    ports:
-     - 8001:80
   api:
-    image: tokend/identity:4.5.3.1
+    image: tokend/identity:4.5.4
     restart: unless-stopped
     depends_on:
       - horizon
@@ -96,15 +94,15 @@ services:
       - ./terraform:/opt/config
     entrypoint: ""
     command: /opt/config/apply.sh
-  web_client:
-    image: tokend/web-client:1.10.3
+  conto_client:
+    image: tokendconto/web-client:1.4.0
     restart: unless-stopped
     volumes:
-      - ./configs/client.js:/usr/share/nginx/html/static/env.js
+      - ./configs/conto.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.10.1
+    image: tokendconto/admin-panel:1.1.0-rc.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -121,50 +119,116 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
-
-  ##
-  ## Auxiliary modules
-  ##
-
-  charts:
-    image: tokend/charts:0.4.1
+  dns:
+    image: tokend/dns:0.3.3
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/charts.yaml:/config.yaml
-    ports:
-      - 8080:8080
-    command: run
-  salecloser:
-    image: tokend/sale-closer-svc:1.0.1
     depends_on:
       - horizon
-    restart: unless-stopped
+      - dns_db
     volumes:
-      - ./configs/salecloser.yaml:/config.yaml
+      - ./configs/dns.yaml:/config.yaml
+    entrypoint: sh -c "dns-svc migrate up && dns-svc run"
+  dns_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=dns
+      - POSTGRES_PASSWORD=dns
+      - POSTGRES_DB=dns
+      - PGDATA=/pgdata
+    volumes:
+      - dns-data:/pgdata
+
+  sponsorship:
+    image: tokend/sponsor:0.2.0
+    restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
-    command: "run"
-  poll_closer:
-    image: tokend/poll-closer:0.1.1
+    depends_on:
+      - horizon
+      - sponsorship_db
+    volumes:
+      - ./configs/sponsorship.yaml:/config.yaml
+    entrypoint: sh -c "sponsor-svc migrate up && sponsor-svc run sponsorship"
+
+  sponsorship_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=sponsorship
+      - POSTGRES_PASSWORD=sponsorship
+      - POSTGRES_DB=sponsorship
+      - PGDATA=/pgdata
+    volumes:
+      - sponsorship-data:/pgdata
+
+  csv:
+    image: tokend/csv:0.1.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
     volumes:
-      - ./configs/poll-closer.yaml:/config.yaml
-    command: run closer
+      - ./configs/csv.yaml:/config.yaml
+    entrypoint: sh -c "csv-svc run csvproxy"
 
-  ## 3rd party
-
-  autoheal:
-    image: willfarrell/autoheal
+  asset_remover:
+    image: tokend/asset-remover-svc:0.1.1
     restart: unless-stopped
     environment:
-      - AUTOHEAL_START_PERIOD=60
-      - AUTOHEAL_DEFAULT_STOP_TIMEOUT=30
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./configs/asset-remover.yaml:/config.yaml
+    entrypoint: sh -c "asset-remover-svc run assetchecker"
+
+  proxy_payments:
+    image: tokend/proxy-payments:0.2.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - proxy_payments_db
+    volumes:
+      - ./configs/proxy-payments.yaml:/config.yaml
+    entrypoint: sh -c "proxy-payments-svc migrate up && proxy-payments-svc run"
+  proxy_payments_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=proxy_payments
+      - POSTGRES_PASSWORD=proxy_payments
+      - POSTGRES_DB=proxy_payments
+      - PGDATA=/pgdata
+    volumes:
+      - proxy-payments-data:/pgdata
+
+  marketplace:
+    image: tokend/marketplace-svc:0.3.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - marketplace_db
+    volumes:
+      - ./configs/marketplace.yaml:/config.yaml
+    entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
+  marketplace_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=marketplace
+      - POSTGRES_PASSWORD=marketplace
+      - POSTGRES_DB=marketplace
+      - PGDATA=/pgdata
+    volumes:
+      - marketplace-data:/pgdata
 
 
 ## Escrow
@@ -207,7 +271,7 @@ services:
       - 8005:80
     depends_on:
       - scheduler_db
-      - horizon
+      - api
   scheduler_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -231,7 +295,7 @@ services:
     depends_on: 
       - booking_db
       - scheduler
-      - horizon
+      - api
   booking_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -243,118 +307,57 @@ services:
     volumes:
       - booking-data:/pgdata
 
+
+  ## 3rd party
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: unless-stopped
+    environment:
+      - AUTOHEAL_START_PERIOD=60
+      - AUTOHEAL_DEFAULT_STOP_TIMEOUT=30
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   ##
   ## Integration services
   ##
 
-  ## Coinpayments
-
-  coinpayments-deposit:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-deposit.yaml:/config.yaml
-    command: deposit
-  coinpayments-deposit-verify:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
-    command: deposit-verify
-  coinpayments-withdraw:
-    image: tokend/coinpayments:0.4.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-withdraw.yaml:/config.yaml
-    command: withdraw
-  coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.4.5
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
-    command: atomic-swap-checker
-  coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.4.5
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
-    command: atomic-swap-matcher
-
-  ## Stellar
-  stellar-deposit:
-    image: tokend/stellar-deposit-svc:1.0.5
+  notificator:
+    image: tokend/notificator:0.5.1
     restart: unless-stopped
     depends_on:
       - horizon
-    environment:
-      - KV_VIPER_FILE=/config.yaml
+      - notificator_db
     volumes:
-      - ./configs/stellar-deposit.yaml:/config.yaml
-  stellar-withdraw:
-    image: tokend/stellar-withdraw-svc:1.0.1
+      - ./configs/notificator.yaml:/config.yaml
+    command:
+      - "notificator"
+      - "--config"
+      - "/config.yaml"
+      - "--migrations"
+      - "/migrations"
+      - "run"
+  notificator_db:
+    image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
-    depends_on:
-      - horizon
     environment:
-      - KV_VIPER_FILE=/config.yaml
+      - POSTGRES_USER=notificator
+      - POSTGRES_PASSWORD=notificator
+      - POSTGRES_DB=notificator
+      - PGDATA=/pgdata
     volumes:
-      - ./configs/stellar-withdraw.yaml:/config.yaml
-
-  ## Ethereum
-  erc20-deposit:
-    image: tokend/erc20-deposit-svc:1.0.8
+      - notificator-data:/pgdata
+  templatesprovider:
+    image: tokend/templates-svc:1.0.0
     restart: unless-stopped
-    depends_on:
-      - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
-      - ./configs/erc20-deposit.yaml:/config.yaml
-    entrypoint: "erc20-deposit-svc"
-    command: ["run", "deposit"]
-  erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.8
-    restart: on-failure
-    depends_on:
-      - horizon
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/erc20-deposit.yaml:/config.yaml
-    entrypoint: "erc20-deposit-svc"
-    command: ["run", "deployer"]
-  erc20-funnel:
-    image: tokend/erc20-deposit-svc:1.0.8
-    restart: unless-stopped
-    depends_on:
-      - horizon
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/erc20-deposit.yaml:/config.yaml
-    entrypoint: "erc20-deposit-svc"
-    command: ["run", "funnel"]
-  erc20-withdraw:
-    image: tokend/erc20-withdraw-svc:1.0.5
-    restart: unless-stopped
-    depends_on:
-      - horizon
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/erc20-withdraw.yaml:/config.yaml
-    entrypoint: "erc20-withdraw-svc"
-    command: ["run", "withdraw"]
+      - ./configs/templatesprovider.yaml:/config.yaml
+    command:
+      - 'run'
+      - 'service'
 
 volumes:
   adks-data:
@@ -362,7 +365,11 @@ volumes:
   core-data:
   horizon-data:
   storage-data:
-  booking-data:
+  dns-data:
+  notificator-data:
+  proxy-payments-data:
+  marketplace-data:
+  sponsorship-data:
   scheduler-data:
+  booking-data:
   escrow-data:
-
