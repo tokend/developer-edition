@@ -234,7 +234,7 @@ services:
 ## Escrow
   
   escrow:
-    image: registry.gitlab.com/tokend/escrow-svc:246f811c9e63ad50cd38eb17bde234d5fdc03ae0
+    image: registry.gitlab.com/tokend/escrow-svc:744afbaa9907f1e50b13a76e4a53a528ed76e6c5
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -283,7 +283,7 @@ services:
     volumes:
       - scheduler-data:/pgdata
   booking:
-    image: registry.gitlab.com/tokend/booking-svc:0071cb40a17188cc32eaae99e133817e846a7fcc
+    image: registry.gitlab.com/tokend/booking-svc:5b5153c9e5fedeea966b230a6e58b07e99fad924
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
