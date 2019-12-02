@@ -12,11 +12,11 @@ horizon:
 listener:
   addr: :80
 
-janus:
-  disabled: true
-  surname: dns
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://dns
+  service_name: "dns-service"
+  service_port: "80"
 
 dns:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4

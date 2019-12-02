@@ -65,6 +65,12 @@ janus:
   upstream: http://api
   surname:  api
 
+cop:
+  endpoint: http://cop
+  upstream: http://api
+  service_name: "api-service"
+  service_port: "80"
+
 twilio:
   # 
   disabled: true

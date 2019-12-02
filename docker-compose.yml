@@ -3,14 +3,21 @@ version: '3.3'
 services:
   traefik:
     image: traefik:v2.0
-    command: --api.insecure=true --providers.docker
     ports:
       - "80:80"
-#      - "8001:80"
-#      - "8080:8080"
+      - "8001:80"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./configs/traefik.yaml:/traefik.yaml
+  cop:
+    image: registry.gitlab.com/tokend/traefik-cop:fec7ae95c2395f99c6e570612e6220bf368da016
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/cop.yaml:/config.yaml
+    entrypoint: sh -c "traefik-cop run"
   upstream:
     image: nginx
     labels:
@@ -63,10 +70,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.6.2-x.0
-    labels:
-      - "traefik.http.routers.horizon.rule=Path(`/transactions`) || Path(`/`) || PathPrefix(`/v3/`)"
-      - "traefik.http.services.horizon-service.loadbalancer.server.port=80"
+    image: registry.gitlab.com/tokend/horizon:pg-df3032dcb9b3fd2ff5d7c65ffddca35f2936d47f
     depends_on:
       - core
     restart: unless-stopped
@@ -79,22 +83,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.3-x.4
-    labels:
-      - "traefik.http.routers.api-service.rule=Path(`/kdf`)
-      || Path(`/data/enums`)
-      || PathPrefix(`/wallets`)
-      || PathPrefix(`/wallets`)
-      || PathPrefix(`/accounts`)
-      || PathPrefix(`/blobs`)
-      || PathPrefix(`/documents`)
-      || PathPrefix(`/identities`)
-      || PathPrefix(`/invites`)
-      || PathPrefix(`/invites_multi`)
-      || PathPrefix(`/sessions`)
-      || PathPrefix(`/integrations/multisig`)
-      || PathPrefix(`/telegram_updates`)"
-      - "traefik.http.services.api-service.loadbalancer.server.port=80"
+    image: registry.gitlab.com/tokend/api:9f772dcf74814f318bb9bfd5786342a9eeb57501
     restart: unless-stopped
     depends_on:
       - horizon
@@ -160,10 +149,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.2.19
-    labels:
-      - "traefik.http.services.dns-service.loadbalancer.server.port=80"
-      - "traefik.http.routers.dns-service.rule=PathPrefix(`/integrations/dns/`)"
+    image: registry.gitlab.com/tokend/dns-svc:d5cbe0d7dd412937f661ddf7acb245d96e913194
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
