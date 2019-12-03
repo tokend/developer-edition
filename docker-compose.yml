@@ -63,6 +63,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+    ports:
+      - 8001:80
   api:
     image: tokend/identity:4.5.4
     restart: unless-stopped
@@ -283,7 +285,7 @@ services:
     volumes:
       - scheduler-data:/pgdata
   booking:
-    image: registry.gitlab.com/tokend/booking-svc:49e77f717e11cdd86354e1ed29324f30b07bfb15
+    image: registry.gitlab.com/tokend/booking-svc:c8e21448e3d5a0ea4490597fb0d033b54e4801ef
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
