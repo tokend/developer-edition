@@ -17,11 +17,12 @@ marketplace:
   skip_sign_check: false
   tx_expiration_time: 30m
 
-janus:
-  disabled: true
-  surname: marketplace
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://marketplace
+  service_name: "marketplace-service"
+  service_port: "80"
+  service_prefix: "/integrations/marketplace"
 
 coinpayments:
   merchant_id: "6936542314febfcc8dd3955fce88e0be"

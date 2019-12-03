@@ -149,7 +149,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:d5cbe0d7dd412937f661ddf7acb245d96e913194
+    image: registry.gitlab.com/tokend/dns-svc:223bca631ce48eb35e3a778a28c45729e964bdb3
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -200,10 +200,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: tokend/marketplace-svc:0.2.0
-    labels:
-      - "traefik.http.services.marketplace.loadbalancer.server.port=80"
-      - "traefik.http.routers.marketplace.rule=PathPrefix(`/integrations/marketplace/`)"
+    image: registry.gitlab.com/tokend/marketplace-svc:2effd89dc83cc056cda7cd6a145a064e1cf917d2
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
