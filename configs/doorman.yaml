@@ -1,0 +1,23 @@
+log:
+  disable_sentry: true
+  level: info
+
+db:
+  url: postgres://doorman:doorman@doorman_db/doorman?sslmode=disable
+
+horizon:
+  endpoint: "http://horizon"
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+
+listener:
+  addr: :80
+
+
+cop:
+  disabled: true
+  endpoint: http://cop
+  upstream: http://doorman-service
+  service_name: "doorman-service"
+  service_port: "80"
+  service_prefix: "/integrations/doorman"

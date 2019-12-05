@@ -1,0 +1,129 @@
+api:
+  project: Human Readable Name
+  horizon_url: http://horizon/horizon
+  account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  # disable only signature validity check
+  skip_signature_check: true
+  horizon_signer: SB73STJOWULYZNPGDLNRBAYGMROB47ATNKM723XORFBLI356U3SKMARZ
+
+db:
+  url: postgres://api@api_db/api?sslmode=disable
+
+listener:
+  addr: :80
+
+wallets:
+  disable_confirm: true
+  tfa_expiration_period: 24h
+  cleaner_period: 24h
+
+horizon:
+  endpoint:  http://horizon/horizon
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+doorman:
+  endpoint: http://doorman/
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+notificator:
+  # client_router: http://localhost:8888
+  # endpoint: http://localhost:9009
+  disabled: true
+  #secret: foo
+  #public: bar
+
+salesforce:
+  disabled: true
+  api_url: "https://xxxxxx.salesforce.com/"
+  client_secret: "1234567"
+  client_id: "XXXXXXXXXXXXXXXXXXXXXXXX"
+  username: "test@test.test"
+  password: "qwerty"
+
+log:
+  level: error
+  slow_query_bound: 300ms
+  slow_request_bound: 1s
+  disable_sentry: true
+
+
+sentry:
+  dsn: http://9be51faad32741f3a18020fa29982edf:aa57a4cad13740ca8957c79100e4c9a7@128.199.229.140:9090/9
+  level: warn
+  disabled: true
+
+storage:
+  host: "http://storage"
+  disabled: true
+  backend: "aws"
+  # minio credentials
+  access_key: "2SRMRAST49JEIMUUKWKH"
+  secret_key: "vm7+HyjPijP6xgzzjsxJrUs7dJgim0mj+K/lD2im"
+  # at this point I've lost track of minio/S3 incompatibilities,
+  # so `ensure_bucket` and `force_ssl` are more like `hey, I'm running minio!"
+  # TODO all hope is lost on platform agnostic storage implementation, make bodges explicit for different use cases
+  force_ssl: false
+  # don't ever set `ensure_bucket` if you are not on minio, use probebucket instead
+  ensure_bucket: false
+  media_types:
+    general:
+      - 'image/jpeg'
+      - 'image/tiff'
+      - 'image/png'
+      - 'image/gif'
+    alpha:
+      - 'application/pdf'
+    bravo:
+      - 'application/pdf'
+
+
+wallet_cleaner:
+  enabled: true
+  expiration: 128h
+
+geo_info:
+  access_key: 288fbbd921b99d9d60024c5a232d0546
+  api_url: http://api.ipstack.com
+  disabled: false
+
+healthcheck:
+  host: localhost
+  port: 3333
+
+cop:
+  disabled: true
+  endpoint: http://cop
+  upstream: http://api-service
+  service_name: "api-service"
+  service_port: "80"
+  service_prefix: "/api"
+
+totp:
+  issuer: "issuer"
+
+email_factor:
+  disabled: true
+
+# system settings
+key_values:
+  kyc_recovery_enabled: "kyc_recovery_enabled"
+  signer_role: "signer_role:default"
+  account_role: "account_role:unverified"
+  kyc_recovery_signer_role: "kyc_recovery_signer_role"
+
+twilio:
+  disabled: true
+  url: ""
+  account_sid: ""
+  auth_token: ""
+  # sender phone number
+  sender: ""
+
+telegram:
+  disabled: true
+  url: ""
+  bot_url: ""
+  api_url: ""
+  # register link to send in invitation message
+  register_url: ""
+  bot_token: ""

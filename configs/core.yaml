@@ -1,0 +1,29 @@
+log:
+  disable_sentry: true
+  level: debug
+
+db:
+  url: postgres://core:core@core_db/core?sslmode=disable
+
+
+listener:
+  addr: :80
+
+transaction:
+  max_pending: 10000
+  # network_passphrase in transaction section because network_passphrase is used to calculate hash for each transaction
+  network_passphrase: Light TokenD Developer Network
+  expiration_period: 1m
+
+ledger:
+  block_size: 100
+  closing_period: 1s
+  admin_id: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+
+cop:
+  disabled: true
+  endpoint: http://cop
+  upstream: http://core-service
+  service_name: "core-service"
+  service_port: "80"
+  service_prefix: "/core"

@@ -1,0 +1,12 @@
+providers:
+  rest:
+    insecure: true
+
+entryPoints:
+  web:
+    address: ":80"
+api:
+  insecure: true
+
+log:
+  level: warn
