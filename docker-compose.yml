@@ -101,34 +101,31 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:3cc0bc4cfd93fee8eadf3882c81a7f07017bfa9c
+    image: registry.gitlab.com/tokend/go-core:84c9b44d7500c7730198ae528b31b840674d868e
     depends_on:
       - core_db
     restart: unless-stopped
     environment:
-      - ENSUREDB=1
+      - POSTGRES_USER=core
+      - DBHOST=core_db
       - KV_VIPER_FILE=config.yaml
     volumes:
       - ./configs/core.yaml:/config.yaml
     labels:
       - "autoheal=true"
-    entrypoint: sh -c "go-core migrate up && go-core run"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:a38bc400bb161b3ac81a1388a500621a955dc28f
+    image: registry.gitlab.com/tokend/ingester:20def35900fba0f6e38da203ee7a5ac9a2f48bc7
     depends_on:
       - core
       - horizon_db
     restart: unless-stopped
     environment:
       - POSTGRES_USER=horizon
-      - POSTGRES_PASSWORD=horizon
-      - POSTGRES_DB=horizon
-      - PGDATA=/data/pgdata
+      - DBHOST=horizon_db
       - KV_VIPER_FILE=config.yaml
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
-    entrypoint: sh -c "ingester migrate up && ingester run"
   core_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
