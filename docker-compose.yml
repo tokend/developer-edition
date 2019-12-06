@@ -1,8 +1,15 @@
 version: '3.3'
 
 services:
+  upstream:
+    image: nginx
+    restart: unless-stopped
+    volumes:
+    - ./configs/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+    - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:d37c0de81d1c911bd841861d7182cbdec6ad2e3d
+    image: registry.gitlab.com/tokend/api:c09ce53d37f7abfe47951cadb3aef21d2b688e90
     restart: unless-stopped
     depends_on:
       - horizon
@@ -10,9 +17,10 @@ services:
       - doorman
     environment:
       - KV_VIPER_FILE=/config.yaml
+      - POSTGRES_USER=api
+      - DBHOST=api_db
     volumes:
       - ./configs/api.yaml:/config.yaml
-    command: run
   api_db:
     image: tokend/postgres-ubuntu:9.6
     labels:
@@ -69,28 +77,6 @@ services:
     volumes:
       - ./configs/cop.yaml:/config.yaml
     entrypoint: sh -c "traefik-cop run"
-  adks:
-    image: tokend/adks:1.0.0
-    restart: unless-stopped
-    depends_on:
-      - horizon
-      - adks_db
-    ports:
-      - 8006:80
-    volumes:
-      - ./configs/adks.toml:/config.toml
-  adks_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=adks
-      - POSTGRES_PASSWORD=adks
-      - POSTGRES_DB=adks
-      - PGDATA=/pgdata
-    labels:
-      - "traefik.enabled=false"
-    volumes:
-      - adks-data:/pgdata
   redis:
     image: redis:5.0-alpine
     restart: unless-stopped

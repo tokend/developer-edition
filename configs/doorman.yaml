@@ -15,9 +15,8 @@ listener:
 
 
 cop:
-  disabled: true
   endpoint: http://cop
-  upstream: http://doorman-service
+  upstream: http://doorman
   service_name: "doorman-service"
   service_port: "80"
   service_prefix: "/integrations/doorman"

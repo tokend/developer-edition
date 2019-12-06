@@ -21,9 +21,8 @@ ledger:
   admin_id: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
 
 cop:
-  disabled: true
   endpoint: http://cop
-  upstream: http://core-service
+  upstream: http://core
   service_name: "core-service"
   service_port: "80"
   service_prefix: "/core"

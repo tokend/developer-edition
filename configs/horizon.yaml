@@ -11,7 +11,7 @@ core_db:
   url: postgres://core:core@core_db/core?sslmode=disable
 
 core:
-  url: http://core:80/core
+  url: http://core/core
 
 horizon:
   ingest: true
@@ -19,10 +19,8 @@ horizon:
   url: db_url
 
 cop:
-  disabled: true
-
   endpoint: http://cop
-  upstream: http://horizon-service
+  upstream: http://horizon
   service_name: "horizon-service"
   service_port: "80"
   service_prefix: "/horizon"
