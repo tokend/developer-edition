@@ -9,7 +9,7 @@ services:
     ports:
     - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:c09ce53d37f7abfe47951cadb3aef21d2b688e90
+    image: registry.gitlab.com/tokend/api:4d34a6e7e80a7a6ed0a0d471824f29e3ac38c177
     restart: unless-stopped
     depends_on:
       - horizon
@@ -87,7 +87,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:84c9b44d7500c7730198ae528b31b840674d868e
+    image: registry.gitlab.com/tokend/go-core:f329b9689e324bd9bcd1589e4f77ec812e3e729d
     depends_on:
       - core_db
     restart: unless-stopped
@@ -100,14 +100,16 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:20def35900fba0f6e38da203ee7a5ac9a2f48bc7
+    image: registry.gitlab.com/tokend/ingester:608aea938b33d11f89c7c9fbf80311a95701ccfb
     depends_on:
       - core
       - horizon_db
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=horizon
-      - DBHOST=horizon_db
+      - INGESTER_POSTGRES_USER=horizon
+      - CORE_POSTGRES_USER=core
+      - INGESTER_DBHOST=horizon_db
+      - CORE_DBHOST=core_db
       - KV_VIPER_FILE=config.yaml
     volumes:
       - ./configs/horizon.yaml:/config.yaml
@@ -158,6 +160,30 @@ services:
     volumes:
       - storage-data:/data
 
+  #Conto related
+  #TODO FIXME proxy payments must be ported, as marketplace depends on it 
+  marketplace:
+    image: registry.gitlab.com/tokend/marketplace-svc:7981172a65cbd5a5b2afdf6d9669a0b5a98f1219
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - marketplace_db
+    volumes:
+      - ./configs/marketplace.yaml:/config.yaml
+    entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
+  marketplace_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=marketplace
+      - POSTGRES_PASSWORD=marketplace
+      - POSTGRES_DB=marketplace
+      - PGDATA=/pgdata
+    volumes:
+      - marketplace-data:/pgdata
+
   ## 3rd party
 
   autoheal:
@@ -177,3 +203,5 @@ volumes:
   storage-data:
   redis-data:
   doorman-data:
+  marketplace-data:
+
