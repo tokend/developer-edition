@@ -36,7 +36,7 @@ services:
     labels:
       - "traefik.enabled=false"
   doorman:
-    image: registry.gitlab.com/tokend/accounts-ingester-svc:e1d439d65ddf0ad8ffc3af4be2f26a436f65db35
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:2de7d6abde2d5113099de74cfa57444ed1f7deeb
     restart: unless-stopped
     depends_on:
       - horizon
@@ -100,7 +100,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:816f0836a31cd67c7a46581b2899b6da734f7fbc
+    image: registry.gitlab.com/tokend/ingester:33cf21610d67de31c4964336682ea5b5b9258f9a
     depends_on:
       - core
       - horizon_db
@@ -161,9 +161,8 @@ services:
       - storage-data:/data
 
   #Conto related
-  #TODO FIXME proxy payments must be ported, as marketplace depends on it 
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:5a3cf1d5150dcfe4b61966fd4d92e82a855f2e26
+    image: registry.gitlab.com/tokend/marketplace-svc:0e4a17ec1de28987fef691d39bb19023fdb08f8d
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
