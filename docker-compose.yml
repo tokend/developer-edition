@@ -163,7 +163,7 @@ services:
   #Conto related
   #TODO FIXME proxy payments must be ported, as marketplace depends on it 
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:7981172a65cbd5a5b2afdf6d9669a0b5a98f1219
+    image: registry.gitlab.com/tokend/marketplace-svc:5a3cf1d5150dcfe4b61966fd4d92e82a855f2e26
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
