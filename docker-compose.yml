@@ -36,7 +36,7 @@ services:
     labels:
       - "traefik.enabled=false"
   doorman:
-    image: registry.gitlab.com/tokend/accounts-ingester-svc:2de7d6abde2d5113099de74cfa57444ed1f7deeb
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:7342a98c07672c68ec8489b05c53fc7c1486b269
     restart: unless-stopped
     depends_on:
       - horizon
