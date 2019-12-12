@@ -33,8 +33,6 @@ services:
       - PGDATA=/pgdata
     volumes:
       - api-data:/pgdata
-    labels:
-      - "traefik.enabled=false"
   doorman:
     image: registry.gitlab.com/tokend/accounts-ingester-svc:7342a98c07672c68ec8489b05c53fc7c1486b269
     restart: unless-stopped
@@ -48,8 +46,6 @@ services:
     entrypoint: sh -c "accounts-ingester-svc migrate up && accounts-ingester-svc run"
   doorman_db:
     image: tokend/postgres-ubuntu:9.6
-    labels:
-      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=doorman
@@ -67,7 +63,6 @@ services:
       - "8001:80"
       - "8080:8080"
     volumes:
-      # - /var/run/docker.sock:/var/run/docker.sock
       - ./configs/traefik.yaml:/traefik.yaml
   cop:
     image: registry.gitlab.com/tokend/traefik-cop:fec7ae95c2395f99c6e570612e6220bf368da016
@@ -162,7 +157,7 @@ services:
 
   #Conto related
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:0e4a17ec1de28987fef691d39bb19023fdb08f8d
+    image: registry.gitlab.com/tokend/marketplace-svc:4162e25cf8fc2eeba19175b77ed229eaa68dc380
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
