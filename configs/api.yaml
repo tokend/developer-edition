@@ -22,7 +22,7 @@ horizon:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 doorman:
-  endpoint: http://doorman/
+  endpoint: http://doorman/integrations/doorman
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
