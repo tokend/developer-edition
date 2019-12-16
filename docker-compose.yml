@@ -82,7 +82,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:f329b9689e324bd9bcd1589e4f77ec812e3e729d
+    image: registry.gitlab.com/tokend/go-core:42f185957892a8639114bb84a391819a049e1377
     depends_on:
       - core_db
     restart: unless-stopped
