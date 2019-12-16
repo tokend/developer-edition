@@ -1,0 +1,40 @@
+log:
+  level: info
+  disable_sentry: true
+
+db:
+  url: "postgres://dns:dns@dns_db/dns?sslmode=disable"
+
+client:
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  endpoint: "http://traefik"
+
+
+identity:
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  endpoint: "http://traefik"
+
+submit:
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  endpoint: "http://traefik"
+
+doorman:
+  endpoint: "http://traefik/integrations/doorman"
+
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: http://cop
+  upstream: http://dns
+  service_name: "dns-service"
+  service_port: "80"
+  service_prefix: "/integrations/dns"
+
+dns:
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
