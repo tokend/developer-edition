@@ -34,7 +34,7 @@ services:
     volumes:
       - api-data:/pgdata
   doorman:
-    image: registry.gitlab.com/tokend/accounts-ingester-svc:f9dc4272a515cff6fa7fb646748781290746a411
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:2c3fabe0f59dc57a22645d705d732ba741401917
     restart: unless-stopped
     depends_on:
       - horizon
@@ -82,7 +82,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:3fafa15579e34f510875332a8b842cfec7234699
+    image: registry.gitlab.com/tokend/go-core:eb3e9f8ba11b94e097020f921303aa042642144d
     depends_on:
       - core_db
     restart: unless-stopped
@@ -95,7 +95,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:32b09321d1348181b9129cb93bc8a8b1da2a94aa
+    image: registry.gitlab.com/tokend/ingester:ca8b51140508bcaa0601802b6c4edd496f48a86d
     depends_on:
       - core
       - horizon_db
@@ -134,7 +134,7 @@ services:
     labels:
       - "traefik.enabled=false"
   initscripts:
-    image: khramov/terraform-provider-tokend:0.0.4
+    image: khramov/terraform-provider-tokend:0.0.6
     depends_on:
       - horizon
       - storage
