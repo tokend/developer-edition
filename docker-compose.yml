@@ -95,7 +95,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:ca8b51140508bcaa0601802b6c4edd496f48a86d
+    image: registry.gitlab.com/tokend/ingester:6584067c5f183bd6ce78ad887eed34743d2f6f14
     depends_on:
       - core
       - horizon_db
@@ -179,7 +179,7 @@ services:
       - marketplace-data:/pgdata
 
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:0a02c7225107e3f78cdb9fc6994475b995e546d2
+    image: registry.gitlab.com/tokend/dns-svc:066b5367098bc74064f9d4f3b60a020fbe11ead1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
