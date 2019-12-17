@@ -34,7 +34,7 @@ services:
     volumes:
       - api-data:/pgdata
   doorman:
-    image: registry.gitlab.com/tokend/accounts-ingester-svc:435139452ee253c13eea92f123a35de3493f2d5d
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:75e7ed9cdfa54e4fc79a48924835703cbe6f1850
     restart: unless-stopped
     depends_on:
       - horizon
@@ -82,7 +82,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:42f185957892a8639114bb84a391819a049e1377
+    image: registry.gitlab.com/tokend/go-core:e3d384e5a96680c08edaafb17e96beb9d4a045d5
     depends_on:
       - core_db
     restart: unless-stopped
@@ -95,7 +95,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:33cf21610d67de31c4964336682ea5b5b9258f9a
+    image: registry.gitlab.com/tokend/ingester:bc0e86443e79e08eae9ae972f9e095c4d66bb6ef
     depends_on:
       - core
       - horizon_db
