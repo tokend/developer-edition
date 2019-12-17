@@ -34,7 +34,7 @@ services:
     volumes:
       - api-data:/pgdata
   doorman:
-    image: registry.gitlab.com/tokend/accounts-ingester-svc:f19dd80263553b07cb6c1042b38a666122735184
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:435139452ee253c13eea92f123a35de3493f2d5d
     restart: unless-stopped
     depends_on:
       - horizon
