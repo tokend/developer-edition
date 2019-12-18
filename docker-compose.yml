@@ -72,6 +72,8 @@ services:
     volumes:
       - ./configs/cop.yaml:/config.yaml
     entrypoint: sh -c "traefik-cop run"
+    depends_on:
+      - traefik
   redis:
     image: redis:5.0-alpine
     restart: unless-stopped
@@ -85,6 +87,7 @@ services:
     image: registry.gitlab.com/tokend/go-core:eb3e9f8ba11b94e097020f921303aa042642144d
     depends_on:
       - core_db
+      - cop
     restart: unless-stopped
     environment:
       - POSTGRES_USER=core
@@ -134,7 +137,7 @@ services:
     labels:
       - "traefik.enabled=false"
   initscripts:
-    image: khramov/terraform-provider-tokend:0.0.6
+    image: khramov/terraform-provider-tokend:0.0.7
     depends_on:
       - horizon
       - storage
