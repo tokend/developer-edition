@@ -54,7 +54,7 @@ sentry:
 
 storage:
   host: "http://storage"
-  disabled: true
+  disabled: false
   backend: "aws"
   # minio credentials
   access_key: "2SRMRAST49JEIMUUKWKH"
@@ -64,13 +64,16 @@ storage:
   # TODO all hope is lost on platform agnostic storage implementation, make bodges explicit for different use cases
   force_ssl: false
   # don't ever set `ensure_bucket` if you are not on minio, use probebucket instead
-  ensure_bucket: false
+  bucket: "api"
+  ensure_bucket: true
+  client_url: http://localhost:8000/_/storage/api
   media_types:
     general:
-      - 'image/jpeg'
-      - 'image/tiff'
-      - 'image/png'
-      - 'image/gif'
+      - application/pdf
+      - image/jpeg
+      - image/png
+      - image/tiif
+      - image/gif
     alpha:
       - 'application/pdf'
     bravo:
@@ -125,3 +128,11 @@ telegram:
   # register link to send in invitation message
   register_url: ""
   bot_token: ""
+
+aws:
+  credentials: "static"
+  endpoint: storage:9000
+  disable_ssl: true
+  access_key: "miniominio"
+  secret_key: "sekritsekrit"
+  region: "us-east-1"
