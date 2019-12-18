@@ -24,6 +24,11 @@ submit:
 doorman:
   endpoint: "http://traefik/integrations/doorman"
 
+key_values:
+  role_unverified: "role:unverified"
+  role_corporate: "role:corporate"
+  role_general: "role:general"
+  role_blocked: "role:blocked"
 
 listener:
   addr: :80

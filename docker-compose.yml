@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:486ba5b9568d9fd7ed257d80c4d8ef0e997cb78a
+    image: registry.gitlab.com/tokend/api:5d80ff48326559c680036c971e69e2a6b13e4b98
     restart: unless-stopped
     depends_on:
       - horizon
@@ -34,7 +34,7 @@ services:
     volumes:
       - api-data:/pgdata
   doorman:
-    image: registry.gitlab.com/tokend/accounts-ingester-svc:2c3fabe0f59dc57a22645d705d732ba741401917
+    image: registry.gitlab.com/tokend/accounts-ingester-svc:84442c75ad72fc6e954bec70c37eb49db173c67b
     restart: unless-stopped
     depends_on:
       - horizon
@@ -157,7 +157,7 @@ services:
 
   #Conto related
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:4162e25cf8fc2eeba19175b77ed229eaa68dc380
+    image: registry.gitlab.com/tokend/marketplace-svc:58e6808523286d10f7a36681401cd2a90982269a
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -179,7 +179,7 @@ services:
       - marketplace-data:/pgdata
 
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:066b5367098bc74064f9d4f3b60a020fbe11ead1
+    image: registry.gitlab.com/tokend/dns-svc:2fdd8a17d8ca88d7cefcf438324950378858fa31
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml

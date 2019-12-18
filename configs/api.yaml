@@ -105,10 +105,9 @@ email_factor:
 
 # system settings
 key_values:
-  kyc_recovery_enabled: "kyc_recovery_enabled"
   signer_role: "signer_role:default"
-  account_role: "account_role:unverified"
-  kyc_recovery_signer_role: "kyc_recovery_signer_role"
+  account_role: "role:unverified"
+  kyc_recovery_role: "kyc_recovery_role"
 
 twilio:
   disabled: true

@@ -15,8 +15,7 @@ core:
 
 horizon:
   ingest: true
-  skip_sign_check: false
-  url: db_url
+  skip_sign_check: true
 
 cop:
   endpoint: http://cop
