@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:5c03584b7c7995506bfad358ea1f69224907db72
+    image: registry.gitlab.com/tokend/api:bc3e59444bb0a5284929c20f30a72b6c901cc147
     restart: unless-stopped
     depends_on:
       - horizon
@@ -84,7 +84,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:eb3e9f8ba11b94e097020f921303aa042642144d
+    image: registry.gitlab.com/tokend/go-core:b7fc64725ea37910817e78350efaf19b722aa196
     depends_on:
       - core_db
       - cop
