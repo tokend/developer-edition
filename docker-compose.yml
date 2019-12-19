@@ -137,7 +137,7 @@ services:
     labels:
       - "traefik.enabled=false"
   initscripts:
-    image: khramov/terraform-provider-tokend:0.0.7
+    image: khramov/terraform-provider-tokend:0.0.8
     depends_on:
       - horizon
       - storage
