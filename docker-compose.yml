@@ -84,7 +84,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:b7fc64725ea37910817e78350efaf19b722aa196
+    image: registry.gitlab.com/tokend/go-core:4c90ba0481e14adbff0e9565c5b6a03dbc9bc5bc
     depends_on:
       - core_db
       - cop
@@ -98,7 +98,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:6584067c5f183bd6ce78ad887eed34743d2f6f14
+    image: registry.gitlab.com/tokend/ingester:9fb7cfdf06543b53e58e31d9076052be6c17b9d4
     depends_on:
       - core
       - horizon_db

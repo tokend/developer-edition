@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "tfstate"
-    key    = "terraform.tfstate"
+    key = "terraform.tfstate"
     region = "us-east-1"
     access_key = "miniominio"
     secret_key = "sekritsekrit"
@@ -18,5 +18,5 @@ provider "tokend" {
 }
 
 module "tokend_vanilla" {
-  source = "git::https://github.com/tokend/terraform-tokend-vanilla.git?ref=316c609001a271f1c1321be38bab93ecb0876f6b"
+  source = "git::https://github.com/tokend/terraform-tokend-vanilla.git?ref=e9f974e1a68027266632195beeeab63aaf7ebba9"
 }
