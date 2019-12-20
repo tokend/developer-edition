@@ -23,7 +23,6 @@ horizon:
 
 doorman:
   endpoint: http://doorman/integrations/doorman
-  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
   # client_router: http://localhost:8888
