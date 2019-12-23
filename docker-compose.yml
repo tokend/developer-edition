@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:96faca7c789939a22a48faeb7406bdacb0fc1e70
+    image: registry.gitlab.com/tokend/api:143df677602b8af750a3da78cd9d8e2cecebcc1c
     restart: unless-stopped
     depends_on:
       - horizon
@@ -182,7 +182,7 @@ services:
       - marketplace-data:/pgdata
 
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:2fdd8a17d8ca88d7cefcf438324950378858fa31
+    image: registry.gitlab.com/tokend/dns-svc:21d56cfd761433f78e97c030eda181bd007803ab
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
