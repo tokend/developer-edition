@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:dd88ff3846be023404c8372583ea451a7efa85e6
+    image: registry.gitlab.com/tokend/api:96faca7c789939a22a48faeb7406bdacb0fc1e70
     restart: unless-stopped
     depends_on:
       - horizon
@@ -84,7 +84,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:4c90ba0481e14adbff0e9565c5b6a03dbc9bc5bc
+    image: registry.gitlab.com/tokend/go-core:54e5decd21b859785c840bb21c6cc2af218d5259
     depends_on:
       - core_db
       - cop
@@ -98,7 +98,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:a8a6fe2711a390674d4c62d316a2b8d28a68dc7d
+    image: registry.gitlab.com/tokend/ingester:7f17b20bbef974399c03a9681fc06620d60a9b18
     depends_on:
       - core
       - horizon_db
@@ -160,7 +160,7 @@ services:
 
   #Conto related
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:58e6808523286d10f7a36681401cd2a90982269a
+    image: registry.gitlab.com/tokend/marketplace-svc:8cae673680cb5d163e2e7db99ce578a3db47b669
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
