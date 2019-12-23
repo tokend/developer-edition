@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:143df677602b8af750a3da78cd9d8e2cecebcc1c
+    image: registry.gitlab.com/tokend/api:bbf9d0cac95a60d88cdce8bbbb3ca45007a05e9a
     restart: unless-stopped
     depends_on:
       - horizon
