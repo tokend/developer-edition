@@ -34,7 +34,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.2
+    image: tokend/core:3.6.3.1
     depends_on:
       - janus
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.7.0
+    image: tokend/horizon:3.7.1.1
     depends_on:
       - core
     restart: unless-stopped
@@ -85,7 +85,7 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:1.2.0
+    image: tokend/terraform-provider-tokend:1.3.0
     depends_on:
       - horizon
       - storage
