@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.4
+    image: registry.gitlab.com/tokend/api:7335078a5b0b48c0f99539131d0f01cf5f7e1207
     restart: unless-stopped
     depends_on:
       - horizon
@@ -209,7 +209,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: tokend/marketplace-svc:0.3.1
+    image: tokend/marketplace-svc:0.3.4
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -247,7 +247,7 @@ services:
   ##
 
   notificator:
-    image: tokend/notificator:0.5.1
+    image: tokend/notificator:0.5.2
     restart: unless-stopped
     depends_on:
       - horizon
