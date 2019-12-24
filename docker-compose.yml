@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:80"
   api:
-    image: registry.gitlab.com/tokend/api:80ed7d42c28233bf211758542e2be772f0bf994b
+    image: registry.gitlab.com/tokend/api:232dd59d079ddbee82b0a0662767e512cddcbcc8
     restart: unless-stopped
     depends_on:
       - horizon
@@ -84,7 +84,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:c07f76c45949cdaf406ae7c06b676f2d90ae7f05
+    image: registry.gitlab.com/tokend/go-core:751c0a2ba09abedf95276a2bb6ab3b8849925360
     depends_on:
       - core_db
       - cop
@@ -98,7 +98,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:9aacdc56be8ebf1bcf3e58f67d2f788b3bc2c418
+    image: registry.gitlab.com/tokend/ingester:60c80a5c5992e0bfa2d1031ead16e5c052ef3f1e
     depends_on:
       - core
       - horizon_db
