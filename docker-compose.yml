@@ -64,7 +64,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: registry.gitlab.com/tokend/api:7335078a5b0b48c0f99539131d0f01cf5f7e1207
+    image: registry.gitlab.com/tokend/api:0c691abf3a6a2acf35517cd8743d677623137263
     restart: unless-stopped
     depends_on:
       - horizon
@@ -95,7 +95,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.4.0
+    image: tokendconto/web-client:1.6.0-rc.1
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
@@ -120,7 +120,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.3.3
+    image: registry.gitlab.io/tokend/dns:d090533ed8f21366d0383891f55aa60a52c3768c
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
