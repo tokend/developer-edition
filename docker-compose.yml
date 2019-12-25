@@ -84,7 +84,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/go-core:751c0a2ba09abedf95276a2bb6ab3b8849925360
+    image: registry.gitlab.com/tokend/go-core:6f047d297dcb7a19a8c234de08008ad41f6dc5ac
     depends_on:
       - core_db
       - cop
