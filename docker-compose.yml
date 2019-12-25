@@ -160,7 +160,7 @@ services:
 
   #Conto related
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:ac872c23596e8b5251f458a8515036417a0bde32
+    image: registry.gitlab.com/tokend/marketplace-svc:789c713969142e9379f7f12be4ed7c9e1bb212b1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml

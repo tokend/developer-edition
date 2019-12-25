@@ -43,6 +43,11 @@ coinpayments:
   ipn_secret: "supersekr1tandsecure"
   request_timeout: 30
 
+key_values:
+  payment_user_to_service: "payment:p2s"
+  payment_user_to_user: "payment:p2p"
+  payment_service_to_user: "payment:s2p"
+
 4bill:
   url: https://api.4bill.io
   api_key: 'M~xcKKT"Wi7{~oCruo"L,j_|[I._zA.W'
