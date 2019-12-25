@@ -98,7 +98,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/ingester:60c80a5c5992e0bfa2d1031ead16e5c052ef3f1e
+    image: registry.gitlab.com/tokend/ingester:6742b454692a28cf6d403dd47e8f0d6e4dee1161
     depends_on:
       - core
       - horizon_db
