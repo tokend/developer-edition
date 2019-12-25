@@ -8,7 +8,7 @@ sentry:
   dsn: https://d6b1d77a917c4a73a5729a3ce836c9a0@sentry.tokend.services/5
 
 horizon:
-  endpoint: http://janus
+  endpoint: http://traefik
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 coinpayments:
@@ -26,7 +26,9 @@ deposit:
 listener:
   addr: :80
 
-janus:
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://coinpayments-deposit
-  surname: coinpayments-deposit
+  service_name: "coinpayments-deposit-service"
+  service_port: "80"
+  service_prefix: "/integrations/coinpayments/deposit"

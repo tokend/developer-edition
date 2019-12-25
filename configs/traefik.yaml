@@ -1,0 +1,14 @@
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+  rest:
+    insecure: true
+
+entryPoints:
+  web:
+    address: ":80"
+api:
+  insecure: true
+
+log:
+  level: ERROR
