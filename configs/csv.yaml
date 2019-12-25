@@ -4,13 +4,14 @@ log:
 
 horizon:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-  endpoint: "http://janus/"
+  endpoint: "http://traefik/"
 
 listener:
   addr: :80
 
-janus:
-  disabled: false
-  surname: svc
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://csv
+  service_name: "csv-service"
+  service_port: "80"
+  service_prefix: "/integrations/csv"

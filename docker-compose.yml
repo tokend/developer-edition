@@ -5,13 +5,12 @@ services:
     image: traefik:v2.0
     ports:
       - "80:80"
-      - "8001:80"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./configs/traefik.yaml:/traefik.yaml
   cop:
-    image: registry.gitlab.com/tokend/traefik-cop:fec7ae95c2395f99c6e570612e6220bf368da016
+    image: tokend/traefik-cop:1.0.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -70,7 +69,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.7.1.1
+    image: tokend/horizon:3.7.1.1-rc.0
     depends_on:
       - core
     restart: unless-stopped
@@ -83,7 +82,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.5
+    image: tokend/identity:4.5.5-rc.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -149,7 +148,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.4.0
+    image: tokend/dns:0.4.0-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -173,7 +172,7 @@ services:
       - dns-data:/pgdata
 
   sponsorship:
-    image: tokend/sponsor:0.2.0
+    image: tokend/sponsor:0.2.0-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -196,7 +195,7 @@ services:
       - sponsorship-data:/pgdata
 
   csv:
-    image: tokend/csv:0.1.1
+    image: tokend/csv:0.1.2-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -245,7 +244,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: tokend/marketplace-svc:0.3.4
+    image: tokend/marketplace-svc:0.3.4-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
