@@ -52,7 +52,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.1-x.0
+    image: tokend/core:3.6.3.1
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: registry.gitlab.com/tokend/horizon:pg-df3032dcb9b3fd2ff5d7c65ffddca35f2936d47f
+    image: tokend/horizon:3.7.1.1
     depends_on:
       - core
     restart: unless-stopped
@@ -83,7 +83,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: registry.gitlab.com/tokend/api:9f772dcf74814f318bb9bfd5786342a9eeb57501
+    image: tokend/identity:4.5.5
     restart: unless-stopped
     depends_on:
       - horizon
@@ -106,7 +106,7 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:1.2.0
+    image: tokend/terraform-provider-tokend:1.3.0
     labels:
       - "traefik.enabled=false"
     depends_on:
@@ -118,7 +118,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.3.0-rc.0
+    image: tokendconto/web-client:1.6.0-rc.1
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -149,7 +149,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: registry.gitlab.com/tokend/dns-svc:223bca631ce48eb35e3a778a28c45729e964bdb3
+    image: tokend/dns:0.4.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -171,6 +171,51 @@ services:
       - PGDATA=/pgdata
     volumes:
       - dns-data:/pgdata
+
+  sponsorship:
+    image: tokend/sponsor:0.2.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - sponsorship_db
+    volumes:
+      - ./configs/sponsorship.yaml:/config.yaml
+    entrypoint: sh -c "sponsor-svc migrate up && sponsor-svc run sponsorship"
+
+  sponsorship_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=sponsorship
+      - POSTGRES_PASSWORD=sponsorship
+      - POSTGRES_DB=sponsorship
+      - PGDATA=/pgdata
+    volumes:
+      - sponsorship-data:/pgdata
+
+  csv:
+    image: tokend/csv:0.1.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+    volumes:
+      - ./configs/csv.yaml:/config.yaml
+    entrypoint: sh -c "csv-svc run csvproxy"
+
+  asset_remover:
+    image: tokend/asset-remover-svc:0.1.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+    volumes:
+      - ./configs/asset-remover.yaml:/config.yaml
+    entrypoint: sh -c "asset-remover-svc run assetchecker"
 
   proxy_payments:
     image: tokend/proxy-payments:0.2.1
@@ -200,7 +245,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:2effd89dc83cc056cda7cd6a145a064e1cf917d2
+    image: tokend/marketplace-svc:0.3.4
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -242,7 +287,7 @@ services:
   ##
 
   notificator:
-    image: tokend/notificator:0.5.1
+    image: tokend/notificator:0.5.2
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -293,3 +338,4 @@ volumes:
   notificator-data:
   proxy-payments-data:
   marketplace-data:
+  sponsorship-data:

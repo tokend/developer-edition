@@ -21,4 +21,4 @@ cop:
 
 dns:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-  skip_sign_check: true
+  skip_sign_check: false

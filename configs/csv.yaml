@@ -1,0 +1,16 @@
+log:
+  level: info
+  disable_sentry: true
+
+horizon:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  endpoint: "http://janus/"
+
+listener:
+  addr: :80
+
+janus:
+  disabled: false
+  surname: svc
+  endpoint: http://janus:8000
+  upstream: http://csv
