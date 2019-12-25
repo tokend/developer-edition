@@ -1,13 +1,26 @@
 version: '3.3'
 
 services:
-  janus:
-    image: tokend/janus:latest
-    restart: unless-stopped
+  traefik:
+    image: traefik:v2.0
+    ports:
+      - "80:80"
+      - "8080:8080"
     volumes:
-      - ./configs/janus.toml:/etc/janus/janus.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./configs/traefik.yaml:/traefik.yaml
+  cop:
+    image: tokend/traefik-cop:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/cop.yaml:/config.yaml
+    entrypoint: sh -c "traefik-cop run"
   upstream:
     image: nginx
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     volumes:
     - ./configs/nginx.conf:/etc/nginx/nginx.conf
@@ -15,6 +28,8 @@ services:
     - "8000:80"
   adks:
     image: tokend/adks:1.0.0
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     depends_on:
       - horizon
@@ -25,6 +40,8 @@ services:
       - ./configs/adks.toml:/config.toml
   adks_db:
     image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=adks
@@ -36,7 +53,7 @@ services:
   core:
     image: tokend/core:3.6.3.1
     depends_on:
-      - janus
+      - traefik
     restart: unless-stopped
     environment:
       - POSTGRES_USER=core
@@ -50,8 +67,9 @@ services:
       - core-data:/data
     labels:
       - "autoheal=true"
+      - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.7.1.1
+    image: tokend/horizon:3.7.1.1-rc.0
     depends_on:
       - core
     restart: unless-stopped
@@ -64,7 +82,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.5
+    image: tokend/identity:4.5.5-rc.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -76,6 +94,8 @@ services:
     command: run
   api_db:
     image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=api
@@ -86,6 +106,8 @@ services:
       - api-data:/pgdata
   initscripts:
     image: tokend/terraform-provider-tokend:1.3.0
+    labels:
+      - "traefik.enabled=false"
     depends_on:
       - horizon
       - storage
@@ -96,6 +118,8 @@ services:
     command: /opt/config/apply.sh
   conto_client:
     image: tokendconto/web-client:1.6.0-rc.1
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     volumes:
       - ./configs/conto.js:/usr/share/nginx/html/static/env.js
@@ -103,6 +127,8 @@ services:
       - 8060:80
   admin_client:
     image: tokendconto/admin-panel:1.1.0-rc.0
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -110,6 +136,8 @@ services:
       - 8070:80
   storage:
     image: minio/minio:RELEASE.2019-01-31T00-31-19Z
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     entrypoint: "sh"
     command: -c "mkdir -p /data/tfstate && minio server /data"
@@ -120,7 +148,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.4.0
+    image: tokend/dns:0.4.0-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -132,6 +160,8 @@ services:
     entrypoint: sh -c "dns-svc migrate up && dns-svc run"
   dns_db:
     image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=dns
@@ -142,7 +172,7 @@ services:
       - dns-data:/pgdata
 
   sponsorship:
-    image: tokend/sponsor:0.2.0
+    image: tokend/sponsor:0.2.0-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -165,7 +195,7 @@ services:
       - sponsorship-data:/pgdata
 
   csv:
-    image: tokend/csv:0.1.1
+    image: tokend/csv:0.1.2-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -188,6 +218,9 @@ services:
 
   proxy_payments:
     image: tokend/proxy-payments:0.2.1
+    labels:
+      - "traefik.http.services.proxy_payments.loadbalancer.server.port=80"
+      - "traefik.http.routers.proxy_payments.rule=PathPrefix(`/integrations/payment-proxy/`)"
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -199,6 +232,8 @@ services:
     entrypoint: sh -c "proxy-payments-svc migrate up && proxy-payments-svc run"
   proxy_payments_db:
     image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=proxy_payments
@@ -209,7 +244,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: tokend/marketplace-svc:0.3.4
+    image: tokend/marketplace-svc:0.3.4-rc.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -221,6 +256,8 @@ services:
     entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
   marketplace_db:
     image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=marketplace
@@ -235,6 +272,8 @@ services:
 
   autoheal:
     image: willfarrell/autoheal
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - AUTOHEAL_START_PERIOD=60
@@ -248,6 +287,8 @@ services:
 
   notificator:
     image: tokend/notificator:0.5.2
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     depends_on:
       - horizon
@@ -263,6 +304,8 @@ services:
       - "run"
   notificator_db:
     image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - POSTGRES_USER=notificator
@@ -273,6 +316,8 @@ services:
       - notificator-data:/pgdata
   templatesprovider:
     image: tokend/templates-svc:1.0.0
+    labels:
+      - "traefik.enabled=false"
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml

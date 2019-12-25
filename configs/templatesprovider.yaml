@@ -13,6 +13,7 @@ log:
   disable_sentry: true
 
 janus:
+  disabled: true
   endpoint: http://janus:8000
   surname: templatesprovider
   upstream: http://templatesprovider

@@ -7,7 +7,7 @@ db:
 
 horizon:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-  endpoint: "http://janus/"
+  endpoint: "http://traefik/"
 
 listener:
   addr: :80
@@ -17,7 +17,7 @@ payment_proxy:
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
 
 janus:
-  disabled: false
+  disabled: true
   surname: proxy_payments
   endpoint: http://janus:8000
   upstream: http://proxy_payments
