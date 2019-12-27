@@ -16,6 +16,8 @@ core:
 horizon:
   ingest: true
   skip_sign_check: true
+  #health check period is core block_time * 10
+  health_check_period: 10s
 
 cop:
   endpoint: http://cop
