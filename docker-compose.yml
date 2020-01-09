@@ -244,7 +244,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: tokend/marketplace-svc:0.3.4-rc.0
+    image: registry.gitlab.com/tokend/marketplace-svc:fa3dde2f77ed8dfafd55d0f78b6a8943ed5ed2f3
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
