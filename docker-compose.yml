@@ -51,7 +51,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.3.1
+    image: tokend/core:3.6.4-rc.0
     depends_on:
       - traefik
     restart: unless-stopped
@@ -69,7 +69,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.7.1.1-rc.0
+    image: tokend/horizon:3.7.2-rc.0
     depends_on:
       - core
     restart: unless-stopped
