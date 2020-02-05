@@ -126,7 +126,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.10.3
+    image: tokend/web-client:1.11.0-rc.0
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
