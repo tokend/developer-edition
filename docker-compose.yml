@@ -236,7 +236,7 @@ services:
 ## Escrow
   
   escrow:
-    image: registry.gitlab.com/tokend/escrow-svc:744afbaa9907f1e50b13a76e4a53a528ed76e6c5
+    image: registry.gitlab.com/tokend/escrow-svc:7fd100e1dceb549d1a7849a5f0bde6d07e54aeca
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
