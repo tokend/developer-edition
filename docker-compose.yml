@@ -262,7 +262,7 @@ services:
   ## Booking
 
   scheduler:
-    image: registry.gitlab.com/tokend/scheduler-svc:c978e54aaad027193291d92ebe08ba21b911eb61
+    image: registry.gitlab.com/tokend/scheduler-svc:9ab77bd49bc93739d6b199807cf2b04be1d6d3f7
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
