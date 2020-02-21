@@ -1,5 +1,5 @@
 api:
-  horizon_url: http://horizon
+  horizon_url: http://janus
   account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
   skip_signature_check: false
 
@@ -9,7 +9,7 @@ db:
   max_connections: 12
 
 horizon:
-  url: http://horizon
+  url: http://janus
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
