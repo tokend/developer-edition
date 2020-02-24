@@ -116,7 +116,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.6.0-rc.1
+    image: tokendconto/web-client:1.7.0-rc.0
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
