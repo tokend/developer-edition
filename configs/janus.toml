@@ -1,7 +1,0 @@
-port = 80
-[log]
-    level = "warn"
-[stats]
-    dsn = "noop://"
-[web]
-    port = 8000

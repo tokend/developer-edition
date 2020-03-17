@@ -39,6 +39,7 @@ coinpayments:
   debug: true
 
 payer:
+  private_payer: false
   payment_service_id: 2
   dl_account_id: 317
   dl_wallet_id: 476

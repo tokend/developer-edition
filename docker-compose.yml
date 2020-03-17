@@ -50,7 +50,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.4-rc.0
+    image: tokend/core:3.6.4
     depends_on:
       - traefik
     restart: unless-stopped
@@ -81,7 +81,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.5-rc.0
+    image: tokend/identity:4.5.5-rc.1
     restart: unless-stopped
     depends_on:
       - horizon
@@ -116,7 +116,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   conto_client:
-    image: tokendconto/web-client:1.6.0-rc.1
+    image: tokendconto/web-client:1.7.0-rc.1
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -147,7 +147,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.4.0-rc.0
+    image: tokend/dns:0.4.0-rc.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -171,7 +171,7 @@ services:
       - dns-data:/pgdata
 
   sponsorship:
-    image: tokend/sponsor:0.2.0-rc.0
+    image: tokend/sponsor:0.2.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -243,7 +243,7 @@ services:
       - proxy-payments-data:/pgdata
 
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:fa3dde2f77ed8dfafd55d0f78b6a8943ed5ed2f3
+    image: tokend/marketplace-svc:0.3.4-rc.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
