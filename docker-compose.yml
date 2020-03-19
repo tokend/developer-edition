@@ -60,7 +60,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.4-rc.0
+    image: tokend/core:3.6.5-x.0
     depends_on:
       - traefik
     restart: unless-stopped
