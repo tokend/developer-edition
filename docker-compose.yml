@@ -50,7 +50,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokend/core:3.6.4
+    image: tokendconto/core:3.6.5-x.0-nc
     depends_on:
       - traefik
     restart: unless-stopped
