@@ -19,10 +19,11 @@ sentry:
   dsn: https://989409410d0740a89b1f8571c4195dca@sentry.tokend.services/3
 
 horizon:
-  endpoint: http://janus
+  endpoint: http://traefik
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 janus:
+  disabled: true
   endpoint: http://janus:8000
   upstream: http://charts
   surname:  charts

@@ -1,5 +1,5 @@
 api:
-  horizon_url: http://janus
+  horizon_url: http://traefik
   account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
   skip_signature_check: false
 
@@ -9,7 +9,7 @@ db:
   max_connections: 12
 
 horizon:
-  url: http://janus
+  url: http://traefik
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
@@ -60,10 +60,17 @@ tx_watcher:
   disabled: false
 
 janus:
+  disabled: true
   endpoint: http://janus:8000
   upstream: http://api
   surname:  api
-  
+
+cop:
+  endpoint: http://cop
+  upstream: http://api
+  service_name: "api-service"
+  service_port: "80"
+
 # system settings
 key_values:
   kyc_recovery_enabled: "kyc_recovery_enabled"

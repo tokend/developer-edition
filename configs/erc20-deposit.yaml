@@ -6,7 +6,7 @@ ethereum:
   confirmations: 1 #number of confirmations to wait for
 
 horizon:
-  endpoint: "http://horizon"
+  endpoint: "http://traefik"
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
 
 deposit:

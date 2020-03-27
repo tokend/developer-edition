@@ -8,7 +8,7 @@ sentry:
   dsn: https://591b6a3c375f4aa890a37532ce4969ec@sentry.tokend.services/4
 
 horizon:
-  endpoint: http://janus
+  endpoint: http://traefik
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 coinpayments:

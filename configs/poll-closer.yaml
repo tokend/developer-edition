@@ -13,7 +13,7 @@ closer:
   concurrency: 100
 
 horizon:
-  endpoint: http://janus/
+  endpoint: http://traefik
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
 
 listener:
