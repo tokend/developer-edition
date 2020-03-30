@@ -1,6 +1,4 @@
 providers:
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
   rest:
     insecure: true
 
@@ -11,4 +9,8 @@ api:
   insecure: true
 
 log:
-  level: ERROR
+  level: WARN
+
+accessLog:
+  filePath: /access.log
+  bufferingSize: 1000
