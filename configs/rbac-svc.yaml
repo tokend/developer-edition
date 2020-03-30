@@ -1,0 +1,21 @@
+log:
+  disable_sentry: true
+  level: debug
+
+listener:
+  addr: :80
+
+casbin:
+  path_to_config: casbin.conf
+  path_to_csv: casbin.csv
+
+client:
+  endpoint: http://traefik/
+
+cop:
+  endpoint: http://cop
+  upstream: http://rbac-svc
+  service_name: rbac-svc
+  service_port: "80"
+  #service_prefix: "/"
+

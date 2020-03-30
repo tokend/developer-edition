@@ -29,6 +29,11 @@ TokenD Developer Edition comes with preconfigured [CoinPayments](https://www.coi
 
 > Make sure to update API credentials in `configs/coinpayments-*.yaml` files before depositing any mainnet cryptocurrency or your coins *will* be lost.
 
+## Add new service flow
+
+* Add section to docker-compose.yml
+* Add config (if your service has public endpoints use section cop and provide upstream name equaled to section name in docker-compose file) 
+
 ## Support
 
 If you need any help with TokenD or would like to suggest a feature, please reach us via https://tokend.atlassian.net/servicedesk/

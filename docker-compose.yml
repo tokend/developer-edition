@@ -88,7 +88,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.7.2-rc.0
+    image: registry.gitlab.com/tokend/horizon:pg-99c5fe5ddbddb55a5585ba638c916c81c7653de1
     depends_on:
       - core
     restart: unless-stopped
@@ -136,7 +136,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.11.0-rc.0
+    image: tokend/web-client:1.12.0-rc.1
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -166,6 +166,44 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
+  rbac-svc:
+    image: registry.gitlab.com/tokend/rbac-svc:78f659719f5d45fa114eb8822cec28df4848eb7a
+    restart: unless-stopped
+    depends_on:
+      - initscripts
+      - horizon
+    entrypoint: rbac-svc
+    volumes:
+      - ./configs/rbac-svc.yaml:/config.yaml
+      - ./configs/casbin.conf:/casbin.conf
+      - ./configs/casbin.csv:/casbin.csv # instead of db
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    command: run
+  identity-storage:
+    image: registry.gitlab.com/tokend/identity-storage:35293baca310e9b56d47a22d0ac5e1c1af392d70
+    restart: unless-stopped
+    entrypoint: identity-storage
+    depends_on:
+      - rbac-svc
+      - identity_storage_db
+    volumes:
+      - ./configs/identity-storage.yaml:/config.yaml
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    command: run
+  identity_storage_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    labels:
+      - "traefik.enabled=false"
+    environment:
+      - POSTGRES_USER=identity_storage
+      - POSTGRES_PASSWORD=identity_storage
+      - POSTGRES_DB=identity_storage
+      - PGDATA=/data
+    volumes:
+      - identity-storage-data:/data
 
   ##
   ## Auxiliary modules
@@ -349,3 +387,4 @@ volumes:
   horizon-data:
   storage-data:
   redis-data:
+  identity-storage-data:

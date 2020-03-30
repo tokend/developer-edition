@@ -1,0 +1,28 @@
+log:
+  disable_sentry: true
+  level: debug
+
+db:
+  url: postgres://identity_storage:identity_storage@identity_storage_db/identity_storage?sslmode=disable
+
+listener:
+  addr: :80
+
+serice:
+  skip_sign_check: true
+
+client:
+  endpoint: http://traefik/
+
+submit:
+  endpoint: http://traefik/
+
+rbac:
+  endpoint: http://traefik/
+
+cop:
+  endpoint: http://cop
+  upstream: http://identity-storage
+  service_name: identity-storage
+  service_port: "80"
+  #service_prefix:

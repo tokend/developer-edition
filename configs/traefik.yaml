@@ -9,7 +9,7 @@ api:
   insecure: true
 
 log:
-  level: WARN
+  level: DEBUG
 
 accessLog:
   filePath: /access.log
