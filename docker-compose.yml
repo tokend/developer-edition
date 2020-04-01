@@ -78,7 +78,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.8.4
+    image: registry.gitlab.com/tokend/horizon:pg-d8ea9c30ab1990c828391bb1dd6f426862cd287a
     depends_on:
       - core
     restart: unless-stopped
