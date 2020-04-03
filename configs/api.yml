@@ -1,7 +1,7 @@
 api:
   horizon_url: http://horizon
   account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-  skip_signature_check: false
+  skip_signature_check: true
 
 db:
   url: postgres://api:api@api_db/api?sslmode=disable
@@ -11,6 +11,9 @@ db:
 horizon:
   url: http://horizon
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+identity_storage:
+  endpoint: http://identity-storage
 
 notificator:
   disabled: true
@@ -22,7 +25,7 @@ listener:
   addr: :80
 
 log:
-  level: warn
+  level: debug
   slow_query_bound: 300ms
   slow_request_bound: 1s
   # we are using sentry for error collection,

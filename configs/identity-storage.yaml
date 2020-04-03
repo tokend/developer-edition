@@ -8,7 +8,7 @@ db:
 listener:
   addr: :80
 
-serice:
+service:
   skip_sign_check: true
 
 client:
@@ -19,6 +19,11 @@ submit:
 
 rbac:
   endpoint: http://traefik/
+  skip_check: true
+
+keys:
+  source: GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 cop:
   endpoint: http://cop

@@ -101,11 +101,12 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.5.5-rc.0
+    image: registry.gitlab.com/tokend/api:860997ec06b6d2c4d34bf128ce415dda065d1c21
     restart: unless-stopped
     depends_on:
       - horizon
       - api_db
+      - identity-storage
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
@@ -181,9 +182,8 @@ services:
       - KV_VIPER_FILE=/config.yaml
     command: run
   identity-storage:
-    image: registry.gitlab.com/tokend/identity-storage:35293baca310e9b56d47a22d0ac5e1c1af392d70
+    image: registry.gitlab.com/tokend/identity-storage:89f1a85b388c30bbf905298f7cf304c0cb0d2722
     restart: unless-stopped
-    entrypoint: identity-storage
     depends_on:
       - rbac-svc
       - identity_storage_db
@@ -191,7 +191,7 @@ services:
       - ./configs/identity-storage.yaml:/config.yaml
     environment:
       - KV_VIPER_FILE=/config.yaml
-    command: run
+    entrypoint: sh -c "identity-storage migrate up && identity-storage run"
   identity_storage_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
