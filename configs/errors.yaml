@@ -1,0 +1,11 @@
+log:
+  disable_sentry: true
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: "http://cop"
+  upstream: "http://errors"
+  service_name: error-handler-svc
+  service_port: "80"

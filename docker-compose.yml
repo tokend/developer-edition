@@ -7,7 +7,7 @@ services:
       - "80:80"
       - "8081:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./configs/traefik.yaml:/traefik.yaml
   cop:
     image: tokend/traefik-cop:1.0.0
@@ -17,6 +17,14 @@ services:
     volumes:
       - ./configs/cop.yaml:/config.yaml
     entrypoint: sh -c "traefik-cop run"
+  errors:
+    image: tokend/error-handler-svc:0.0.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/errors.yaml:/config.yaml
+    entrypoint: sh -c "error-handler-svc run service"
   upstream:
     image: nginx
     restart: unless-stopped
@@ -24,6 +32,8 @@ services:
     - ./configs/nginx.conf:/etc/nginx/nginx.conf
     ports:
     - "8000:80"
+    labels:
+    - "traefik.frontend.passHostHeader=true"
   adks:
     image: tokend/adks:1.0.0
     restart: unless-stopped
