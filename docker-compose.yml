@@ -182,7 +182,7 @@ services:
       - KV_VIPER_FILE=/config.yaml
     command: run
   identity-storage:
-    image: registry.gitlab.com/tokend/identity-storage:71989c227098974fcc75d87c8b9ae549fd71da69
+    image: registry.gitlab.com/tokend/identity-storage:b246c0b71ccf1dc1b16505a376074e138bd8d9c9
     restart: unless-stopped
     depends_on:
       - rbac-svc
