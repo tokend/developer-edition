@@ -1,6 +1,29 @@
 version: '3.3'
 
 services:
+  invoices:
+    image: registry.gitlab.com/tokend/revolut/invoices-svc:103221e49f7d61200095d9460d4f5addd1690c72
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/invoices.yaml:/config.yaml
+    entrypoint: sh -c "invoices-svc migrate up && invoices-svc run"
+    ports:
+      - 8002:80
+    depends_on:
+      - invoices_db
+      - horizon
+    invoices_db:
+      image: tokend/postgres-ubuntu:9.6
+      restart: unless-stopped
+      environment:
+        - POSTGRES_USER=invoices
+        - POSTGRES_PASSWORD=invoices
+        - POSTGRES_DB=invoices
+        - PGDATA=/pgdata
+      volumes:
+        - invoices-data:/pgdata
   janus:
     image: tokend/janus:latest
     restart: unless-stopped
@@ -72,6 +95,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+    ports:
+      - 8007:80
   api:
     image: tokend/identity:4.5.4
     restart: unless-stopped
@@ -293,3 +318,4 @@ volumes:
   horizon-data:
   storage-data:
   redis-data:
+  invoices-data:

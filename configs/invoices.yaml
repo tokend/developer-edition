@@ -1,0 +1,24 @@
+log:
+  disable_sentry: true
+
+invoices:
+  skip_sign_check: true
+
+client:
+  endpoint: http://janus
+
+keys:
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+
+db:
+  url: postgres://invoices:invoices@invoices_db/invoices?sslmode=disable
+
+listener:
+  addr: :8080
+
+
+janus:
+  endpoint: http://janus:8000
+  upstream: http://invoices
+  surname:  invoices
