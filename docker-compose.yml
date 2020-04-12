@@ -14,16 +14,16 @@ services:
     depends_on:
       - invoices_db
       - horizon
-    invoices_db:
-      image: tokend/postgres-ubuntu:9.6
-      restart: unless-stopped
-      environment:
-        - POSTGRES_USER=invoices
-        - POSTGRES_PASSWORD=invoices
-        - POSTGRES_DB=invoices
-        - PGDATA=/pgdata
-      volumes:
-        - invoices-data:/pgdata
+  invoices_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=invoices
+      - POSTGRES_PASSWORD=invoices
+      - POSTGRES_DB=invoices
+      - PGDATA=/pgdata
+    volumes:
+      - invoices-data:/pgdata
   janus:
     image: tokend/janus:latest
     restart: unless-stopped
