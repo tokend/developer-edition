@@ -1,0 +1,31 @@
+log:
+    disable_sentry: true
+
+db:
+  url: "postgres://recpayments:recpayments@recurring-payments-svc-db/recpayments?sslmode=disable"
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: "http://cop"
+  upstream: "http://recurring-payments-svc"
+  service_name: "recurring-payments-svc"
+  service_port: 80
+  service_prefix: "/integrations/rpayments"
+
+service:
+  signer: SC45C2RCEBVIUMKU6MJBVDI2PULM4RXJBNGRZRSGRZRVIK5UZMFUFOIX
+  balancesd_interval: 1m
+  send_interval: 5m
+  concurrency: 10
+  skip_sign_check: true
+
+client:
+  endpoint: http://traefik
+
+keys:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+submit:
+  endpoint: http://traefik
