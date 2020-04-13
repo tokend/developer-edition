@@ -1,11 +1,12 @@
 log:
   disable_sentry: true
+  level: info
 
 invoices:
   skip_sign_check: true
 
 client:
-  endpoint: http://janus
+  endpoint: http://traefik
 
 keys:
   source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
@@ -15,10 +16,11 @@ db:
   url: postgres://invoices:invoices@invoices_db/invoices?sslmode=disable
 
 listener:
-  addr: :8080
+  addr: :80
 
-
-janus:
-  endpoint: http://janus:8000
-  upstream: http://invoices
-  surname:  invoices
+cop:
+  endpoint: "http://cop"
+  upstream: "http://invoices"
+  service_name: "invoices"
+  service_port: 80
+  service_prefix: "/integrations/invoices"

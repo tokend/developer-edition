@@ -5,6 +5,7 @@ services:
     image: traefik:v2.0
     ports:
       - "8080:8080"
+      - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./configs/traefik.yaml:/traefik.yaml
@@ -25,7 +26,7 @@ services:
       - ./configs/errors.yaml:/config.yaml
     entrypoint: sh -c "error-handler-svc run service"
   invoices:
-    image: registry.gitlab.com/tokend/revolut/invoices-svc:103221e49f7d61200095d9460d4f5addd1690c72
+    image: registry.gitlab.com/tokend/revolut/invoices-svc:4600bebedbc9e29be1b38bdd7b8b29167c238028
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
