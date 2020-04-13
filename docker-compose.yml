@@ -246,7 +246,7 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
   rpayments-db-migrate:
-    image: rpayments:local # registry.gitlab.com/tokend/revolut/recurring-payments-svc:e18b738b9362e81af3c9f2fac5c2601bdb193dce
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:4e8e8e78d655492c8618ec40a648e8956a4fbedb
     restart: on-failure
     depends_on: 
       - recurring-payments-svc-db
@@ -256,7 +256,7 @@ services:
       - ./configs/recpayments.yaml:/config.yaml
     command: migrate up 
   recurring-payments-svc:
-    image: rpayments:local # registry.gitlab.com/tokend/revolut/recurring-payments-svc:e18b738b9362e81af3c9f2fac5c2601bdb193dce
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:4e8e8e78d655492c8618ec40a648e8956a4fbedb
     restart: unless-stopped
     depends_on: 
       - horizon
