@@ -1,0 +1,22 @@
+log:
+  disable_sentry: true
+
+db:
+  url: postgres://nft:nft@nft_svc_db/nft?sslmode=disable
+
+client:
+  endpoint: http://horizon
+
+submit:
+  endpoint: http://horizon
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: http://cop
+  upstream: http://nft-svc
+  service_name: "nft-svc"
+  service_port: "80"
+  service_prefix: "/tokens"
+

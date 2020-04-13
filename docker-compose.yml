@@ -166,6 +166,29 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
+  nft-svc:
+    image: registry.gitlab.com/tokend/nft-svc:d3652467d316bc58825b55a6b3212e0175fa906c
+    restart: unless-stopped
+    entrypoint: sh -c "nft-svc migrate up && nft-svc run"
+    depends_on:
+      - horizon
+      - nft_svc_db
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/nft-svc.yaml:/config.yaml
+  nft_svc_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    labels:
+      - "traefik.enabled=false"
+    environment:
+      - POSTGRES_USER=nft
+      - POSTGRES_PASSWORD=nft
+      - POSTGRES_DB=nft
+      - PGDATA=/pgdata
+    volumes:
+      - nft-data:/pgdata
 
   ##
   ## Auxiliary modules
@@ -349,3 +372,4 @@ volumes:
   horizon-data:
   storage-data:
   redis-data:
+  nft-data:
