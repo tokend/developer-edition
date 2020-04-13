@@ -1,6 +1,29 @@
 version: '3.3'
 
 services:
+  traefik:
+    image: traefik:v2.0
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./configs/traefik.yaml:/traefik.yaml
+  cop:
+    image: registry.gitlab.com/tokend/traefik-cop:93dd46be8dccb36973bbfdfe4888b60d528df2ca # tokend/traefik-cop:1.0.0
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/cop.yaml:/config.yaml
+    entrypoint: sh -c "traefik-cop run"
+  errors:
+    image: tokend/error-handler-svc:0.0.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/errors.yaml:/config.yaml
+    entrypoint: sh -c "error-handler-svc run service"
   invoices:
     image: registry.gitlab.com/tokend/revolut/invoices-svc:103221e49f7d61200095d9460d4f5addd1690c72
     restart: unless-stopped
@@ -36,6 +59,8 @@ services:
     - ./configs/nginx.conf:/etc/nginx/nginx.conf
     ports:
     - "8000:80"
+    labels:
+    - "traefik.frontend.passHostHeader=true"
   adks:
     image: tokend/adks:1.0.0
     restart: unless-stopped
@@ -83,7 +108,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.7.1.1
+    image: tokend/horizon:3.7.1.1-rc.0
     depends_on:
       - core
     restart: unless-stopped
@@ -98,7 +123,7 @@ services:
     ports:
       - 8007:80
   api:
-    image: tokend/identity:4.5.4
+    image: tokend/identity:4.5.5-rc.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -244,6 +269,27 @@ services:
     volumes:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
+  recurring-payments-svc:
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:b3ddf1077f7c7ae521c84cac3f097cf36c3c08de
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - recurring-payments-svc-db
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/recpayments.yaml:/config.yaml
+    entrypoint: sh -c "recurring-payments-svc migrate up && recurring-payments-svc run service"
+  recurring-payments-svc-db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=recpayments
+      - POSTGRES_PASSWORD=recpayments
+      - POSTGRES_DB=recpayments
+      - PGDATA=/pgdata
+    volumes:
+      - recpayments-data:/pgdata
 
   ## Stellar
   stellar-deposit:
@@ -319,3 +365,4 @@ volumes:
   storage-data:
   redis-data:
   invoices-data:
+  recpayments-data:

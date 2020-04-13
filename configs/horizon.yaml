@@ -24,7 +24,8 @@ config:
   invest_ready:                            http://black.hole
   telegram_airdrop:                        http://black.hole
 
-janus:
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://horizon
-  surname: horizon
+  service_name: "horizon-service"
+  service_port: "80"

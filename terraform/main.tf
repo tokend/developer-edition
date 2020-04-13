@@ -14,9 +14,9 @@ terraform {
 provider "tokend" {
   account  = "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
   signer   = "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
-  endpoint = "http://janus"
+  endpoint = "http://traefik"
 }
 
 module "tokend_vanilla" {
-  source = "git::https://github.com/tokend/terraform-tokend-vanilla.git?ref=a95125baa8bd5a35e26889539be9bb786fb8cbfb"
+  source = "git::https://github.com/tokend/terraform-tokend-vanilla.git?ref=dfa224eb96d0468fc606d142fc38ca797503ef9f"
 }
