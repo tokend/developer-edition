@@ -26,7 +26,7 @@ services:
       - ./configs/errors.yaml:/config.yaml
     entrypoint: sh -c "error-handler-svc run service"
   invoices:
-    image: registry.gitlab.com/tokend/revolut/invoices-svc:d87c8efdfa7d84cbda700be3fb54f7bc44481882
+    image: registry.gitlab.com/tokend/revolut/invoices-svc:d6567e199a5113fa6ee3e8d9f9234d778b232f0e
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
