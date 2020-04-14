@@ -245,8 +245,9 @@ services:
     volumes:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
-  rpayments-db-migrate:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:b3ddf1077f7c7ae521c84cac3f097cf36c3c08de
+    rpayments-db-migrate:
+    # TODO should do something with it? two containers with one command per container vs. one container with two commands in it? :hmm:
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:d1542b8ab5cf5b5ba38c8b865d8695af29b4b7fe
     restart: on-failure
     depends_on: 
       - recurring-payments-svc-db
@@ -256,7 +257,7 @@ services:
       - ./configs/recpayments.yaml:/config.yaml
     command: migrate up 
   recurring-payments-svc:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:b3ddf1077f7c7ae521c84cac3f097cf36c3c08de
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:d1542b8ab5cf5b5ba38c8b865d8695af29b4b7fe
     restart: unless-stopped
     depends_on: 
       - horizon
