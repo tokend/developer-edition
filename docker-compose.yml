@@ -26,15 +26,13 @@ services:
       - ./configs/errors.yaml:/config.yaml
     entrypoint: sh -c "error-handler-svc run service"
   invoices:
-    image: registry.gitlab.com/tokend/revolut/invoices-svc:f5a2f444b94430aa5bbf0dfcc89c49109aa2125f
+    image: registry.gitlab.com/tokend/revolut/invoices-svc:d87c8efdfa7d84cbda700be3fb54f7bc44481882
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/invoices.yaml:/config.yaml
     entrypoint: sh -c "invoices-svc migrate up && invoices-svc run"
-    ports:
-      - 8002:80
     depends_on:
       - invoices_db
       - horizon
@@ -192,7 +190,7 @@ services:
     volumes:
       - ./configs/charts.yaml:/config.yaml
     ports:
-      - 8080:8080
+      - 8090:8080
     command: run
   salecloser:
     image: tokend/sale-closer-svc:1.0.1
