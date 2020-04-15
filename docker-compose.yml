@@ -269,7 +269,7 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
   recurring-payments-svc:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:e5a3b0e856aa9248154e417c1ac8bb7bee5f9d1a
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:b3bda8874b7030dc503b129300703badbd5f2d9d
     restart: unless-stopped
     depends_on:
       - horizon
