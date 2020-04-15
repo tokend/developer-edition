@@ -1,0 +1,26 @@
+log:
+  disable_sentry: true
+  level: info
+
+invoices:
+  skip_sign_check: true
+
+client:
+  endpoint: http://traefik
+
+keys:
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+
+db:
+  url: postgres://invoices:invoices@invoices_db/invoices?sslmode=disable
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: "http://cop"
+  upstream: "http://invoices"
+  service_name: "invoices"
+  service_port: 80
+  service_prefix: "/integrations/invoices"

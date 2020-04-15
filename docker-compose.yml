@@ -4,8 +4,8 @@ services:
   traefik:
     image: traefik:v2.0
     ports:
-      - "80:80"
       - "8080:8080"
+      - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./configs/traefik.yaml:/traefik.yaml
@@ -25,6 +25,27 @@ services:
     volumes:
       - ./configs/errors.yaml:/config.yaml
     entrypoint: sh -c "error-handler-svc run service"
+  invoices:
+    image: registry.gitlab.com/tokend/revolut/invoices-svc:71e4fe8f4553739216fd50de7f837f6d6dc66569
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/invoices.yaml:/config.yaml
+    entrypoint: sh -c "invoices-svc migrate up && invoices-svc run"
+    depends_on:
+      - invoices_db
+      - horizon
+  invoices_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=invoices
+      - POSTGRES_PASSWORD=invoices
+      - POSTGRES_DB=invoices
+      - PGDATA=/pgdata
+    volumes:
+      - invoices-data:/pgdata
   janus:
     image: tokend/janus:latest
     restart: unless-stopped
@@ -98,6 +119,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+    ports:
+      - 8007:80
   api:
     image: tokend/identity:4.5.5-rc.0
     restart: unless-stopped
@@ -159,16 +182,16 @@ services:
   ## Auxiliary modules
   ##
 
-  # charts:
-  #   image: tokend/charts:0.4.1
-  #   restart: unless-stopped
-  #   environment:
-  #     - KV_VIPER_FILE=/config.yaml
-  #   volumes:
-  #     - ./configs/charts.yaml:/config.yaml
-  #   ports:
-  #     - 8080:8080
-  #   command: run
+  charts:
+    image: tokend/charts:0.4.1
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/charts.yaml:/config.yaml
+    ports:
+      - 8090:8080
+    command: run
   salecloser:
     image: tokend/sale-closer-svc:1.0.1
     depends_on:
@@ -245,29 +268,17 @@ services:
     volumes:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
-  rpayments-db-migrate:
-    # TODO should do something with it? two containers with one command per container vs. one container with two commands in it? :hmm:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:e5a3b0e856aa9248154e417c1ac8bb7bee5f9d1a
-    restart: on-failure
-    depends_on: 
-      - recurring-payments-svc-db
-    environment: 
-      - KV_VIPER_FILE=/config.yaml
-    volumes: 
-      - ./configs/recpayments.yaml:/config.yaml
-    command: migrate up 
   recurring-payments-svc:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:e5a3b0e856aa9248154e417c1ac8bb7bee5f9d1a
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:b3ddf1077f7c7ae521c84cac3f097cf36c3c08de
     restart: unless-stopped
-    depends_on: 
+    depends_on:
       - horizon
       - recurring-payments-svc-db
-      - rpayments-db-migrate
-    environment: 
+    environment:
       - KV_VIPER_FILE=/config.yaml
-    volumes: 
+    volumes:
       - ./configs/recpayments.yaml:/config.yaml
-    command: run service
+    entrypoint: sh -c "recurring-payments-svc migrate up && recurring-payments-svc run service"
   recurring-payments-svc-db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -352,4 +363,5 @@ volumes:
   horizon-data:
   storage-data:
   redis-data:
+  invoices-data:
   recpayments-data:
