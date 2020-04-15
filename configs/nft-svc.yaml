@@ -1,11 +1,16 @@
 log:
   disable_sentry: true
+  level: debug
 
 db:
   url: postgres://nft:nft@nft_svc_db/nft?sslmode=disable
 
 client:
   endpoint: http://horizon
+
+keys:
+  source: GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 submit:
   endpoint: http://horizon
