@@ -26,7 +26,7 @@ services:
       - ./configs/errors.yaml:/config.yaml
     entrypoint: sh -c "error-handler-svc run service"
   invoices:
-    image: registry.gitlab.com/tokend/revolut/invoices-svc:71e4fe8f4553739216fd50de7f837f6d6dc66569
+    image: registry.gitlab.com/tokend/revolut/invoices-svc:6efccc149ae42c10b518cde8a1648549511092be
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -269,7 +269,7 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
   recurring-payments-svc:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:2e07a9f1eff571cf6e2e864720d509350d116c40
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:661e048c8f2c371e9944d1f6d96c6d7a13bc7d93
     restart: unless-stopped
     depends_on:
       - horizon
