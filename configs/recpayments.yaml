@@ -1,5 +1,5 @@
 log:
-  disable_sentry: true
+    disable_sentry: true
 
 db:
   url: "postgres://recpayments:recpayments@recurring-payments-svc-db/recpayments?sslmode=disable"
