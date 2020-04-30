@@ -167,7 +167,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:69a36a5296e8fa2f077fb51993fd56598e8ba567
+    image: registry.gitlab.com/tokend/nft-svc:5b53ca2b665d5673c48b09e0e51bb6c50bc083d6
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -226,6 +226,29 @@ services:
     volumes:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
+  marketplace:
+    image: registry.gitlab.com/tokend/marketplace-svc:3185d9665f0c50c2e6c58a3174446944e9765629
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    depends_on:
+      - horizon
+      - marketplace_db
+    volumes:
+      - ./configs/marketplace.yaml:/config.yaml
+    entrypoint: sh -c "marketplace-svc migrate up && marketplace-svc run"
+  marketplace_db:
+    image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=marketplace
+      - POSTGRES_PASSWORD=marketplace
+      - POSTGRES_DB=marketplace
+      - PGDATA=/pgdata
+    volumes:
+      - marketplace-data:/pgdata
 
   ## 3rd party
 
@@ -287,30 +310,6 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
 
-  ## Stellar
-  stellar-deposit:
-    image: tokend/stellar-deposit-svc:1.0.5
-    labels:
-      - "traefik.enabled=false"
-    restart: unless-stopped
-    depends_on:
-      - horizon
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/stellar-deposit.yaml:/config.yaml
-  stellar-withdraw:
-    image: tokend/stellar-withdraw-svc:1.0.1
-    labels:
-      - "traefik.enabled=false"
-    restart: unless-stopped
-    depends_on:
-      - horizon
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/stellar-withdraw.yaml:/config.yaml
-
   ## Ethereum
   erc20-deposit:
     image: tokend/erc20-deposit-svc:1.0.8
@@ -364,6 +363,17 @@ services:
       - ./configs/erc20-withdraw.yaml:/config.yaml
     entrypoint: "erc20-withdraw-svc"
     command: ["run", "withdraw"]
+  stripe:
+    image: registry.gitlab.com/tokend/psims/stripe-svc:94984ef0fc0779e072f893c4e8c08b1a7699d39c
+    restart: unless-stopped
+    volumes:
+      - ./configs/stripe.yaml:/config.yaml
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    entrypoint: stripe-svc
+    command: run
+    depends_on:
+      - horizon
 
 volumes:
   adks-data:
@@ -373,3 +383,4 @@ volumes:
   storage-data:
   redis-data:
   nft-data:
+  marketplace-data:

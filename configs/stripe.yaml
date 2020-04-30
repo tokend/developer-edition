@@ -1,0 +1,14 @@
+log:
+  disable_sentry: true
+  level: debug
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: http://cop
+  upstream: http://stripe
+  service_name: stripe-svc
+  service_port: 80
+  service_prefix: "/integrations/stripe"
+
