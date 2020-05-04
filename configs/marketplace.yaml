@@ -50,3 +50,8 @@ payer:
 
 nft_svc:
   endpoint: http://nft-svc
+
+fiat_integrations:
+  data:
+  - endpoint: http://stripe/integrations/stripe
+    currency: USD

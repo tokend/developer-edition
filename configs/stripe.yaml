@@ -5,6 +5,12 @@ log:
 listener:
   addr: :80
 
+stripe:
+  secret_key: sk_test_oWxMeyILtYs7mke2gTW9czIu
+  domain: http://b8996c3a.ngrok.io/_/api/
+  success_url: http://localhost:8060
+  cancel_url: http://localhost:8060
+
 cop:
   endpoint: http://cop
   upstream: http://stripe

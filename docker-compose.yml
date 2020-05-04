@@ -227,7 +227,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:3185d9665f0c50c2e6c58a3174446944e9765629
+    image: registry.gitlab.com/tokend/marketplace-svc:a4525032e98e00f0bd83d13995d7b90b2c887d16
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -364,7 +364,7 @@ services:
     entrypoint: "erc20-withdraw-svc"
     command: ["run", "withdraw"]
   stripe:
-    image: registry.gitlab.com/tokend/psims/stripe-svc:94984ef0fc0779e072f893c4e8c08b1a7699d39c
+    image: registry.gitlab.com/tokend/psims/stripe-svc:8f33113418277059d8aad3c8bbd997bd952c7f85
     restart: unless-stopped
     volumes:
       - ./configs/stripe.yaml:/config.yaml
