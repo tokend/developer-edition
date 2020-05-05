@@ -227,7 +227,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:a4525032e98e00f0bd83d13995d7b90b2c887d16
+    image: registry.gitlab.com/tokend/marketplace-svc:a1b3dc942e4652ebc204e171bcff967476cbb075
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -325,7 +325,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deposit"]
   erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.8
+    image: tokend/erc20-deposit-svc:1.0.10
     restart: on-failure
     labels:
       - "traefik.enabled=false"
