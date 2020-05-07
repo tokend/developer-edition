@@ -100,6 +100,7 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+
   api:
     image: tokend/identity:4.5.5-rc.0
     restart: unless-stopped
@@ -227,7 +228,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:a1b3dc942e4652ebc204e171bcff967476cbb075
+    image: registry.gitlab.com/tokend/marketplace-svc:a4525032e98e00f0bd83d13995d7b90b2c887d16
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -325,7 +326,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deposit"]
   erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.10
+    image: tokend/erc20-deposit-svc:1.0.8
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -337,6 +338,7 @@ services:
       - ./configs/erc20-deposit.yaml:/config.yaml
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deployer"]
+
   erc20-funnel:
     image: tokend/erc20-deposit-svc:1.0.8
     restart: unless-stopped
@@ -350,6 +352,7 @@ services:
       - ./configs/erc20-deposit.yaml:/config.yaml
     entrypoint: "erc20-deposit-svc"
     command: ["run", "funnel"]
+
   erc20-withdraw:
     image: tokend/erc20-withdraw-svc:1.0.5
     restart: unless-stopped
@@ -363,6 +366,63 @@ services:
       - ./configs/erc20-withdraw.yaml:/config.yaml
     entrypoint: "erc20-withdraw-svc"
     command: ["run", "withdraw"]
+
+  erc721-deposit:
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:e58fcf5523a4b01f7649d02b32fe041a6a1f5139
+    labels:
+      - "traefik.enabled=false"
+    restart: unless-stopped
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc721-deposit.yaml:/config.yaml
+    entrypoint: "erc-721-deposit"
+    command: ["run", "deposit"]
+
+  erc721-deployer:
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:e58fcf5523a4b01f7649d02b32fe041a6a1f5139
+    restart: on-failure
+    labels:
+      - "traefik.enabled=false"
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc721-deposit.yaml:/config.yaml
+    entrypoint: "erc-721-deposit"
+    command: ["run", "deployer"]
+
+  erc721-funnel:
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:e58fcf5523a4b01f7649d02b32fe041a6a1f5139
+    restart: unless-stopped
+    labels:
+      - "traefik.enabled=false"
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc721-deposit.yaml:/config.yaml
+    entrypoint: "erc-721-deposit"
+    command: ["run", "funnel"]
+
+  erc721-withdraw:
+    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:d9037e704388daf21e7d0c863a959a62960d2081
+    restart: unless-stopped
+    labels:
+      - "traefik.enabled=false"
+    depends_on:
+      - horizon
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/erc721-withdraw.yaml:/config.yaml
+    entrypoint: "erc-721-withdraw"
+    command: ["run", "withdraw"]
+
   stripe:
     image: registry.gitlab.com/tokend/psims/stripe-svc:8f33113418277059d8aad3c8bbd997bd952c7f85
     restart: unless-stopped
