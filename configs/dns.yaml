@@ -1,0 +1,24 @@
+log:
+  level: debug
+  disable_sentry: true
+
+db:
+  url: "postgres://dns:dns@dns_db/dns?sslmode=disable"
+
+horizon:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  endpoint: "http://traefik/"
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: http://cop
+  upstream: http://dns
+  service_name: "dns-service"
+  service_port: "80"
+  service_prefix: "/integrations/dns"
+
+dns:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  skip_sign_check: false
