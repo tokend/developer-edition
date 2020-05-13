@@ -168,7 +168,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:5b53ca2b665d5673c48b09e0e51bb6c50bc083d6
+    image: registry.gitlab.com/tokend/nft-svc:b2c22a7bb1e21a53c06d9050e36351c08d0e42a5
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -178,6 +178,7 @@ services:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/nft-svc.yaml:/config.yaml
+
   nft_svc_db:
     image: tokend/postgres-ubuntu:9.6
     restart: unless-stopped
@@ -325,6 +326,7 @@ services:
       - ./configs/erc20-deposit.yaml:/config.yaml
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deposit"]
+
   erc20-deployer:
     image: tokend/erc20-deposit-svc:1.0.8
     restart: on-failure
@@ -368,7 +370,7 @@ services:
     command: ["run", "withdraw"]
 
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:e58fcf5523a4b01f7649d02b32fe041a6a1f5139
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:7868c18b3af33e15cbac5ca5d3136ecf43216862
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -382,12 +384,13 @@ services:
     command: ["run", "deposit"]
 
   erc721-deployer:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:e58fcf5523a4b01f7649d02b32fe041a6a1f5139
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:7868c18b3af33e15cbac5ca5d3136ecf43216862
     restart: on-failure
     labels:
       - "traefik.enabled=false"
     depends_on:
       - horizon
+      - nft-svc
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
@@ -396,7 +399,7 @@ services:
     command: ["run", "deployer"]
 
   erc721-funnel:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:e58fcf5523a4b01f7649d02b32fe041a6a1f5139
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:7868c18b3af33e15cbac5ca5d3136ecf43216862
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -410,7 +413,7 @@ services:
     command: ["run", "funnel"]
 
   erc721-withdraw:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:d9037e704388daf21e7d0c863a959a62960d2081
+    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:cc2c4da817ea4be6c0e33559e096169069d3b7b0
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
