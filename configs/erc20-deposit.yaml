@@ -25,7 +25,7 @@ deployer:
   gas_limit: "400000"
   contract_owner: "0x9266798B4469275e844C94f747b4e35Dc6aD8D77"
   signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
-  contract_count: 2
+  contract_count: 0
 
 log:
   level: debug
