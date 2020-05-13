@@ -393,7 +393,7 @@ services:
     command: ["run", "withdraw"]
 
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:7868c18b3af33e15cbac5ca5d3136ecf43216862
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:d4424c23a1e86035eaf9e6c81e43930fa0212c6a
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -407,7 +407,7 @@ services:
     command: ["run", "deposit"]
 
   erc721-deployer:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:7868c18b3af33e15cbac5ca5d3136ecf43216862
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:d4424c23a1e86035eaf9e6c81e43930fa0212c6a
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -422,7 +422,7 @@ services:
     command: ["run", "deployer"]
 
   erc721-funnel:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:7868c18b3af33e15cbac5ca5d3136ecf43216862
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:d4424c23a1e86035eaf9e6c81e43930fa0212c6a
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
