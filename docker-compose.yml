@@ -168,7 +168,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:b2c22a7bb1e21a53c06d9050e36351c08d0e42a5
+    image: registry.gitlab.com/tokend/nft-svc:e857096802a538fc45f3b381ae799ad6f2ad5021
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -436,7 +436,7 @@ services:
     command: ["run", "funnel"]
 
   erc721-withdraw:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:cc2c4da817ea4be6c0e33559e096169069d3b7b0
+    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:a1cf9f21dab6e1e5530b6c1c2e67b6cabf28254f
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
