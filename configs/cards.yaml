@@ -1,0 +1,29 @@
+log:
+  disable_sentry: true
+
+db:
+  url: "postgres://cards:cards@cards-db/cards?sslmode=disable"
+
+listener:
+  addr: :80 # TODO configure and rm this TODO
+
+cop:
+  endpoint: "http://cop"
+  upstream: "http://cards-svc"
+  service_name: "cards-svc"
+  service_port: 80
+  service_prefix: "/integrations/cards"
+
+service:
+  skip_sign_check: true
+
+client:
+  endpoint: "http://traefik"
+
+keys:
+  signer: "SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4"
+  source: "GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB"
+
+event_saver:
+  limit: 100
+  period: 3m

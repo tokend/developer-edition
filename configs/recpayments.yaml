@@ -1,5 +1,5 @@
 log:
-    disable_sentry: true
+  disable_sentry: true
 
 db:
   url: "postgres://recpayments:recpayments@recurring-payments-svc-db/recpayments?sslmode=disable"
@@ -17,8 +17,7 @@ cop:
 service:
   account: "GBSO4E7YBNWOGQAW64RC4LACM3YNBH2C4PWRLNXILVFHG2AWANH54L5T"
   signer: "SBZY7CTSALS4TJ5MZ47RPUNT7RLKY6ACN3F7U2KHRTFGMEXI43F5D2B6"
-  balancesd_interval: 1m
-  send_interval: 5m
+  send_interval: 15s
   concurrency: 10
   skip_sign_check: true
 

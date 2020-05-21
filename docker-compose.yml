@@ -90,7 +90,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.3.1
+    image: registry.gitlab.com/tokend/core:pg-27c6f8abb1a3e08d22da02252bac635823471b93 # tokend/core:3.6.3.1
     depends_on:
       - janus
     restart: unless-stopped
@@ -107,7 +107,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.7.1.1-rc.0
+    image: registry.gitlab.com/tokend/horizon:pg-41bdcc8e5298917a29a36f7cca8ebee4992ddbec # tokend/horizon:3.7.1.1-rc.0
     depends_on:
       - core
     restart: unless-stopped
@@ -269,11 +269,12 @@ services:
       - ./configs/coinpayments-atomic-swap-matcher.yaml:/config.yaml
     command: atomic-swap-matcher
   recurring-payments-svc:
-    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:661e048c8f2c371e9944d1f6d96c6d7a13bc7d93
+    image: registry.gitlab.com/tokend/revolut/recurring-payments-svc:38e32029b8c5721b14c8c4b1360861b6b99dc770
     restart: unless-stopped
     depends_on:
       - horizon
       - recurring-payments-svc-db
+      - cards-svc
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
@@ -289,6 +290,27 @@ services:
       - PGDATA=/pgdata
     volumes:
       - recpayments-data:/pgdata
+  cards-svc:
+    image: registry.gitlab.com/tokend/revolut/cards-svc:c31cef770dce224dbafd49dd32d4df63534b9e09
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - cards-db
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:  
+      - ./configs/cards.yaml:/config.yaml
+    entrypoint: sh -c "cards-svc migrate up && cards-svc run service"
+  cards-db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=cards
+      - POSTGRES_PASSWORD=cards
+      - POSTGRES_DB=cards
+      - PGDATA=/pgdata
+    volumes:
+      - cards-data:/pgdata
 
   ## Stellar
   stellar-deposit:
@@ -365,3 +387,4 @@ volumes:
   redis-data:
   invoices-data:
   recpayments-data:
+  cards-data:
