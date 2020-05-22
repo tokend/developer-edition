@@ -168,7 +168,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:e857096802a538fc45f3b381ae799ad6f2ad5021
+    image: registry.gitlab.com/tokend/nft-svc:4c5cfb52168f1bc13dfb892114bc876be9c3e62f
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -229,7 +229,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:abb5626fc5ee96770f54d37f42bdad53e90cffda
+    image: registry.gitlab.com/tokend/marketplace-svc:aa21e1298ba154817b7d93b268c32ee7542327a2
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -393,7 +393,7 @@ services:
     command: ["run", "withdraw"]
 
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:d4424c23a1e86035eaf9e6c81e43930fa0212c6a
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:07c7739fb3341246a32964ca8c7ed7dabb686726
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -407,7 +407,7 @@ services:
     command: ["run", "deposit"]
 
   erc721-deployer:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:d4424c23a1e86035eaf9e6c81e43930fa0212c6a
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:07c7739fb3341246a32964ca8c7ed7dabb686726
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -422,7 +422,7 @@ services:
     command: ["run", "deployer"]
 
   erc721-funnel:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:d4424c23a1e86035eaf9e6c81e43930fa0212c6a
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:07c7739fb3341246a32964ca8c7ed7dabb686726
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -436,7 +436,7 @@ services:
     command: ["run", "funnel"]
 
   erc721-withdraw:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:a1cf9f21dab6e1e5530b6c1c2e67b6cabf28254f
+    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:f589d4a3e8e4082683201302b58d2e38fe045584
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
