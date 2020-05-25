@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.0-x.1
+    image: tokend/horizon:3.9.0
     depends_on:
       - core
     restart: unless-stopped
@@ -83,7 +83,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.6.0-rc.2
+    image: tokend/identity:4.6.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -144,7 +144,7 @@ services:
   ##
 
   charts:
-    image: tokend/charts:0.5.0-rc.0
+    image: tokend/charts:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -190,7 +190,7 @@ services:
   ## Coinpayments
 
   coinpayments-deposit:
-    image: tokend/coinpayments:0.5.0-rc.1
+    image: tokend/coinpayments:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -198,7 +198,7 @@ services:
       - ./configs/coinpayments-deposit.yaml:/config.yaml
     command: deposit
   coinpayments-deposit-verify:
-    image: tokend/coinpayments:0.5.0-rc.1
+    image: tokend/coinpayments:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -206,7 +206,7 @@ services:
       - ./configs/coinpayments-deposit-verify.yaml:/config.yaml
     command: deposit-verify
   coinpayments-withdraw:
-    image: tokend/coinpayments:0.5.0-rc.1
+    image: tokend/coinpayments:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -214,7 +214,7 @@ services:
       - ./configs/coinpayments-withdraw.yaml:/config.yaml
     command: withdraw
   coinpayments-atomic-swap-checker:
-    image: tokend/coinpayments:0.5.0-rc.1
+    image: tokend/coinpayments:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -222,7 +222,7 @@ services:
       - ./configs/coinpayments-atomic-swap-checker.yaml:/config.yaml
     command: atomic-swap-checker
   coinpayments-atomic-swap-matcher:
-    image: tokend/coinpayments:0.5.0-rc.1
+    image: tokend/coinpayments:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
