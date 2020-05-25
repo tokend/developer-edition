@@ -60,7 +60,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.0-x.1
+    image: tokend/horizon:3.9.0
     depends_on:
       - core
     restart: unless-stopped
@@ -73,7 +73,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.6.0-rc.2
+    image: tokend/identity:4.6.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -129,7 +129,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.4.0-rc.2
+    image: tokend/dns:0.5.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -151,7 +151,7 @@ services:
       - dns-data:/pgdata
 
   sponsorship:
-    image: tokend/sponsor:0.3.0-rc.0
+    image: tokend/sponsor:0.3.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -174,7 +174,7 @@ services:
       - sponsorship-data:/pgdata
 
   csv:
-    image: tokend/csv:0.2.0-rc.0
+    image: tokend/csv:0.2.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -196,7 +196,7 @@ services:
     entrypoint: sh -c "asset-remover-svc run assetchecker"
    
   marketplace:
-    image: tokend/marketplace-svc:0.3.4-rc.5
+    image: tokend/marketplace-svc:0.4.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -259,7 +259,7 @@ services:
     volumes:
       - notificator-data:/pgdata
   templatesprovider:
-    image: tokend/templates-svc:1.1.0-rc.0
+    image: tokend/templates-svc:1.1.0
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
