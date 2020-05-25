@@ -1,10 +1,6 @@
 listener:
   addr: :80
 
-websocket:
-  enabled: true
-  addr: :8080
-
 log:
   level: warn
   # we are using sentry for error collection,
@@ -19,10 +15,11 @@ sentry:
   dsn: https://989409410d0740a89b1f8571c4195dca@sentry.tokend.services/3
 
 horizon:
-  endpoint: http://janus
+  endpoint: http://traefik
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
-janus:
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://charts
-  surname:  charts
+  service_name: "charts-service"
+  service_port: "80"

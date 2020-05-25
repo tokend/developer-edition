@@ -59,10 +59,11 @@ wallets:
 tx_watcher:
   disabled: false
 
-janus:
-  endpoint: http://janus:8000
+cop:
+  endpoint: http://cop
   upstream: http://api
-  surname:  api
+  service_name: "api-service"
+  service_port: "80"
   
 # system settings
 key_values:
