@@ -59,12 +59,6 @@ wallets:
 tx_watcher:
   disabled: false
 
-janus:
-  disabled: true
-  endpoint: http://janus:8000
-  upstream: http://api
-  surname:  api
-
 cop:
   endpoint: http://cop
   upstream: http://api
