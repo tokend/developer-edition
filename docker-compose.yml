@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.0
+    image: tokend/horizon:3.9.1
     depends_on:
       - core
     restart: unless-stopped
