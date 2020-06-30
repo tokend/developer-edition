@@ -55,3 +55,11 @@ fiat_integrations:
   data:
   - endpoint: http://stripe/integrations/stripe
     currency: USD
+
+discounter:
+  enabled: true
+  asset: "BTC"
+  discounts:
+  - lower_limit: 10
+    upper_limit: 100
+    percent: 20
