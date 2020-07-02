@@ -53,7 +53,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.5
+    image: registry.gitlab.com/tokend/core:pg-31eb0c830f6bc810bc3c1bf95f664ac126c5c4cc
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.1
+    image: registry.gitlab.com/tokend/horizon:pg-8bed578ccaa51d4e49a50e4152558c20eb4aa526
     depends_on:
       - core
     restart: unless-stopped
@@ -116,7 +116,7 @@ services:
   web_client:
     image: tokend/web-client:1.12.0-rc.1
     restart: unless-stopped
-    volumes:  
+    volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
