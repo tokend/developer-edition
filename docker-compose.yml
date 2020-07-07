@@ -53,7 +53,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/core:pg-31eb0c830f6bc810bc3c1bf95f664ac126c5c4cc
+    image: registry.gitlab.com/tokend/core:pg-520ab003d465a22da52cbd2012113326ab359039
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/horizon:pg-8bed578ccaa51d4e49a50e4152558c20eb4aa526
+    image: registry.gitlab.com/tokend/horizon:pg-4ca42c4efd7b9adc9d0487872e9eb0b7b6d69db8
     depends_on:
       - core
     restart: unless-stopped
