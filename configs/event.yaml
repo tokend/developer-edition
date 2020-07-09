@@ -1,0 +1,15 @@
+log:
+  level: warn
+  disable_sentry: true
+
+db:
+  url: postgres://event:event@event_db/event?sslmode=disable
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: http://cop
+  upstream: http://event
+  service_name: "event"
+  service_port: "80"

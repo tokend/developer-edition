@@ -82,6 +82,26 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+  event:
+    image: registry.gitlab.com/tokend/conf4.0/conf4.0-svc:dc5e358090f2ab2718c2e24be743b5919a8bbbaf
+    restart: unless-stopped
+    depends_on:
+      - event_db
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/event.yaml:/config.yaml
+    entrypoint: sh -c "conf4.0-svc migrate up && conf4.0-svc run service"
+  event_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=event
+      - POSTGRES_PASSWORD=event
+      - POSTGRES_DB=event
+      - PGDATA=/pgdata
+    volumes:
+      - event-data:/pgdata
   api:
     image: tokend/identity:4.6.0
     restart: unless-stopped
@@ -303,3 +323,4 @@ volumes:
   horizon-data:
   storage-data:
   redis-data:
+  event-data:
