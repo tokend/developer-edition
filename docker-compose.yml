@@ -88,7 +88,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: registry.gitlab.com/tokend/horizon:pg-d8ea9c30ab1990c828391bb1dd6f426862cd287a
+    image: tokend/horizon:3.9.1
     depends_on:
       - core
     restart: unless-stopped
@@ -100,6 +100,8 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
+    ports:
+      - "9010:80"
 
   api:
     image: tokend/identity:4.5.5-rc.0
@@ -125,7 +127,7 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:1.3.0
+    image: tokend/terraform-provider-tokend:1.3.4
     labels:
       - "traefik.enabled=false"
     depends_on:
@@ -137,7 +139,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: registry.gitlab.com/tokend/blockparty/web-client:19bad76958315dd023a6beca82d64e2e05197a24
+    image: registry.gitlab.com/tokend/blockparty/web-client:095d9fc8c0c01dedd9b529880e7572f523e6c94f
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -229,7 +231,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:2abfc6af6c163de1448b85d41a5142c2c4636a0a
+    image: registry.gitlab.com/tokend/marketplace-svc:f508e644f7e0b0db3a69f5c9695c9e32c9679544
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -337,7 +339,7 @@ services:
 
   ## Ethereum
   erc20-deposit:
-    image: tokend/erc20-deposit-svc:1.0.8
+    image: registry.gitlab.com/tokend/docker-registry/erc20-deposit-svc:118b177775decebd1c9d32ca08934fd069a1e6ce
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -351,7 +353,7 @@ services:
     command: ["run", "deposit"]
 
   erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.8
+    image: registry.gitlab.com/tokend/docker-registry/erc20-deposit-svc:118b177775decebd1c9d32ca08934fd069a1e6ce
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -365,7 +367,7 @@ services:
     command: ["run", "deployer"]
 
   erc20-funnel:
-    image: tokend/erc20-deposit-svc:1.0.8
+    image: registry.gitlab.com/tokend/docker-registry/erc20-deposit-svc:118b177775decebd1c9d32ca08934fd069a1e6ce
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -379,7 +381,7 @@ services:
     command: ["run", "funnel"]
 
   erc20-withdraw:
-    image: tokend/erc20-withdraw-svc:1.0.5
+    image: tokend/erc20-withdraw-svc:1.0.6
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -393,7 +395,7 @@ services:
     command: ["run", "withdraw"]
 
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:396582d70c04390f8bbfe6f485c8f34435633e2f
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:fa6ae74a318ffe804f868e6363ac49869ffa4827
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -407,7 +409,7 @@ services:
     command: ["run", "deposit"]
 
   erc721-deployer:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:396582d70c04390f8bbfe6f485c8f34435633e2f
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:fa6ae74a318ffe804f868e6363ac49869ffa4827
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -422,7 +424,7 @@ services:
     command: ["run", "deployer"]
 
   erc721-funnel:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:396582d70c04390f8bbfe6f485c8f34435633e2f
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:fa6ae74a318ffe804f868e6363ac49869ffa4827
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
