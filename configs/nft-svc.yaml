@@ -15,6 +15,9 @@ keys:
 submit:
   endpoint: http://horizon
 
+doorman:
+  skip_sign_check: false
+
 listener:
   addr: :80
 
