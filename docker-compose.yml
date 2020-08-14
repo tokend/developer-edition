@@ -139,7 +139,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: registry.gitlab.com/tokend/blockparty/web-client:095d9fc8c0c01dedd9b529880e7572f523e6c94f
+    image: registry.gitlab.com/tokend/blockparty/web-client:b7ccf4cc0c5a26f79cc5f30301ffd44d18648478
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -231,7 +231,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:f508e644f7e0b0db3a69f5c9695c9e32c9679544
+    image: registry.gitlab.com/tokend/marketplace-svc:f497002e99403526ac30fdb978faeb4a7f296ad2
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -395,7 +395,7 @@ services:
     command: ["run", "withdraw"]
 
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:fa6ae74a318ffe804f868e6363ac49869ffa4827
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:ea709aeae581bdfdba0e2aeb0a94d1f026cdf1dc
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -409,7 +409,7 @@ services:
     command: ["run", "deposit"]
 
   erc721-deployer:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:fa6ae74a318ffe804f868e6363ac49869ffa4827
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:ea709aeae581bdfdba0e2aeb0a94d1f026cdf1dc
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -424,7 +424,7 @@ services:
     command: ["run", "deployer"]
 
   erc721-funnel:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:fa6ae74a318ffe804f868e6363ac49869ffa4827
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:ea709aeae581bdfdba0e2aeb0a94d1f026cdf1dc
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"

@@ -43,7 +43,7 @@ payer:
   payment_service_id: 2
   dl_account_id: 317
   dl_wallet_id: 476
-  payments_asset: "UAH"
+  payments_asset: "USD"
   fixed_fee: 500 # kopiyky
   dynamic_fee: 0.0125 # %
   debug: true
@@ -58,7 +58,7 @@ fiat_integrations:
 
 discounter:
   enabled: true
-  asset: "BTC"
+  asset: "BOXX"
   discounts:
   - lower_limit: 10
     upper_limit: 100
