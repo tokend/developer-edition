@@ -438,7 +438,7 @@ services:
     command: ["run", "funnel"]
 
   erc721-withdraw:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:f589d4a3e8e4082683201302b58d2e38fe045584
+    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:ca9b2c396aa53299cabbaaf11c5f8c7e825717d3
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
