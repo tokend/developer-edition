@@ -18,6 +18,9 @@ submit:
 listener:
   addr: :80
 
+doorman:
+  skip_sign_check: true
+
 cop:
   endpoint: http://cop
   upstream: http://nft-svc
