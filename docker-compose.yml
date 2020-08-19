@@ -133,7 +133,6 @@ services:
     depends_on:
       - horizon
       - storage
-    restart: on-failure
     volumes:
       - ./terraform:/opt/config
     entrypoint: ""
@@ -148,7 +147,7 @@ services:
     ports:
       - 8060:80
   admin_client:
-    image: registry.gitlab.com/tokend/blockparty/admin-panel:7b31e06248de34304dc135eb1c6eaf34ba2882e1
+    image: registry.gitlab.com/tokend/blockparty/admin-panel:14b5b2d9304b5f9c061230d67e70fc549e2a06db
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -170,7 +169,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:bcd3f53ccb167ed7991c72f51a3fa8d30e88121c
+    image: registry.gitlab.com/tokend/nft-svc:b624bdd122744298dc324a48db2cb2f8b1f202ea
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -231,7 +230,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:1ae496872bd0441e7378aff5459bf2c4bcd8278a
+    image: registry.gitlab.com/tokend/marketplace-svc:37afe72c5b0d4343373618104e00d1bfb574da83
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -438,7 +437,7 @@ services:
     command: ["run", "funnel"]
 
   erc721-withdraw:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:a14c7adb2cf9806df0597aec5fe50c0f7ec4e5eb
+    image: registry.gitlab.com/tokend/blockparty/erc-721-withdraw:6c8f3b51c43090c080b9a6d1ebe85dbfbb52bc3c
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
