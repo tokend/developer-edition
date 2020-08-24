@@ -1,0 +1,25 @@
+s3:
+  region: us-east-1
+  use_static_credentials: true
+  url: templates:9000
+  access_key: "miniominio"
+  secret_key: "sekritsekrit"
+  disable_ssl: true
+  s3_force_path_style: true
+  
+template_provider:
+  bucket: "templates"
+
+listener:
+  addr: :80
+                
+log:
+  level: info
+  disable_sentry: true
+
+cop:
+  endpoint: http://cop
+  upstream: http://templatesprovider
+  service_name: "templatesprovider"
+  service_port: "80"
+  service_prefix: "/templates"

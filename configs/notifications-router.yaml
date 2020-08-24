@@ -1,0 +1,33 @@
+log:
+  disable_sentry: true
+  level: info
+
+client:
+  endpoint: "http://traefik/"
+
+keys:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+
+doorman:
+  skip_sign_check: true
+
+notificator:
+  default_channels_priority:
+    - push
+    - sms
+
+db:
+  url: postgres://notifications_router:notifications_router@notifications_router_db/notifications_router?sslmode=disable
+
+listener:
+  addr: :80
+
+registration_api:
+  addr: :8000
+
+cop:
+  endpoint: http://cop
+  upstream: http://notifications_router
+  service_name: "notifications-router-svc"
+  service_port: "80"
+  service_prefix: "/integrations/notifications"

@@ -20,7 +20,7 @@ config:
   env:                                     "developer-edition"
   migrate_up_on_start:                     true
   api_backend:                             http://black.hole
-  template_backend:                        http://black.hole
+  template_backend:                        http://templatesprovider
   invest_ready:                            http://black.hole
   telegram_airdrop:                        http://black.hole
 
