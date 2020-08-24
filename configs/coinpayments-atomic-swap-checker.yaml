@@ -12,11 +12,11 @@ horizon:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 coinpayments:
-  merchant_id: "6936542314febfcc8dd3955fce88e0be"
+  merchant_id: "ae907f7919abbd0eb5283e0b2172bcd6"
   address: https://www.coinpayments.net/api.php
-  private_key: "1004f66dB4081cA6D9c3f0651A1DC64eB754158e48daFb7441c4B632D26628eC"
-  public_key: "f1db0de9c54cac677109f9da823b9627bef1c606fa75634c776100b88170a271"
-  ipn_secret: "supersekr1tandsecure"
+  private_key: "319Eb4A46bDEB5a0dac600A8d60cfed6331eDcC58cCE2B3B39864b90fA06a7c4"
+  public_key: "b510f391abc94f04bae6991ef89b7874c272c590c3d2d1067656c96de15009da"
+  ipn_secret: "deprecated"
   request_timeout: 30
 
 atomic_swap_checker:
