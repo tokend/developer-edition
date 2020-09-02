@@ -1,7 +1,7 @@
 api:
   horizon_url: http://janus
   account_manager: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
-  skip_signature_check: false
+  skip_signature_check: true
 
 db:
   url: postgres://api:api@api_db/api?sslmode=disable
