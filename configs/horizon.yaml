@@ -8,7 +8,7 @@ config:
   port:                                    80
   ingest:                                  true
   stale_threshold:                         0
-  sign_checkskip:                          false
+  sign_checkskip:                          true
   cors_enabled:                            false
   disable_api_submit:                      true
   disable_tx_tfa:                          true

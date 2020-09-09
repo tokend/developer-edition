@@ -53,7 +53,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.5
+    image: registry.gitlab.com/tokend/core:pg-b4e53c50dd30b252122437d7f1ecd5a7b0987614
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.1
+    image: registry.gitlab.com/tokend/horizon:pg-25b5ccdf8f917ca1b5f7341cedfce136c2a72063
     depends_on:
       - core
     restart: unless-stopped
@@ -138,7 +138,7 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
-
+  
   ##
   ## Auxiliary modules
   ##
@@ -303,3 +303,4 @@ volumes:
   horizon-data:
   storage-data:
   redis-data:
+  identity-storage-data:
