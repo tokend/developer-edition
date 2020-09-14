@@ -420,8 +420,8 @@ services:
     entrypoint: "erc-721-deposit"
     command: ["run", "deployer"]
 
-  identity:
-    image: registry.gitlab.com/tokend/identity-storage:5f28654d23a8cbd6f642a45734533448177bb466
+  identity-storage:
+    image: registry.gitlab.com/tokend/identity-storage:7f22bfcee4d4cdfd72f1058fe862004e373a4538
     labels:
       - "traefik.enabled=false"
     environment:

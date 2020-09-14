@@ -5,8 +5,12 @@ log:
 db:
   url: postgres://identity:identity@identity_db?sslmode=disable
 
+doorman:
+  skip_sign_check: true
+
 eth:
-  disabled: true
+  disabled: false
+  eth_identity_type: ethereum_pubkey
 
 listener:
   addr: :80
@@ -24,9 +28,9 @@ service:
   skip_sign_check: true
 
 cop:
-  disabled: true
+  disabled: false
   endpoint: "http://cop"
-  upstream: "http://identity"
-  surname: "identity"
+  upstream: "http://identity-storage"
+  service_name: "identity-storage"
   service_port: "80"
   service_prefix: "/integrations/identity-storage"
