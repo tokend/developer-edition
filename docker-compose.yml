@@ -421,7 +421,7 @@ services:
     command: ["run", "deployer"]
 
   identity:
-    image: identity-storage:latest
+    image: registry.gitlab.com/tokend/identity-storage:5f28654d23a8cbd6f642a45734533448177bb466
     labels:
       - "traefik.enabled=false"
     environment:
