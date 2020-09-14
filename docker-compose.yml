@@ -88,7 +88,7 @@ services:
       - "autoheal=true"
       - "traefik.enabled=false"
   horizon:
-    image: tokend/horizon:3.9.1
+    image: tokend/horizon:3.10.0-x.3
     depends_on:
       - core
     restart: unless-stopped
@@ -100,8 +100,6 @@ services:
     volumes:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
-    ports:
-      - "9010:80"
 
   api:
     image: tokend/identity:4.5.5-rc.0
@@ -169,7 +167,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:b624bdd122744298dc324a48db2cb2f8b1f202ea
+    image: registry.gitlab.com/tokend/nft-svc:1ba0e468c2a56649fd8fe83b6575eb307242b56e
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -422,6 +420,32 @@ services:
     entrypoint: "erc-721-deposit"
     command: ["run", "deployer"]
 
+  identity:
+    image: identity-storage:latest
+    labels:
+      - "traefik.enabled=false"
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - identity_db
+    volumes:
+      - ./configs/identity-storage.yaml:/config.yaml
+    entrypoint: sh -c "identity-storage migrate up && identity-storage run service"
+  identity_db:
+    image: tokend/postgres-ubuntu:9.6
+    labels:
+      - "traefik.enabled=false"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=identity
+      - POSTGRES_PASSWORD=identity
+      - POSTGRES_DB=identity
+      - PGDATA=/pgdata
+    volumes:
+      - identity-data:/pgdata
+
   erc721-funnel:
     image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:cb9b6d902baace04155a60d8c778038581860ee7
     restart: unless-stopped
@@ -517,6 +541,7 @@ services:
       - notificator-data:/pgdata
 
 volumes:
+  identity-data:
   adks-data:
   api-data:
   core-data:

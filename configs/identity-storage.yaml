@@ -1,0 +1,32 @@
+log:
+  disable_sentry: true
+  level: debug
+
+db:
+  url: postgres://identity:identity@identity_db?sslmode=disable
+
+eth:
+  disabled: true
+
+listener:
+  addr: :80
+
+client:
+  endpoint: http://horizon
+
+submit:
+  endpoint: http://horizon
+
+rbac:
+  endpoint: http://....
+
+service:
+  skip_sign_check: true
+
+cop:
+  disabled: true
+  endpoint: "http://cop"
+  upstream: "http://identity"
+  surname: "identity"
+  service_port: "80"
+  service_prefix: "/tokens"
