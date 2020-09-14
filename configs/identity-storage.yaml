@@ -29,4 +29,4 @@ cop:
   upstream: "http://identity"
   surname: "identity"
   service_port: "80"
-  service_prefix: "/integrations/dns"
+  service_prefix: "/integrations/identity-storage"
