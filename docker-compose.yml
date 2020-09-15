@@ -136,7 +136,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: registry.gitlab.com/tokend/blockparty/web-client:4fe658d17ba6acda2762b2631eacca89c61f48b1
+    image: registry.gitlab.com/tokend/blockparty/web-client:829f1f66902ded603ce680a7181da9ffdb1d343b
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -421,7 +421,7 @@ services:
     command: ["run", "deployer"]
 
   identity-storage:
-    image: registry.gitlab.com/tokend/identity-storage:7f22bfcee4d4cdfd72f1058fe862004e373a4538
+    image: registry.gitlab.com/tokend/identity-storage:eecdbb36801c632929a4915f68466dcdc7b86315
     labels:
       - "traefik.enabled=false"
     environment:

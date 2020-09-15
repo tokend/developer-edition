@@ -13,7 +13,7 @@ horizon:
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
-  disabled: false
+  disabled: true
   endpoint: http://notificator
   client_router: https://example.tokend.io/
 
@@ -56,7 +56,7 @@ storage:
       - image/gif
 
 wallets:
-  disable_confirm: false
+  disable_confirm: true
 
 tx_watcher:
   disabled: false
