@@ -70,7 +70,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.5-rc.0
+    image: 3.7.0-x.3
     depends_on:
       - traefik
     restart: unless-stopped
