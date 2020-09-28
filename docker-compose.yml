@@ -136,7 +136,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: registry.gitlab.com/tokend/blockparty/web-client:73102a2fa66b676990f934c79c940be5f4f1e55f
+    image: registry.gitlab.com/tokend/blockparty/web-client:9fcd814ebccb591f171cf03d99aa48df21a77845
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -167,7 +167,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:1ba0e468c2a56649fd8fe83b6575eb307242b56e
+    image: registry.gitlab.com/tokend/nft-svc:7f4deef9fc477671e122855baa49eab264938ad2
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -228,7 +228,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:37afe72c5b0d4343373618104e00d1bfb574da83
+    image: registry.gitlab.com/tokend/marketplace-svc:1e35ed1b42b8703a35edc209175a4abc5f39d040
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -421,7 +421,7 @@ services:
     command: ["run", "deployer"]
 
   identity-storage:
-    image: registry.gitlab.com/tokend/identity-storage:538c6f9181e028328cff1adc38874782200016ad
+    image: registry.gitlab.com/tokend/identity-storage:0086e9381a6cd4f1993e3e585cca3ea771a9d0a4
     labels:
       - "traefik.enabled=false"
     environment:
