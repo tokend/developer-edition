@@ -1,0 +1,25 @@
+log:
+  disable_sentry: true
+  level: debug
+
+keys:
+  signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
+  source: GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB
+
+client:
+  endpoint: http://traefik
+
+submit:
+  endpoint: http://traefik
+
+db:
+  url: postgres://mass_payments:mass_payments@mass_payments_db/mass_payments?sslmode=disable
+
+listener:
+  addr: :80
+
+cop:
+  endpoint: http://cop
+  upstream: http://mass_payments
+  service_name: "mass-payments"
+  service_port: "80"

@@ -53,7 +53,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: registry.gitlab.com/tokend/core:pg-b4e53c50dd30b252122437d7f1ecd5a7b0987614
+    image: registry.gitlab.com/tokend/core:pg-86177322897848eabd0396cde70f190dcf778fb9
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: registry.gitlab.com/tokend/horizon:pg-25b5ccdf8f917ca1b5f7341cedfce136c2a72063
+    image: registry.gitlab.com/tokend/horizon:pg-b89b5d015c8e30a632d1bc7cefbdab738b99e484
     depends_on:
       - core
     restart: unless-stopped
@@ -138,6 +138,27 @@ services:
       - MINIO_BROWSER=off
     volumes:
       - storage-data:/data
+  mass_payments:
+    image: registry.gitlab.com/tokend/mass-payments-sender-svc:835bade709acf777fdc3a53d89b06de6fdb43085
+    restart: unless-stopped
+    depends_on:
+      - horizon
+      - mass_payments_db
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/mass-payments.yaml:/config.yaml
+    entrypoint: sh -c "mass-payments-sender-svc migrate up && mass-payments-sender-svc run service" 
+  mass_payments_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=mass_payments
+      - POSTGRES_PASSWORD=mass_payments
+      - POSTGRES_DB=mass_payments
+      - PGDATA=/pgdata
+    volumes:
+      - mass-payments-data:/pgdata
   
   ##
   ## Auxiliary modules
@@ -304,3 +325,4 @@ volumes:
   storage-data:
   redis-data:
   identity-storage-data:
+  mass-payments-data:
