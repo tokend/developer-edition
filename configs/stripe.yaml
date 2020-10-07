@@ -8,7 +8,7 @@ listener:
 stripe:
   secret_key: sk_test_oWxMeyILtYs7mke2gTW9czIu
   domain: http://b8996c3a.ngrok.io/_/api/
-  success_url: http://localhost:8060
+  success_url: http://localhost:8095
   cancel_url: http://localhost:8060
 
 cop:

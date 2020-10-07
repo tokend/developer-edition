@@ -27,8 +27,8 @@ cop:
 coinpayments:
   merchant_id: "6936542314febfcc8dd3955fce88e0be"
   address: https://www.coinpayments.net/api.php
-  private_key: "1004f66dB4081cA6D9c3f0651A1DC64eB754158e48daFb7441c4B632D26628eC"
-  public_key: "f1db0de9c54cac677109f9da823b9627bef1c606fa75634c776100b88170a271"
+  private_key: "96584e0e72E4453D4542d50058c7aF9B5652a60f84351920267730c48BDD09e5"
+  public_key: "f9d5d241d2fa9a54d5d361b8a492f4ad8323636689e596798d78f0de7b280e77"
   ipn_secret: "supersekr1tandsecure"
   request_timeout: 30
 

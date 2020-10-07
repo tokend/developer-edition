@@ -167,7 +167,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:7f4deef9fc477671e122855baa49eab264938ad2
+    image: registry.gitlab.com/tokend/nft-svc:08eab3c67eaeec0f5c77c95a631a10acfceddc31
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -228,7 +228,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:1e35ed1b42b8703a35edc209175a4abc5f39d040
+    image: registry.gitlab.com/tokend/marketplace-svc:8d07348a5d35810f9fde98302bf2adf06fcf3fee
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
