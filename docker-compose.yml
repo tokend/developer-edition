@@ -194,9 +194,9 @@ services:
     volumes:
       - ./configs/asset-remover.yaml:/config.yaml
     entrypoint: sh -c "asset-remover-svc run assetchecker"
-   
+
   marketplace:
-    image: tokend/marketplace-svc:0.4.0
+    image: tokend/marketplace-svc:0.4.1
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
