@@ -42,6 +42,7 @@ services:
     depends_on:
       - horizon
       - adks_db
+      - marketplace
     ports:
       - 8006:80
     volumes:
