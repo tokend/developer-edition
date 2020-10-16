@@ -42,6 +42,7 @@ services:
     depends_on:
       - horizon
       - adks_db
+      - marketplace
     ports:
       - 8006:80
     volumes:
@@ -136,7 +137,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: registry.gitlab.com/tokend/blockparty/web-client:9fcd814ebccb591f171cf03d99aa48df21a77845
+    image: registry.gitlab.com/tokend/blockparty/web-client:46c358ef61e8d16ff8a1ea1145beeb09c279b2a0
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -167,7 +168,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:08eab3c67eaeec0f5c77c95a631a10acfceddc31
+    image: registry.gitlab.com/tokend/nft-svc:5900ac77de2f36a44d286d50b8516c47d02d4b14
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -228,7 +229,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:8d07348a5d35810f9fde98302bf2adf06fcf3fee
+    image: registry.gitlab.com/tokend/marketplace-svc:4e1dda4ceb000438be0de5566763fe3da00ab1bd
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -390,9 +391,20 @@ services:
       - ./configs/erc20-withdraw.yaml:/config.yaml
     entrypoint: "erc20-withdraw-svc"
     command: ["run", "withdraw"]
-
+  docker-host:
+    image: qoomon/docker-host
+    cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+    restart: on-failure
+  tcp_message_emitter:
+    depends_on: [ docker-host ]
+    image: alpine
+    command: [ "sh", "-c", "while :; do date; sleep 1; done | nc 'docker-host' 2323 -v"]
+  udp_message_emitter:
+    depends_on: [ docker-host ]
+    image: alpine
+    command: [ "sh", "-c", "while :; do date; sleep 1; done | nc 'docker-host' 5353 -u -v"]
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:cb9b6d902baace04155a60d8c778038581860ee7
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:27c417b5deea7f8a7d1b71cf0607bf4741fe0cdf
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
@@ -406,7 +418,7 @@ services:
     command: ["run", "deposit"]
 
   erc721-deployer:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:cb9b6d902baace04155a60d8c778038581860ee7
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:27c417b5deea7f8a7d1b71cf0607bf4741fe0cdf
     restart: on-failure
     labels:
       - "traefik.enabled=false"
@@ -447,7 +459,7 @@ services:
       - identity-data:/pgdata
 
   erc721-funnel:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:cb9b6d902baace04155a60d8c778038581860ee7
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:27c417b5deea7f8a7d1b71cf0607bf4741fe0cdf
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"

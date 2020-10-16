@@ -2,8 +2,11 @@ rpc:
   endpoint: "ws://63.32.188.217:8546"
 
 ethereum:
-  checkpoint: 6106200 #block to start listening for deposits from
+  checkpoint: 8882144 #block to start listening for deposits from
   confirmations: 1 #number of confirmations to wait for
+
+token_url:
+  disabled: false
 
 horizon:
   endpoint: "http://horizon"
