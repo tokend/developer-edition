@@ -129,7 +129,7 @@ services:
     volumes:
       - storage-data:/data
   dns:
-    image: tokend/dns:0.5.0
+    image: registry.gitlab.com/tokend/tsym/dns-svc:05cfff94571210bfcb06becd7ef7636057e56b7d
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -269,6 +269,29 @@ services:
       - 'run'
       - 'service'
 
+  problems:
+    image: registry.gitlab.com/tokend/tsym/problems-svc:42677b02e4f835c53e71562895650ac66d7cc02d
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/problems.yaml:/config.yaml
+    entrypoint: sh -c "problems-svc migrate up && problems-svc run service"
+
+    depends_on:
+      - problems_db
+      - api
+  problems_db:
+    image: tokend/postgres-ubuntu:9.6
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=problems
+      - POSTGRES_PASSWORD=problems
+      - POSTGRES_DB=problems
+      - PGDATA=/pgdata
+    volumes:
+      - problems-data:/pgdata
+
 volumes:
   adks-data:
   api-data:
@@ -280,3 +303,4 @@ volumes:
   proxy-payments-data:
   marketplace-data:
   sponsorship-data:
+  problems-data:

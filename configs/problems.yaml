@@ -1,0 +1,16 @@
+log:
+  level: info 
+  disable_sentry: true
+
+db:
+  url: postgres://problems:problems@problems_db/problems?sslmode=disable
+
+listener:
+  addr: :80 # TODO configure and rm this TODO
+
+cop:
+  endpoint: http://cop
+  upstream: http://problems
+  service_name: "problems-svc"
+  service_port: "80"
+  service_prefix: "/integrations/problems"
