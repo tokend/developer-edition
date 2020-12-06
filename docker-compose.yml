@@ -43,7 +43,7 @@ services:
     volumes:
       - adks-data:/pgdata
   core:
-    image: tokendconto/core:3.6.5-nc
+    image: registry.gitlab.com/tokend/core:pg-4866462edb2c1c50a371e3bde8ea02823b3c1c2a
     depends_on:
       - traefik
     restart: unless-stopped
@@ -60,7 +60,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.0
+    image: registry.gitlab.com/tokend/horizon:pg-3cae912ca3741cdca91fc78837deaf8d13de4bb7
     depends_on:
       - core
     restart: unless-stopped
