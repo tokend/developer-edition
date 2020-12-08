@@ -137,7 +137,7 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: registry.gitlab.com/tokend/blockparty/web-client:46c358ef61e8d16ff8a1ea1145beeb09c279b2a0
+    image: registry.gitlab.com/tokend/blockparty/web-client:2.0.0-rc.16
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -146,7 +146,7 @@ services:
     ports:
       - 8060:80
   admin_client:
-    image: registry.gitlab.com/tokend/blockparty/admin-panel:14b5b2d9304b5f9c061230d67e70fc549e2a06db
+    image: registry.gitlab.com/tokend/blockparty/admin-panel:831c40cf7927310100765830d7321175ae6e9454
     restart: unless-stopped
     labels:
       - "traefik.enabled=false"
@@ -168,7 +168,7 @@ services:
     volumes:
       - storage-data:/data
   nft-svc:
-    image: registry.gitlab.com/tokend/nft-svc:5900ac77de2f36a44d286d50b8516c47d02d4b14
+    image: registry.gitlab.com/tokend/nft-svc:41b5fe762a4fc4591fdebf98d713ff2111a78f97
     restart: unless-stopped
     entrypoint: sh -c "nft-svc migrate up && nft-svc run"
     depends_on:
@@ -229,7 +229,7 @@ services:
       - ./configs/poll-closer.yaml:/config.yaml
     command: run closer
   marketplace:
-    image: registry.gitlab.com/tokend/marketplace-svc:4e1dda4ceb000438be0de5566763fe3da00ab1bd
+    image: registry.gitlab.com/tokend/marketplace-svc:1962b10b4b2edbedffd24007625f1875793439e4
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -404,7 +404,7 @@ services:
     image: alpine
     command: [ "sh", "-c", "while :; do date; sleep 1; done | nc 'docker-host' 5353 -u -v"]
   erc721-deposit:
-    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:27c417b5deea7f8a7d1b71cf0607bf4741fe0cdf
+    image: registry.gitlab.com/tokend/blockparty/erc-721-deposit:1a4362c432eac4b23e2b0f30241280778a7a849d
     labels:
       - "traefik.enabled=false"
     restart: unless-stopped
