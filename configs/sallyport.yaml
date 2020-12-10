@@ -1,0 +1,29 @@
+log:
+  disable_sentry: true
+
+listener:
+  addr: :80 # TODO configure and rm this TODO
+
+cop:
+  endpoint: "http://cop"
+  upstream: "http://sallyport"
+  service_name: "sallyport-svc"
+  service_port: 80
+  service_prefix: "/integrations/sallyport"
+
+
+proxy:
+  pass: "http://traefik"
+  path: "/_/api/integrations/identities"
+  endpoints:
+    - path: "/"
+      methods:
+        - "POST"
+    - path: "/info"
+      methods:
+        - "GET"
+
+service:
+  identities:
+    - username: badmin
+      password: badmin
