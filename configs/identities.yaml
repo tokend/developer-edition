@@ -2,7 +2,7 @@ log:
   disable_sentry: true
 
 db:
-  url: "postgres://identities:identities@identities_db:5432/identities?sslmode=disable"
+  url: "postgres://identities:identities@identities_db/identities?sslmode=disable"
 
 listener:
   addr: :80 # TODO configure and rm this TODO
@@ -10,38 +10,29 @@ listener:
 cop:
   endpoint: "http://cop"
   upstream: "http://identities"
-  service_name: "identity-svc"
+  service_name: "identities-svc"
   service_port: 80
   service_prefix: "/integrations/identities"
 
 service:
-  ca_admin_identity_name: caadmin
-  ca_admin_identity_password: caadminpw
+  disable_encryption: false
   service_private_key: |
     -----BEGIN RSA PRIVATE KEY-----
-    MIIEowIBAAKCAQEAvW+2VY8cGXWoLabXw4ZASf7sVeNiKoZjjpEA/z2NHMNAnEsi
-    DvCUlwQtdYSKb5rT/24NCnyd6LZlAdv36DJGEJamNkD3k+5wEb0MxUeKIatL9gb5
-    2WoSIqVlSc6GIQD6PaIDJATQDIz3t3LfOYaQDsZ0tkXL1kMlo1QnMrggSHHeyLo2
-    a29/auTvk69GuaaZe4o4WCFWezK2v4O+DPdf3G7yq6hH0RHBXI8R8uThBno/mvAB
-    8uAoufNMoaHHMWEybFhi0amzCxKvGHDKuQ32uXhmUsP13qmMH/WEzFfTcolVrFTL
-    MJZqHjJslrIlYKUCUJJJhc7BWIckzCC87DLjGwIDAQABAoIBAGsysj2MdFw75mWf
-    Cm4MpIi7B0Y7HCvwTJo6mBPX4uip3QAUzDskDRHAPXFJBYXOWbUrs5mBl2I/BL2e
-    mpT9DgUJGxmMfg1qWmTPVFC3AQW4h427uNs9WPHeIok3o1M92F3UNm7Fgm33v55C
-    FOvap96UkysqKAUhjkT0tBHRfANB44li69ZlrJ5KP7Q9DC/T8VEFaH9MF8EMmlMq
-    jhttIkmKeTnL+T5tl6KeQ6nItQu6a9dUeWhvB53YKEuGFnerk6/QktHAWhiMcbVL
-    AcVhElX5Cy97/VFxzkW5D9KFzU7YWtzje72s34Y26xXU8bWh6LnvtH+u72RQyLFa
-    q/8nN0ECgYEA38rWM9NVvAxytP+zDu9Luy8X0GiiCINyhcsQpqbbcP9w/k7XFeGp
-    mz++n27Pm1wjH4pbSxWdNcyJ9k0bIGoFDwm32bOM1ThgHZLhVwLWmpAeXyxkovMU
-    7KV0dWuoefM86R6AJwPUNPmDCJsh2i286tGv2v5FHZukABIf3vI8Y3ECgYEA2LMa
-    DRriyBrDslNlkRDxXugE1UWuuFVLyRT/WVlbm24yFGrrGeyZNs1gbPAm5XbEBykx
-    w29g6DVFnuxKOUl6kg5sjXbVj5Rjcigo1x/TDKWio19B+yy/7v01L9L1LiSKt7Q1
-    Tghj2c+OSglXceDquehUb8az7timQM53x847UUsCgYBITcqDGAadKRBudiat7pZz
-    NbXl+chQI9f+bitFDKfdjEo/f81yHmSj6iZ2cGDW+x/F8ven/KW8WgdA8oyPHnHf
-    9+3UgnQ/92TmaSww5pPbgDCv4zHoi8z44EQOI+hc7j+Buf8Bm/UV4H97alO3oAtn
-    erPsdzZxaHXGKBTv/SeRoQKBgQCYdrrXiZkRrTMPHnoRbNhGK/xqiZJ6gxjFK47V
-    MHexjgCSOP+cx8istCcpvnW/cKZPW351wMFv3ztSq3E1iStB5AAgMAHl+UNWqEbD
-    xNJazZb2Vyk3La8E2QY41bZHdtJameH/Owv1zYCROq1ZpCPCFWKDGkyyuZ+PbTT9
-    UW6OrQKBgCBJXrH1LCUSiVKjylS+Bf6417G5Euf6q4x/ZkGp80W3AT/5SaLcglrJ
-    fRJ2pG95XshojBrhAhUJ1Ba1K4AaUze+diaUVvF30fkuZQRqiM0SoCrnVM4LAyU8
-    022/rvY/Kx1tBkBHuDFa/n9P43TYFbSsZmT/2T/lCnYcvhxGJWuW
-    -----END RSA PRIVATE KEY-----
+    MIICXAIBAAKBgQC350PIdcFex7ue9WlofdaEhRUjWPuJoGG96ZoKUR2nB5+b/AHa
+    Hw/DezE7/T1mzfrfsuUyKtSVDvPfdYde9MxLO2Q6cMWi1vfvxImL0mbNSzFCKDpE
+    MMpWGEZYcLEZKdkRbEuExjgPrugQ1bkFAsElYowH+FxB0ybDnoggraYrowIDAQAB
+    AoGASaBfNNxgJJAWf5eFMf5fagLV6abwXbNGLoBd2Y+MLZkRv6NvImKZLwwdNAU5
+    FfWVYQYAWMto/JxV6rrlDZE4UKCL2SjMbVXgCFbPk/PimCTve6738bgKi4OxjHH/
+    kmfuZuNBE9gCErtIecRBjnSkQ6GPXDxfDs21C5yAAr38HFECQQDgLKJIJGJdcl0G
+    pMkx25aPvJvvt3WU5ZSyVZSunGE04IyQP2HwOLhf0FnzZGZwe7w89Ko0y8TFGK3j
+    LFvAEZ1nAkEA0gMHAncU29F/tSv6Tg3bjKVeceyBh7HAQ5sFLCM7md9+lFq++Uxp
+    snbLWMkC96M/1o0ao7SYy7++fZnyfhceZQJBAIYIKb8Ygfd9OUGPpPu6XvrxugpJ
+    lnPAEHfP02XS+guzdleIjfYi85nV6PItRVJbqOCJKHsImk19w/nfu7vKzGECQE4b
+    8CR7k9d6IOyKUctsHgc+jlUC6N5GP0MlyhOzevxtApA8/CCOyhUlV9ZK1P6zyg+L
+    ZagTiGzngPsIIgfBo30CQHCLZk3HUxKEI0gIAm0F4ZW457T4aWHzM74Oz/THvFR+
+    9D5HDmyCmbNIp9SxdD1EbexsFngFJOQE91p2s0WC41A=
+    -----END RSA PRIVATE recKEY-----
+
+sdkconfig:
+  # disabled: true
+  config_file: /sdkconf.yaml

@@ -1,0 +1,214 @@
+#
+# Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
+#
+version: 1.0.0
+
+#
+# The client section used by GO SDK.
+#
+client:
+  # Which organization does this application instance belong to? The value must be the name of an org
+  # defined under "organizations"
+  organization: Org1MSP
+
+  logging:
+    level: info
+
+  # Root of the MSP directories with keys and certs.
+  cryptoconfig:
+    path: /organizations/peerOrganizations/org1.example.com
+
+  # BCCSP config for the client. Used by GO SDK.
+  BCCSP:
+    security:
+      enabled: true
+      default:
+        provider: "SW"
+      hashAlgorithm: "SHA2"
+      softVerify: true
+      level: 256
+
+  tlsCerts:
+    # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
+    systemCertPool: false
+
+channels:
+  # name of the channel
+  mychannel:
+    # Required. list of peers from participating orgs
+    peers:
+      peer0.org1.example.com:
+        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
+        # have the chaincode installed. The app can also use this property to decide which peers
+        # to send the chaincode install request. Default: true
+        endorsingPeer: true
+
+        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
+        # installed. The app can also use this property to decide which peers to send the
+        # chaincode install request. Default: true
+        chaincodeQuery: true
+
+        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
+        # queryBlock(), queryTransaction(), etc. Default: true
+        ledgerQuery: true
+
+        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
+        # produce events but the app typically only needs to connect to one to listen to events.
+        # Default: true
+        eventSource: true
+
+    # [Optional]. The application can use these options to perform channel operations like retrieving channel
+    # config etc.
+    policies:
+      #[Optional] options for retrieving channel configuration blocks
+      queryChannelConfig:
+        #[Optional] min number of success responses (from targets/peers)
+        minResponses: 1
+        #[Optional] channel config will be retrieved for these number of random targets
+        maxTargets: 1
+        #[Optional] retry options for query config block
+        retryOpts:
+          #[Optional] number of retry attempts
+          attempts: 5
+          #[Optional] the back off interval for the first retry attempt
+          initialBackoff: 500ms
+          #[Optional] the maximum back off interval for any retry attempt
+          maxBackoff: 5s
+          #[Optional] he factor by which the initial back off period is exponentially incremented
+          backoffFactor: 2.0
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  Org1MSP:
+    mspid: Org1MSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath:  users/{username}@org1.example.com/msp
+
+    peers:
+      - peer0.org1.example.com
+
+    certificateAuthorities:
+      - ca_org1
+
+  # # the profile will contain public information about organizations other than the one it belongs to.
+  # # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # # peers with a public URL to send transaction proposals. The file will not contain private
+  # # information reserved for members of the organization, such as admin key and certificate,
+  # # fabric-ca registrar enroll ID and secret, etc.
+  # OrgEximBankMSP:
+  #   mspid: OrgEximBankMSP
+
+  #   # This org's MSP store (absolute path or relative to client.cryptoconfig)
+  #   cryptoPath:  peerOrganizations/exim.com/users/{username}@exim.com/msp
+
+  #   peers:
+  #     - peer0.exim.com
+
+  # # Orderer Org name
+  # OrgPrivatBankMSP:
+  #   # Membership Service Provider ID for this organization
+  #   mspID: OrgPrivatBankMSP
+
+  #   # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
+  #   cryptoPath: ordererOrganizations/pb.com/users/{username}@pb.com/msp
+
+##
+## List of orderers to send transaction and channel create/update requests to. For the time
+## being only one orderer is needed. If more than one is defined, which one get used by the
+## SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+##
+#orderers:
+#  orderer.example.com:
+#    url: localhost:7050
+#
+#    # these are standard properties defined by the gRPC library
+#    # they will be passed in as-is to gRPC client constructor
+#    grpcOptions:
+#      ssl-target-name-override: orderer.example.com
+#      # These parameters should be set in coordination with the keepalive policy on the server,
+#      # as incompatible settings can result in closing of connection.
+#      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+#      keep-alive-time: 0s
+#      keep-alive-timeout: 20s
+#      keep-alive-permit: false
+#      fail-fast: false
+#      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+#      allow-insecure: false
+#
+#    tlsCACerts:
+#      # Certificate location absolute path
+#      path: /artifacts/ca/nbu/ca-cert.pem
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+  peer0.org1.example.com:
+    # this URL is used to send endorsement and query requests
+    url: localhost:7051
+    # # eventUrl is only needed when using eventhub (default is delivery service)
+    # eventUrl: peer0.org1.example.com:7053
+
+    grpcOptions:
+      ssl-target-name-override: peer0.org1.example.com
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      # TODO use shared location
+      path: /organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+
+certificateAuthorities:
+  ca_org1:
+    url: https://ca_org1:7054
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /organizations/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+#    # [Optional] The optional name of the CA.
+#    caName: ca.ca_org1.tokend.io
+
+  ca_org2:
+    url: https://ca_org2:8054
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /organizations/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      enrollId: admin
+      enrollSecret: adminpw
+#    # [Optional] The optional name of the CA.
+#    caName: ca.ca_org1.tokend.io
+
+#  ca_orderer:
+#    url: https://localhost:9054
+#    tlsCACerts:
+#      # Certificate location absolute path
+#      path: /organizations/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+#
+#    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+#    # needed to enroll and invoke new users.
+#    registrar:
+#      enrollId: admin
+#      enrollSecret: admin
+##    # [Optional] The optional name of the CA.
+##    caName: ca.ca_org1.tokend.io

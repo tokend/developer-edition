@@ -1,5 +1,10 @@
 version: '3.3'
 
+networks: 
+  test:
+    external:
+      name: net_test 
+
 services:
   traefik:
     image: traefik:v2.0
@@ -8,6 +13,9 @@ services:
       - "8081:8080"
     volumes:
       - ./configs/traefik.yaml:/traefik.yaml
+    networks:
+      - test
+
   cop:
     image: tokend/traefik-cop:1.0.0
     restart: unless-stopped
@@ -16,6 +24,9 @@ services:
     volumes:
       - ./configs/cop.yaml:/config.yaml
     entrypoint: sh -c "traefik-cop run"
+    networks:
+      - test
+
   upstream:
     image: nginx
     restart: unless-stopped
@@ -23,15 +34,21 @@ services:
     - ./configs/nginx.conf:/etc/nginx/nginx.conf
     ports:
     - "8000:80"
+    networks:
+      - test
 
   identities:
-    image: registry.gitlab.com/tokend/nbu/identity-svc:75ed0f0cf5ba50870fb097ecd0f4f6cb49a1a0a9
+    image: identities:latest # registry.gitlab.com/tokend/nbu/identity-svc:0b6bebf545e88c6c7deed0ef1592f1e797fd45ab
     restart: unless-stopped
-    entrypoint: sh -c "identity-svc migrate down && identity-svc run service"
+    entrypoint: sh -c "identity-svc migrate up && identity-svc run service"
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/identities.yaml:/config.yaml
+      - ./configs/sdkconf.yaml:/sdkconf.yaml
+      - ./organizations:/organizations
+    networks:
+      - test
 
   identities_db:
     image: tokend/postgres-ubuntu:9.6
@@ -43,14 +60,18 @@ services:
       - PGDATA=/pgdata
     volumes:
       - identities-data:/pgdata
+    networks:
+      - test
 
   sallyport:
-    image: registry.gitlab.com/tokend/nbu/sallyport-svc:b559a3764d83060f455dd9f5cbe52f1e761942fc
+    image: sallyport:latest # registry.gitlab.com/tokend/nbu/sallyport-svc:b559a3764d83060f455dd9f5cbe52f1e761942fc
     environment:
       - KV_VIPER_FILE=/config.yaml
     command: run service
     volumes:
       - ./configs/sallyport.yaml:/config.yaml
+    networks:
+      - test
 
 volumes:
   identities-data:

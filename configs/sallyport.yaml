@@ -14,14 +14,11 @@ cop:
 
 proxy:
   pass: "http://traefik"
-  path: "/_/api/integrations/identities"
+  path: "/integrations/identities"
   endpoints:
     - path: "/"
       methods:
         - "POST"
-    - path: "/info"
-      methods:
-        - "GET"
 
 service:
   identities:
