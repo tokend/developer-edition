@@ -53,7 +53,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.5
+    image: tokend/core:3.7.0-x.8
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.1
+    image: tokend/horizon:3.10.0-x.7
     depends_on:
       - core
     restart: unless-stopped
