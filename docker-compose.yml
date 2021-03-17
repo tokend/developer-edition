@@ -53,7 +53,7 @@ services:
       - --appendonly
       - "yes"
   core:
-    image: tokend/core:3.6.5
+    image: tokend/core:3.7.0-x.10
     depends_on:
       - traefik
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
     labels:
       - "autoheal=true"
   horizon:
-    image: tokend/horizon:3.9.1
+    image: tokend/horizon:3.10.0-x.10
     depends_on:
       - core
     restart: unless-stopped
@@ -83,7 +83,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.6.0
+    image: tokend/identity:4.7.0-rc.0
     restart: unless-stopped
     depends_on:
       - horizon
@@ -114,14 +114,14 @@ services:
     entrypoint: ""
     command: /opt/config/apply.sh
   web_client:
-    image: tokend/web-client:1.13.0-rc.0
+    image: tokend/web-client:1.13.0-rc.2
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.13.0
+    image: tokend/admin-client:1.14.0-rc.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
@@ -252,7 +252,7 @@ services:
 
   ## Ethereum
   erc20-deposit:
-    image: tokend/erc20-deposit-svc:1.0.10
+    image: tokend/erc20-deposit-svc:1.0.12
     restart: unless-stopped
     depends_on:
       - horizon
@@ -263,7 +263,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deposit"]
   erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.10
+    image: tokend/erc20-deposit-svc:1.0.12
     restart: on-failure
     depends_on:
       - horizon
@@ -274,7 +274,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deployer"]
   erc20-funnel:
-    image: tokend/erc20-deposit-svc:1.0.10
+    image: tokend/erc20-deposit-svc:1.0.12
     restart: unless-stopped
     depends_on:
       - horizon
@@ -285,7 +285,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "funnel"]
   erc20-withdraw:
-    image: tokend/erc20-withdraw-svc:1.0.6
+    image: tokend/erc20-withdraw-svc:1.0.9-x.0
     restart: unless-stopped
     depends_on:
       - horizon
