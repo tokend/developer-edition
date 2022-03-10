@@ -83,7 +83,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.7.0
+    image: tokend/identity:4.7.2-x.0
     restart: unless-stopped
     depends_on:
       - horizon
