@@ -5,7 +5,7 @@ Quick way for running [TokenD](https://tokend.io) local development environment 
 ## Requirements
 
 * [Docker 17.06.0+](https://www.docker.com/get-started)
-* [Compose 3.3+](https://docs.docker.com/compose/install/)
+* [Compose 1.0 <=, < 2.0](https://docs.docker.com/compose/install/)
 * Linux/MacOS, Windows support is experimental and has known issues.
 
 ## Bootstraping your environment
