@@ -83,7 +83,7 @@ services:
       - ./configs/horizon.yaml:/config.yaml
       - horizon-data:/data
   api:
-    image: tokend/identity:4.7.2-rc.0
+    image: tokend/identity:4.7.5
     restart: unless-stopped
     depends_on:
       - horizon
@@ -121,7 +121,7 @@ services:
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.14.0-rc.0
+    image: tokend/admin-client:1.14.0-rc.1
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js

@@ -22,7 +22,7 @@ listener:
   addr: :80
 
 log:
-  level: warn
+  level: debug
   slow_query_bound: 300ms
   slow_request_bound: 1s
   # we are using sentry for error collection,
