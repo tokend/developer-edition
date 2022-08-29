@@ -121,7 +121,7 @@ services:
     ports:
       - 8060:80
   admin_client:
-    image: tokend/admin-client:1.14.0-rc.1
+    image: tokend/admin-client:1.15.0-x.0
     restart: unless-stopped
     volumes:
       - ./configs/client.js:/usr/share/nginx/html/static/env.js
