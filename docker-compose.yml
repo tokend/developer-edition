@@ -104,10 +104,10 @@ services:
     volumes:
       - api-data:/pgdata
   initscripts:
-    image: tokend/terraform-provider-tokend:1.3.12
+    image: tokend/terraform-provider-tokend:2.0.0
     depends_on:
-      - horizon
       - storage
+      - horizon
     restart: on-failure
     volumes:
       - ./terraform:/opt/config
