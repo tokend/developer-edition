@@ -1,21 +1,6 @@
 version: '3.3'
 
 services:
-  traefik:
-    image: traefik:v2.0
-    ports:
-      - "80:80"
-      - "8081:8080"
-    volumes:
-      - ./configs/traefik.yaml:/traefik.yaml
-  cop:
-    image: tokend/traefik-cop:1.0.0
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/cop.yaml:/config.yaml
-    entrypoint: sh -c "traefik-cop run"
   upstream:
     image: nginx
     restart: unless-stopped
@@ -23,35 +8,48 @@ services:
     - ./configs/nginx.conf:/etc/nginx/nginx.conf
     ports:
     - "8000:80"
+  initscripts:
+    image: tokend/terraform-provider-tokend:2.0.0
+    depends_on:
+      - storage
+      - horizon
+    restart: on-failure
+    volumes:
+      - ./terraform:/opt/config
+    environment:
+      WAIT_HOSTS: storage:9000, horizon:80
+    entrypoint: ""
+    command: sh -c "/opt/config/wait && /opt/config/apply.sh"
+  traefik:
+    image: traefik:v2.0
+    depends_on:
+      - upstream
+    ports:
+      - "80:80"
+      - "8081:8080"
+    volumes:
+      - ./configs/traefik.yaml:/traefik.yaml
+  cop:
+    image: tokend/traefik-cop:1.0.0
+    depends_on:
+      - traefik
+    restart: unless-stopped
+    environment:
+      - KV_VIPER_FILE=/config.yaml
+    volumes:
+      - ./configs/cop.yaml:/config.yaml
+    entrypoint: sh -c "traefik-cop run"
   adks:
     image: tokend/adks:1.0.2
     restart: unless-stopped
     depends_on:
       - horizon
       - adks_db
+      - initscripts
     ports:
       - 8006:80
     volumes:
       - ./configs/adks.toml:/config.toml
-  adks_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=adks
-      - POSTGRES_PASSWORD=adks
-      - POSTGRES_DB=adks
-      - PGDATA=/pgdata
-    volumes:
-      - adks-data:/pgdata
-  redis:
-    image: redis:5.0-alpine
-    restart: unless-stopped
-    volumes:
-      - redis-data:/data
-    command:
-      - redis-server
-      - --appendonly
-      - "yes"
   core:
     image: tokend/core:3.7.1
     depends_on:
@@ -73,6 +71,7 @@ services:
     image: tokend/horizon:3.10.4
     depends_on:
       - core
+      - traefik
     restart: unless-stopped
     environment:
       - POSTGRES_USER=horizon
@@ -88,31 +87,12 @@ services:
     depends_on:
       - horizon
       - api_db
+      - initscripts
     environment:
       - KV_VIPER_FILE=/config.yaml
     volumes:
       - ./configs/api.yml:/config.yaml
-    command: run
-  api_db:
-    image: tokend/postgres-ubuntu:9.6
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=api
-      - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=api
-      - PGDATA=/pgdata
-    volumes:
-      - api-data:/pgdata
-  initscripts:
-    image: tokend/terraform-provider-tokend:2.0.0
-    depends_on:
-      - storage
-      - horizon
-    restart: on-failure
-    volumes:
-      - ./terraform:/opt/config
-    entrypoint: ""
-    command: /opt/config/apply.sh
+    command: "run"
   web_client:
     image: tokend/web-client:1.13.0-rc.2
     restart: unless-stopped
@@ -129,6 +109,8 @@ services:
       - 8070:80
   storage:
     image: minio/minio:RELEASE.2019-01-31T00-31-19Z
+    depends_on:
+      - upstream
     restart: unless-stopped
     entrypoint: "sh"
     command: -c "mkdir -p /data/tfstate && minio server /data"
@@ -145,6 +127,9 @@ services:
 
   charts:
     image: tokend/charts:0.5.0
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -156,6 +141,7 @@ services:
   salecloser:
     image: tokend/sale-closer-svc:1.0.1
     depends_on:
+      - api
       - horizon
     restart: unless-stopped
     volumes:
@@ -165,6 +151,9 @@ services:
     command: "run"
   poll_closer:
     image: tokend/poll-closer:0.1.1
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -176,6 +165,9 @@ services:
 
   autoheal:
     image: willfarrell/autoheal
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - AUTOHEAL_START_PERIOD=60
@@ -191,6 +183,9 @@ services:
 
   coinpayments-deposit:
     image: tokend/coinpayments:0.5.0
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -199,6 +194,9 @@ services:
     command: deposit
   coinpayments-deposit-verify:
     image: tokend/coinpayments:0.5.0
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -207,6 +205,9 @@ services:
     command: deposit-verify
   coinpayments-withdraw:
     image: tokend/coinpayments:0.5.0
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -215,6 +216,9 @@ services:
     command: withdraw
   coinpayments-atomic-swap-checker:
     image: tokend/coinpayments:0.5.0
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -223,6 +227,9 @@ services:
     command: atomic-swap-checker
   coinpayments-atomic-swap-matcher:
     image: tokend/coinpayments:0.5.0
+    depends_on:
+      - api
+      - horizon
     restart: unless-stopped
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -235,6 +242,7 @@ services:
     image: tokend/stellar-deposit-svc:1.0.5
     restart: unless-stopped
     depends_on:
+      - api
       - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -244,6 +252,7 @@ services:
     image: tokend/stellar-withdraw-svc:1.0.1
     restart: unless-stopped
     depends_on:
+      - api
       - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -255,6 +264,7 @@ services:
     image: tokend/erc20-deposit-svc:1.0.12
     restart: unless-stopped
     depends_on:
+      - api
       - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -266,6 +276,7 @@ services:
     image: tokend/erc20-deposit-svc:1.0.12
     restart: on-failure
     depends_on:
+      - api
       - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -277,6 +288,7 @@ services:
     image: tokend/erc20-deposit-svc:1.0.12
     restart: unless-stopped
     depends_on:
+      - api
       - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -288,6 +300,7 @@ services:
     image: tokend/erc20-withdraw-svc:1.0.9
     restart: unless-stopped
     depends_on:
+      - api
       - horizon
     environment:
       - KV_VIPER_FILE=/config.yaml
@@ -295,6 +308,46 @@ services:
       - ./configs/erc20-withdraw.yaml:/config.yaml
     entrypoint: "erc20-withdraw-svc"
     command: ["run", "withdraw"]
+
+
+
+#Data Base`s
+
+  adks_db:
+    image: tokend/postgres-ubuntu:9.6
+    depends_on:
+      - upstream
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=adks
+      - POSTGRES_PASSWORD=adks
+      - POSTGRES_DB=adks
+      - PGDATA=/pgdata
+    volumes:
+      - adks-data:/pgdata
+  api_db:
+    image: tokend/postgres-ubuntu:9.6
+    depends_on:
+      - upstream
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=api
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=api
+      - PGDATA=/pgdata
+    volumes:
+      - api-data:/pgdata
+  redis:
+    image: redis:5.0-alpine
+    depends_on:
+      - upstream
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
 
 volumes:
   adks-data:
