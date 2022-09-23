@@ -1,7 +1,0 @@
-port = 80
-horizon = "http://traefik"
-log_level = "warn"
-
-[database]
-type = "postgres"
-url = "postgres://adks:adks@adks_db/adks?sslmode=disable"

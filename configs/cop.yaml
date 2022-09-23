@@ -1,8 +1,0 @@
-log:
-  disable_sentry: true
-
-traefik:
-  endpoint: http://traefik:8080
-
-listener:
-  addr: :80
