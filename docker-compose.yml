@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  upstream:
+  ingress:
     image: nginx
     restart: unless-stopped
     volumes:
@@ -20,25 +20,6 @@ services:
       WAIT_HOSTS: storage:9000, horizon:80
     entrypoint: ""
     command: sh -c "/opt/config/wait && /opt/config/apply.sh"
-  traefik:
-    image: traefik:v2.0
-    depends_on:
-      - upstream
-    ports:
-      - "80:80"
-      - "8081:8080"
-    volumes:
-      - ./configs/traefik.yaml:/traefik.yaml
-  cop:
-    image: tokend/traefik-cop:1.0.0
-    depends_on:
-      - traefik
-    restart: unless-stopped
-    environment:
-      - KV_VIPER_FILE=/config.yaml
-    volumes:
-      - ./configs/cop.yaml:/config.yaml
-    entrypoint: sh -c "traefik-cop run"
   adks:
     image: tokend/adks:1.0.2
     restart: unless-stopped
@@ -53,7 +34,7 @@ services:
   core:
     image: tokend/core:3.7.1
     depends_on:
-      - traefik
+      - ingress
     restart: unless-stopped
     environment:
       - POSTGRES_USER=core
@@ -71,7 +52,7 @@ services:
     image: tokend/horizon:3.10.4
     depends_on:
       - core
-      - traefik
+      - ingress
     restart: unless-stopped
     environment:
       - POSTGRES_USER=horizon
@@ -110,8 +91,10 @@ services:
   storage:
     image: minio/minio:RELEASE.2019-01-31T00-31-19Z
     depends_on:
-      - upstream
+      - ingress
     restart: unless-stopped
+    ports:
+      - 9000:9000
     entrypoint: "sh"
     command: -c "mkdir -p /data/tfstate && minio server /data"
     environment:
@@ -316,7 +299,7 @@ services:
   adks_db:
     image: tokend/postgres-ubuntu:9.6
     depends_on:
-      - upstream
+      - ingress
     restart: unless-stopped
     environment:
       - POSTGRES_USER=adks
@@ -328,7 +311,7 @@ services:
   api_db:
     image: tokend/postgres-ubuntu:9.6
     depends_on:
-      - upstream
+      - ingress
     restart: unless-stopped
     environment:
       - POSTGRES_USER=api
@@ -340,7 +323,7 @@ services:
   redis:
     image: redis:5.0-alpine
     depends_on:
-      - upstream
+      - ingress
     restart: unless-stopped
     volumes:
       - redis-data:/data

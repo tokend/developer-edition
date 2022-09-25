@@ -15,10 +15,11 @@ sentry:
   dsn: https://989409410d0740a89b1f8571c4195dca@sentry.tokend.services/3
 
 horizon:
-  endpoint: http://traefik
+  endpoint: http://horizon
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 cop:
+  disabled: true
   endpoint: http://cop
   upstream: http://charts
   service_name: "charts-service"

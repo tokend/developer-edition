@@ -25,6 +25,7 @@ config:
   telegram_airdrop:                        http://black.hole
 
 cop:
+  disabled: true
   endpoint: http://cop
   upstream: http://horizon
   service_name: "horizon-service"

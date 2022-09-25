@@ -1,5 +1,5 @@
 port = 80
-horizon = "http://traefik"
+horizon = "http://horizon"
 log_level = "warn"
 
 [database]
