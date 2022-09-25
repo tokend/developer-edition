@@ -9,7 +9,7 @@ db:
   max_connections: 12
 
 horizon:
-  url: http://traefik
+  url: http://horizon
   signer: SAMJKTZVW5UOHCDK5INYJNORF2HRKYI72M5XSZCBYAHQHR34FFR4Z6G4
 
 notificator:
@@ -60,6 +60,7 @@ tx_watcher:
   disabled: false
 
 cop:
+  disabled: true
   endpoint: http://cop
   upstream: http://api
   service_name: "api-service"

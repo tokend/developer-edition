@@ -5,6 +5,7 @@ listener:
   addr: :80
 
 cop:
+  disabled: true
   endpoint: "http://cop"
   upstream: "http://errors"
   service_name: error-handler-svc
