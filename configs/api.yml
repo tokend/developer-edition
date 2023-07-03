@@ -27,7 +27,7 @@ log:
   slow_request_bound: 1s
   # we are using sentry for error collection,
   # you could opt-out by disabling it on the following line
-  disable_sentry: false
+  disable_sentry: true
 
 sentry:
   dsn: https://9f22323f09364ec4ad24a2315bd60c98:a4da9e4e6ddb4d13b01a336f96e73ca5@sentry.tokend.services/2
