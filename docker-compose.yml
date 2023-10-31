@@ -30,7 +30,7 @@ services:
     volumes:
       - ./configs/traefik.yaml:/traefik.yaml
   cop:
-    image: tokend/traefik-cop:1.0.0
+    image: tokend/traefik-cop:1.1.0
     depends_on:
       - traefik
     restart: unless-stopped
@@ -40,7 +40,7 @@ services:
       - ./configs/cop.yaml:/config.yaml
     entrypoint: sh -c "traefik-cop run"
   adks:
-    image: tokend/adks:1.0.2
+    image: tokend/adks:1.0.3
     restart: unless-stopped
     depends_on:
       - horizon
@@ -70,7 +70,7 @@ services:
     entrypoint:
       - "entrypoint.sh"
   horizon:
-    image: tokend/horizon:3.11.0
+    image: tokend/horizon:3.12.5-x.0
     depends_on:
       - core
       - horizon-db
@@ -91,7 +91,7 @@ services:
     volumes:
       - horizon-data:/data
   api:
-    image: tokend/identity:4.7.7
+    image: tokend/identity:4.8.3
     restart: unless-stopped
     depends_on:
       - horizon
@@ -138,7 +138,7 @@ services:
   ##
 
   charts:
-    image: tokend/charts:0.5.0
+    image: tokend/charts:0.5.1
     depends_on:
       - api
       - horizon
@@ -151,7 +151,7 @@ services:
       - 8080:8080
     command: run
   salecloser:
-    image: tokend/sale-closer-svc:1.0.1
+    image: tokend/sale-closer-svc:1.1.0
     depends_on:
       - api
       - horizon
@@ -273,7 +273,7 @@ services:
 
   ## Ethereum
   erc20-deposit:
-    image: tokend/erc20-deposit-svc:1.0.12
+    image: tokend/erc20-deposit-svc:1.0.13
     restart: unless-stopped
     depends_on:
       - api
@@ -285,7 +285,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deposit"]
   erc20-deployer:
-    image: tokend/erc20-deposit-svc:1.0.12
+    image: tokend/erc20-deposit-svc:1.0.13
     restart: on-failure
     depends_on:
       - api
@@ -297,7 +297,7 @@ services:
     entrypoint: "erc20-deposit-svc"
     command: ["run", "deployer"]
   erc20-funnel:
-    image: tokend/erc20-deposit-svc:1.0.12
+    image: tokend/erc20-deposit-svc:1.0.13
     restart: unless-stopped
     depends_on:
       - api
