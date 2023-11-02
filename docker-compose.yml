@@ -70,7 +70,7 @@ services:
     entrypoint:
       - "entrypoint.sh"
   horizon:
-    image: tokend/horizon:3.12.5-x.0
+    image: tokend/horizon:3.12.5
     depends_on:
       - core
       - horizon-db
@@ -91,7 +91,7 @@ services:
     volumes:
       - horizon-data:/data
   api:
-    image: tokend/identity:4.8.3
+    image: tokend/identity:4.8.4
     restart: unless-stopped
     depends_on:
       - horizon
